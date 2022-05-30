@@ -1,6 +1,6 @@
-package com.JDR.Vacunassist.model;
+package com.JDR.Vacunassist.Model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,7 +40,7 @@ public class Administrador {
 	private String apellido;
 	
 	@Column(name="fecha_nacimiento")
-	private Timestamp fechaNacimiento;
+	private Date fechaNacimiento;
 	
 	@ManyToOne
 	@JoinColumn(name="rol_id", nullable=false)
@@ -50,7 +50,7 @@ public class Administrador {
 	}
 	
 	public Administrador(int dni, String password, int codigo, String nombre, String apellido, String email,
-			Timestamp fechaNacimiento) {
+			Date fechaNacimiento) {
 		super();
 		this.dni = dni;
 		this.password = password;
@@ -109,11 +109,20 @@ public class Administrador {
 		this.email = email;
 	}
 
-	public Timestamp getFechaNacimiento() {
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Timestamp fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
 }

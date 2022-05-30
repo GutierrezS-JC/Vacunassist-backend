@@ -1,4 +1,4 @@
-package com.JDR.Vacunassist.model;
+package com.JDR.Vacunassist.Model;
 
 import java.util.Set;
 
