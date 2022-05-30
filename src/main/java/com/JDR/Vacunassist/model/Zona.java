@@ -56,5 +56,29 @@ public class Zona {
 	public void setNombreZona(String nombreZona) {
 		this.nombreZona = nombreZona;
 	}
+
+	public Vacunatorio getVacunatorio() {
+		return vacunatorio;
+	}
+
+	public void setVacunatorio(Vacunatorio vacunatorio) {
+		this.vacunatorio = vacunatorio;
+	}
+
+	public Set<VacunadorZona> getVacunadores() {
+		return vacunadores;
+	}
+
+	public void setVacunadores(Set<VacunadorZona> vacunadores) {
+		this.vacunadores = vacunadores;
+	}
+
+	public Set<PacienteZona> getPacientes() {
+		return pacientes;
+	}
+
+	public void setPacientes(Set<PacienteZona> pacientes) {
+		this.pacientes = pacientes;
+	}
 	
 }

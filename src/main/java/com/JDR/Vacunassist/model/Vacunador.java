@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class Vacunador {
 	private String apellido;
 	
 	@Column(name="fecha_nacimiento")
-	private Timestamp fechaNacimiento;
+	private Date fechaNacimiento;
 	
 	@ManyToOne
 	@JoinColumn(name="rol_id", nullable=false)
@@ -55,7 +56,7 @@ public class Vacunador {
 	}
 	
 	public Vacunador(int dni, String password, int codigo, String nombre, String apellido, String email,
-			Timestamp fechaNacimiento) {
+			Date fechaNacimiento) {
 		super();
 		this.dni = dni;
 		this.password = password;
@@ -64,6 +65,14 @@ public class Vacunador {
 		this.apellido = apellido;
 		this.email = email;
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getDni() {
@@ -114,11 +123,28 @@ public class Vacunador {
 		this.email = email;
 	}
 
-	public Timestamp getFechaNacimiento() {
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Timestamp fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	public Set<VacunadorZona> getZonas() {
+		return zonas;
+	}
+
+	public void setZonas(Set<VacunadorZona> zonas) {
+		this.zonas = zonas;
+	}
+	
 }

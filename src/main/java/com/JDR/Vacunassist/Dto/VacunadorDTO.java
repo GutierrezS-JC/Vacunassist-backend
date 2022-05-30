@@ -1,6 +1,8 @@
 package com.JDR.Vacunassist.Dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VacunadorDTO {
 	
@@ -11,13 +13,14 @@ public class VacunadorDTO {
 	private String apellido;
 	private Date fechaNacimiento;
 	private RolDTO rol;
+	private List<ZonaDTO> zonas = new ArrayList<>();
 	
 	public VacunadorDTO() {
 		
 	}
 	
 	public VacunadorDTO(Integer id, Integer dni, String email, String nombre, String apellido, Date fechaNacimiento,
-			RolDTO rol) {
+			RolDTO rol, List<ZonaDTO> zonas) {
 		super();
 		this.id = id;
 		this.dni = dni;
@@ -26,6 +29,7 @@ public class VacunadorDTO {
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
 		this.rol = rol;
+		this.zonas = zonas;
 	}
 
 	public Integer getId() {
@@ -82,6 +86,14 @@ public class VacunadorDTO {
 
 	public void setRol(RolDTO rol) {
 		this.rol = rol;
+	}
+
+	public List<ZonaDTO> getZonas() {
+		return zonas;
+	}
+
+	public void setZonas(List<ZonaDTO> zonas) {
+		this.zonas = zonas;
 	}
 
 }
