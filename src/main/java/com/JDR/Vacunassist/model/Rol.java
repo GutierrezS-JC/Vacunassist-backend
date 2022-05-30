@@ -12,6 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.JoinColumn;
 
 @Entity
@@ -71,6 +74,7 @@ public class Rol {
 		this.nombreRol = nombreRol;
 	}
 
+	@JsonIgnore
 	public Set<Permiso> getPermisos() {
 		return permisos;
 	}
