@@ -16,11 +16,11 @@ public class Administrador {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;    
+	private Integer id;    
 	
 	@NotNull
 	@Column(unique=true)
-	private int dni;
+	private Integer dni;
 	
 	@NotNull
 	@Column(unique=true)
@@ -49,7 +49,7 @@ public class Administrador {
 	public Administrador() {
 	}
 	
-	public Administrador(int dni, String password, int codigo, String nombre, String apellido, String email,
+	public Administrador(Integer dni, String password, int codigo, String nombre, String apellido, String email,
 			Date fechaNacimiento) {
 		super();
 		this.dni = dni;
@@ -61,11 +61,19 @@ public class Administrador {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public int getDni() {
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getDni() {
 		return dni;
 	}
 
-	public void setDni(int dni) {
+	public void setDni(Integer dni) {
 		this.dni = dni;
 	}
 
