@@ -44,5 +44,16 @@ public class VacunatorioService {
 		return vacunatorioDTO;
 	}
 
+	public Boolean editarNombreVacunatorio(String nombre, Integer id) {
+		Vacunatorio vacunatorioBuscado = vacunatorioRepository.findById(id).get();
+		if(vacunatorioBuscado != null) {
+			vacunatorioBuscado.setNombre(nombre);
+			vacunatorioRepository.save(vacunatorioBuscado);
+			return true;
+		} else {			
+			return false;
+		}
+	}
+
 
 }

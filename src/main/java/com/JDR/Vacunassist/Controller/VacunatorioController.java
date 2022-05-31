@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +35,11 @@ public class VacunatorioController {
 	@GetMapping("/getVacunatorioPorNombre")
 	public ResponseEntity<VacunatorioFullDTO> getVacunatorioPorNombre(@RequestParam("nombre") String nombre) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunatorioService.devolverVacunatorioPorNombre(nombre));
+	}
+	
+	@PutMapping("/editarNombreVacunatorio")
+	public ResponseEntity<Boolean> updateNombreVacunatorio(@RequestParam("nombre") String nombre, @RequestParam("id") Integer id) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunatorioService.editarNombreVacunatorio(nombre,id));
 	}
 
 }
