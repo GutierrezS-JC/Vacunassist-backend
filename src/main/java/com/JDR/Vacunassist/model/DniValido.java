@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class DnisValidos {
+public class DniValido {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,11 +26,11 @@ public class DnisValidos {
 	@Column
 	private String apellido;
 
-	public DnisValidos() {
+	public DniValido() {
 		
 	}
 	
-	public DnisValidos(Integer id, @NotNull Integer dni, @NotNull String nombre, @NotNull String apellido) {
+	public DniValido(Integer id, @NotNull Integer dni, @NotNull String nombre, @NotNull String apellido) {
 		super();
 		this.id = id;
 		this.dni = dni;
