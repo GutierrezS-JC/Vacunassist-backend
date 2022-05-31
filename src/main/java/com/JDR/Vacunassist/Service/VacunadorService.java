@@ -30,6 +30,7 @@ public class VacunadorService {
 		return response;	
 	}
 
+	//Convierte un objeto Vacunador traido con toda la data redundante de la BD a una version cutom por nosotros
 	private List<VacunadorDTO> convertirVacunador(List<Vacunador> vacunadorList) {
 		return vacunadorList.stream().map(vacunador -> mapearVacunador(vacunador)).collect(Collectors.toList());
 	}
@@ -73,6 +74,12 @@ public class VacunadorService {
 			return mapearVacunador(vacunador);
 		}
 		else return null;
+	}
+
+	public List<VacunadorDTO> devolverVacunadoresEnRango(Integer inferiorDni, Integer superiorDni) {
+		List<Vacunador> vacunadorList = vacunadorRepository.findByDniGreaterThanAndDniLessThan(inferiorDni, superiorDni);
+		List<VacunadorDTO> response = this.convertirVacunador(vacunadorList);
+		return response;
 	}
 
 }
