@@ -35,7 +35,13 @@ public class ZonaService {
 	}
 
 	private ZonaDTO mapearZona(Zona zona) {
-		VacunatorioDTO vacunatorioResponse = new VacunatorioDTO(zona.getVacunatorio().getId(), zona.getNombreZona());
+		VacunatorioDTO vacunatorioResponse;
+		if(zona.getVacunatorio()==null) {
+			vacunatorioResponse = null;
+		}
+		else {			
+			vacunatorioResponse = new VacunatorioDTO(zona.getVacunatorio().getId(), zona.getNombreZona());
+		}
 		ZonaDTO zonaResponse = new ZonaDTO(zona.getId(),zona.getNombreZona(), vacunatorioResponse);
 		return zonaResponse;
 	}
