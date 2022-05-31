@@ -26,9 +26,6 @@ public class Vacunatorio {
 	private String nombre;
 	
 	@Column
-	private String direccion;
-	
-	@Column
 	private String calle;
 	
 	@Column
@@ -54,11 +51,10 @@ public class Vacunatorio {
 		
 	}
 
-	public Vacunatorio(int id, String nombre, String direccion, String calle, String altura, int piso, int dpto) {
+	public Vacunatorio(int id, String nombre, String calle, String altura, int piso, int dpto) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.direccion = direccion;
 		this.calle = calle;
 		this.altura = altura;
 		this.piso = piso;
@@ -79,14 +75,6 @@ public class Vacunatorio {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
 	}
 
 	public String getCalle() {
@@ -120,6 +108,13 @@ public class Vacunatorio {
 	public void setDpto(int dpto) {
 		this.dpto = dpto;
 	}
-	
+
+	public Zona getZona() {
+		return zona;
+	}
+
+	public void setZona(Zona zona) {
+		this.zona = zona;
+	}
 	
 }

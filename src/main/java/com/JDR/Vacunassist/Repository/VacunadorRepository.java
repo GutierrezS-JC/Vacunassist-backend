@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.JDR.Vacunassist.Model.Vacunador;
 
 @Repository
-public interface VacunadorRepository extends JpaRepository<Vacunador, Long>{
+public interface VacunadorRepository extends JpaRepository<Vacunador, Integer>{
+
+	Vacunador findByDni(Integer dni);
 
 }

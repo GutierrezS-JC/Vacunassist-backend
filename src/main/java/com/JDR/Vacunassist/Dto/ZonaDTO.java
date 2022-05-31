@@ -10,6 +10,13 @@ public class ZonaDTO {
 		
 	}
 	
+	public ZonaDTO(Integer id, String nombreZona) {
+		super();
+		this.id = id;
+		this.nombreZona = nombreZona;
+		this.vacunatorio = null;
+	}
+	
 	public ZonaDTO(Integer id, String nombreZona, VacunatorioDTO vacunatorio) {
 		super();
 		this.id = id;

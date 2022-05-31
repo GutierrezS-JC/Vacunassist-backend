@@ -12,10 +12,10 @@ import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
+import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Model.Permiso;
 import com.JDR.Vacunassist.Model.Vacunador;
 import com.JDR.Vacunassist.Model.VacunadorZona;
-import com.JDR.Vacunassist.Model.Zona;
 import com.JDR.Vacunassist.Repository.VacunadorRepository;
 
 @Service
@@ -60,6 +60,19 @@ public class VacunadorService {
 		vacunadorDTO.setZonas(listaZonasDTO);
 		
 		return vacunadorDTO;
+	}
+
+	public VacunadorDTO devolverVacunadorPorId(Integer id) throws ResourceNotFoundException{
+		Vacunador vacunador = vacunadorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No se encontro un admin para este id: " + id));
+		return mapearVacunador(vacunador);
+	}
+
+	public VacunadorDTO devolverVacunadorPorDni(Integer dni) {
+		Vacunador vacunador = vacunadorRepository.findByDni(dni);
+		if(vacunador!= null) {
+			return mapearVacunador(vacunador);
+		}
+		else return null;
 	}
 
 }

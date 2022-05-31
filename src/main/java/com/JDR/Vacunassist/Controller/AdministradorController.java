@@ -29,7 +29,7 @@ public class AdministradorController {
 	}
 	
 	@GetMapping("/getAdministradorByDni/{dni}")
-	public ResponseEntity<AdministradorDTO> getAdministradorPorDNI(@PathVariable(name="dni") Integer dni) throws ResourceNotFoundException{
+	public ResponseEntity<AdministradorDTO> getAdministradorPorDni(@PathVariable(name="dni") Integer dni) throws ResourceNotFoundException{
 		return ResponseEntity.ok(administradorService.devolverAdminPorDNI(dni));
 	}
 	
