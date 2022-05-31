@@ -65,4 +65,14 @@ public class AdministradorService {
 		}
 		else return null;
 	}
+
+	public Boolean devolverSiExisteDniEnAdminTable(Integer dni) {
+		Administrador adminBuscado = administradorRepository.findByDni(dni);
+		if(adminBuscado != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

@@ -82,4 +82,9 @@ public class VacunadorService {
 		return response;
 	}
 
+	public Boolean devolverSiExisteDniEnVacunadorTable(Integer dni) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findByDni(dni);
+		if(vacunadorBuscado !=null) return true; else return false;
+	}
+
 }

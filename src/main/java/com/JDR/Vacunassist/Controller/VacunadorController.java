@@ -39,4 +39,8 @@ public class VacunadorController {
 		return ResponseEntity.ok(vacunadorService.devolverVacunadorPorDni(dni));
 	}
 	
+	@GetMapping("/getExisteDniVacunador")
+	public ResponseEntity<Boolean> getExisteDniVacunador(@RequestParam("dni") Integer dni) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunadorService.devolverSiExisteDniEnVacunadorTable(dni));
+	}
 }
