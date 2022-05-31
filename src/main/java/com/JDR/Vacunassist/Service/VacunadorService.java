@@ -10,19 +10,30 @@ import org.springframework.stereotype.Service;
 import com.JDR.Vacunassist.Dto.PermisoDTO;
 import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Model.Permiso;
+import com.JDR.Vacunassist.Model.Rol;
 import com.JDR.Vacunassist.Model.Vacunador;
 import com.JDR.Vacunassist.Model.VacunadorZona;
+import com.JDR.Vacunassist.Model.Zona;
+import com.JDR.Vacunassist.Repository.RolRepository;
 import com.JDR.Vacunassist.Repository.VacunadorRepository;
+import com.JDR.Vacunassist.Repository.ZonaRepository;
 
 @Service
 public class VacunadorService {
 
 	@Autowired
 	VacunadorRepository vacunadorRepository;
+	
+	@Autowired
+	RolRepository rolRepository;
+	
+	@Autowired
+	ZonaRepository zonaRepository;
 	
 	public List<VacunadorDTO> devolverVacunadores() {
 		List<Vacunador> vacunadorList = vacunadorRepository.findAll();
@@ -85,6 +96,25 @@ public class VacunadorService {
 	public Boolean devolverSiExisteDniEnVacunadorTable(Integer dni) {
 		Vacunador vacunadorBuscado = vacunadorRepository.findByDni(dni);
 		if(vacunadorBuscado !=null) return true; else return false;
+	}
+
+	public VacunadorDTO cargarVacunador(VacunadorRequest vacunadorReq) {
+		Rol rolBuscado = rolRepository.findById(vacunadorReq.getRolId()).get();
+		Zona zona = zonaRepository.findById(vacunadorReq.getZonaId()).get();
+		
+		Vacunador nuevoVacunador = new Vacunador(vacunadorReq.getId(), vacunadorReq.getDni(), vacunadorReq.getEmail(), vacunadorReq.getPassword(),
+				vacunadorReq.getClave(), vacunadorReq.getNombre(), vacunadorReq.getApellido(), vacunadorReq.getFechaNacimiento(), rolBuscado);
+	
+		Vacunador vacunadorCreado = vacunadorRepository.save(nuevoVacunador);
+
+		//Creo el objeto VacunadorZona que representa la union entre ambas entidades participantes
+		VacunadorZona vacunadorZona = new VacunadorZona(vacunadorCreado, zona);
+		vacunadorCreado.getZonas().add(vacunadorZona);
+		vacunadorRepository.save(vacunadorCreado);
+		
+		VacunadorDTO vacunadorResponse = this.mapearVacunador(vacunadorCreado);
+		
+		return vacunadorResponse;
 	}
 
 }

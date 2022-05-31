@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -26,10 +27,10 @@ public class Zona {
     private Vacunatorio vacunatorio;
 	
 	@OneToMany(mappedBy = "zona")
-	private Set<VacunadorZona> vacunadores;
+	private Set<VacunadorZona> vacunadores = new HashSet<>();
 	
 	@OneToMany(mappedBy = "zona")
-	private Set<PacienteZona> pacientes;
+	private Set<PacienteZona> pacientes = new HashSet<>();
 	
 	public Zona() {
 		

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.JDR.Vacunassist.Model.Rol;
 
 @Repository
-public interface RolRepository extends JpaRepository<Rol, Long>{
+public interface RolRepository extends JpaRepository<Rol, Integer>{
 
 }

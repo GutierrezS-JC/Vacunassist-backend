@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
+import com.JDR.Vacunassist.Model.DniValido;
 import com.JDR.Vacunassist.Service.VacunadorService;
 
 @RestController
@@ -42,5 +46,10 @@ public class VacunadorController {
 	@GetMapping("/getExisteDniVacunador")
 	public ResponseEntity<Boolean> getExisteDniVacunador(@RequestParam("dni") Integer dni) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunadorService.devolverSiExisteDniEnVacunadorTable(dni));
+	}
+	
+	@PostMapping("/cargarVacunador")
+	public ResponseEntity<VacunadorDTO> cargarVacunador(@RequestBody VacunadorRequest vacunadorRequest ){
+		return ResponseEntity.ok(vacunadorService.cargarVacunador(vacunadorRequest));
 	}
 }

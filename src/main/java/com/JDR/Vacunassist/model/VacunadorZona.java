@@ -1,6 +1,7 @@
 package com.JDR.Vacunassist.Model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,15 +26,23 @@ public class VacunadorZona {
 	private Zona zona;
 	
 	@Column(name="fecha_desde")
-	private Timestamp fechaDesde;
+	private Date fechaDesde;
 	
 	@Column(name="fecha_hasta")
-	private Timestamp fechaHasta;
+	private Date fechaHasta;
 
 	public VacunadorZona() {
 		
 	}
 	
+	//Usado para cargar el vacunador
+	public VacunadorZona(Vacunador vacunador, Zona zona) {
+		super();
+		this.vacunador = vacunador;
+		this.zona = zona;
+		this.fechaDesde = new Date();
+	}
+
 	public VacunadorZona(Integer id, Vacunador vacunador, Zona zona, Timestamp fechaDesde, Timestamp fechaHasta) {
 		super();
 		this.id = id;
@@ -67,19 +76,19 @@ public class VacunadorZona {
 		this.zona = zona;
 	}
 
-	public Timestamp getFechaDesde() {
+	public Date getFechaDesde() {
 		return fechaDesde;
 	}
 
-	public void setFechaDesde(Timestamp fechaDesde) {
+	public void setFechaDesde(Date fechaDesde) {
 		this.fechaDesde = fechaDesde;
 	}
 
-	public Timestamp getFechaHasta() {
+	public Date getFechaHasta() {
 		return fechaHasta;
 	}
 
-	public void setFechaHasta(Timestamp fechaHasta) {
+	public void setFechaHasta(Date fechaHasta) {
 		this.fechaHasta = fechaHasta;
 	}
 	

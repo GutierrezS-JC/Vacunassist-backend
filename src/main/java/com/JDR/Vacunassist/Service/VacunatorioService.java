@@ -21,7 +21,7 @@ public class VacunatorioService {
 	public List<VacunatorioFullDTO> devolverVacunatorios() {
 		List<Vacunatorio> vacunatorioList = vacunatorioRepository.findAll();
 		List<VacunatorioFullDTO> response = this.convertirVacunatorio(vacunatorioList);
-		return null;
+		return response;
 	}
 
 	private List<VacunatorioFullDTO> convertirVacunatorio(List<Vacunatorio> vacunatorioList) {

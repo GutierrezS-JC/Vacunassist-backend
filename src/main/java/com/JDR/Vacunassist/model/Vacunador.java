@@ -2,6 +2,7 @@ package com.JDR.Vacunassist.Model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -50,11 +51,42 @@ public class Vacunador {
 	private Rol rol;
 	
 	@OneToMany(mappedBy = "vacunador")
-	private Set<VacunadorZona> zonas;
+	private Set<VacunadorZona> zonas = new HashSet<>();
 	
 	public Vacunador() {
 	}
 	
+	
+	//Para cargar el Vacunador
+	public Vacunador(int id, @NotNull int dni, @NotNull String email, @NotNull String password, int codigo,
+			String nombre, String apellido, Date fechaNacimiento, Rol rol) {
+		super();
+		this.id = id;
+		this.dni = dni;
+		this.email = email;
+		this.password = password;
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fechaNacimiento = fechaNacimiento;
+		this.rol = rol;
+	}
+
+	public Vacunador(int id, @NotNull int dni, @NotNull String email, @NotNull String password, int codigo,
+			String nombre, String apellido, Date fechaNacimiento, Rol rol, Set<VacunadorZona> zonas) {
+		super();
+		this.id = id;
+		this.dni = dni;
+		this.email = email;
+		this.password = password;
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fechaNacimiento = fechaNacimiento;
+		this.rol = rol;
+		this.zonas = zonas;
+	}
+
 	public Vacunador(int dni, String password, int codigo, String nombre, String apellido, String email,
 			Date fechaNacimiento) {
 		super();
