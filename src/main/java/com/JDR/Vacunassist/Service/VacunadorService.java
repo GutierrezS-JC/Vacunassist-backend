@@ -128,4 +128,15 @@ public class VacunadorService {
 		}
 	}
 
+	public VacunadorDTO validarVacunadorConCodigo(ValidarVacunador validarVacunador) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findByEmailAndPasswordAndCodigo(validarVacunador.getEmail(), validarVacunador.getPassword(), validarVacunador.getCodigo());
+		if(vacunadorBuscado != null) {
+			VacunadorDTO vacunadorDTO = this.mapearVacunador(vacunadorBuscado);
+			return vacunadorDTO;
+		}
+		else {			
+			return null;
+		}
+	}
+
 }
