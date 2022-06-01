@@ -9,4 +9,8 @@ import com.JDR.Vacunassist.Model.Administrador;
 public interface AdministradorRepository extends JpaRepository<Administrador, Integer>{
 	
 	Administrador findByDni(Integer dni);
+
+	Administrador findByEmailAndPassword(String email, String password);
+
+	Administrador findByEmailAndPasswordAndCodigo(String email, String password, Integer codigo);
 }

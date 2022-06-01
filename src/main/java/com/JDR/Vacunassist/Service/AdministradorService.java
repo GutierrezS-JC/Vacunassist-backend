@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.JDR.Vacunassist.Dto.AdministradorDTO;
 import com.JDR.Vacunassist.Dto.PermisoDTO;
 import com.JDR.Vacunassist.Dto.RolDTO;
+import com.JDR.Vacunassist.Dto.ValidarAdmin;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Model.Administrador;
 import com.JDR.Vacunassist.Model.Permiso;
@@ -73,6 +74,28 @@ public class AdministradorService {
 		}
 		else {
 			return false;
+		}
+	}
+
+	public AdministradorDTO validarAdmin(ValidarAdmin validarAdmin) {
+		Administrador administradorBuscado = administradorRepository.findByEmailAndPassword(validarAdmin.getEmail(), validarAdmin.getPassword());
+		if(administradorBuscado != null) {
+			AdministradorDTO adminDTO = this.mapearAdmin(administradorBuscado);
+			return adminDTO;
+		}
+		else {
+			return null;
+		}
+	}
+
+	public AdministradorDTO validarAdminConCodigo(ValidarAdmin validarAdmin) {
+		Administrador administradorBuscado = administradorRepository.findByEmailAndPasswordAndCodigo(validarAdmin.getEmail(), validarAdmin.getPassword(), validarAdmin.getCodigo());
+		if(administradorBuscado != null) {
+			AdministradorDTO adminDTO = this.mapearAdmin(administradorBuscado);
+			return adminDTO;
+		}
+		else {
+			return null;
 		}
 	}
 }

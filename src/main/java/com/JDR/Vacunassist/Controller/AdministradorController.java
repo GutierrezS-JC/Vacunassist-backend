@@ -7,10 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.AdministradorDTO;
+import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.ValidarAdmin;
+import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Service.AdministradorService;
 
@@ -38,6 +42,16 @@ public class AdministradorController {
 	@GetMapping("/getExisteDniAdministrador")
 	public ResponseEntity<Boolean> getExisteDniAdministrador(@RequestParam("dni") Integer dni) throws ResourceNotFoundException{
 		return ResponseEntity.ok(administradorService.devolverSiExisteDniEnAdminTable(dni));
+	}
+	
+	@GetMapping("/validarAdmin")
+	public ResponseEntity<AdministradorDTO> validarAdmin(@RequestBody ValidarAdmin validarAdmin) throws ResourceNotFoundException{
+		return ResponseEntity.ok(administradorService.validarAdmin(validarAdmin));
+	}
+	
+	@GetMapping("/validarAdminConCodigo")
+	public ResponseEntity<AdministradorDTO> validarAdminConCodigo(@RequestBody ValidarAdmin validarAdmin) throws ResourceNotFoundException{
+		return ResponseEntity.ok(administradorService.validarAdminConCodigo(validarAdmin));
 	}
 	
 	//Test - Funciona
