@@ -46,6 +46,13 @@ public class VacunatorioController {
 		return ResponseEntity.ok(vacunatorioService.cargarVacunatorio(vacunatorioPost));
 	}
 	
+	//Insertar vacunas al centro de vacunacion (no agregar stock)
+	@PostMapping("/cargarVacunaEnVacunatorio")
+	public ResponseEntity<Boolean> cargarVacuna(@RequestParam("vacunatorioId") Integer vacunatorioId, @RequestParam("vacunaId") Integer vacunaId){
+		return ResponseEntity.ok(vacunatorioService.cargarVacuna(vacunatorioId, vacunaId));
+	}
+	
+	
 	@PutMapping("/editarNombreVacunatorio")
 	public ResponseEntity<Boolean> updateNombreVacunatorio(@RequestParam("nombre") String nombre, @RequestParam("id") Integer id) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunatorioService.editarNombreVacunatorio(nombre,id));

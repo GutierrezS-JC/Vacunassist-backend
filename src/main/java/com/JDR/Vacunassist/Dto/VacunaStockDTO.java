@@ -1,6 +1,6 @@
 package com.JDR.Vacunassist.Dto;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class VacunaStockDTO {
 

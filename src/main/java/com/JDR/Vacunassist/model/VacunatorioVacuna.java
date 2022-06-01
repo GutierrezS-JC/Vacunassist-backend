@@ -1,10 +1,13 @@
 package com.JDR.Vacunassist.Model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,13 +18,14 @@ import javax.persistence.Table;
 public class VacunatorioVacuna {
 	
 	@Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@ManyToOne
-	@JoinColumn(name="vacunadorio_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name="vacunatorio_id")
 	private Vacunatorio vacunatorio;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="vacuna_id")
 	private Vacuna vacuna;
 	
@@ -33,6 +37,14 @@ public class VacunatorioVacuna {
 	
 	public VacunatorioVacuna() {
 		
+	}
+	
+	public VacunatorioVacuna(Vacunatorio vacunatorio, Vacuna vacuna) {
+		super();
+		this.vacunatorio = vacunatorio;
+		this.vacuna = vacuna;
+		this.stock = 0;
+		this.fecha = new Date();
 	}
 	
 	public VacunatorioVacuna(Integer id, Vacunatorio vacunatorio, Vacuna vacuna, Integer stock, Date fecha) {

@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class Vacunatorio {
 	@OneToMany(mappedBy="vacunatorio")
 	private Set<Turno> turnos = new HashSet<>();
 	
-	@OneToMany(mappedBy = "vacunatorio")
+	@OneToMany(mappedBy = "vacunatorio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<VacunatorioVacuna> vacunas = new HashSet<>();
 	
 	@OneToOne(cascade = CascadeType.ALL)

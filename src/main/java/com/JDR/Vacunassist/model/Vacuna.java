@@ -5,8 +5,10 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +32,7 @@ public class Vacuna {
 	@Column(name="fecha_vencimiento")
 	private Date fechaVencimiento;
 
-	@OneToMany(mappedBy = "vacuna")
+	@OneToMany(mappedBy = "vacuna", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<VacunatorioVacuna> vacunatorios = new HashSet<>();
 	
 	@OneToMany(mappedBy="vacuna")

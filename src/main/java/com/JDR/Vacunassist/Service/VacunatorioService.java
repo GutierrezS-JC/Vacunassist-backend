@@ -10,8 +10,11 @@ import com.JDR.Vacunassist.Dto.VacunatorioFullDTO;
 import com.JDR.Vacunassist.Dto.VacunatorioPost;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
+import com.JDR.Vacunassist.Model.Vacuna;
 import com.JDR.Vacunassist.Model.Vacunatorio;
+import com.JDR.Vacunassist.Model.VacunatorioVacuna;
 import com.JDR.Vacunassist.Model.Zona;
+import com.JDR.Vacunassist.Repository.VacunaRepository;
 import com.JDR.Vacunassist.Repository.VacunatorioRepository;
 import com.JDR.Vacunassist.Repository.ZonaRepository;
 
@@ -23,6 +26,9 @@ public class VacunatorioService {
 	
 	@Autowired
 	ZonaRepository zonaRepository;
+	
+	@Autowired
+	VacunaRepository vacunaRepository;
 
 	public List<VacunatorioFullDTO> devolverVacunatorios() {
 		List<Vacunatorio> vacunatorioList = vacunatorioRepository.findAll();
@@ -77,6 +83,20 @@ public class VacunatorioService {
 		}
 		else {			
 			return null;
+		}
+	}
+
+	public Boolean cargarVacuna(Integer vacunatorioId, Integer vacunaId) {
+		Vacuna vacunaBuscada = vacunaRepository.findById(vacunaId).get();
+		if(vacunaBuscada != null) {
+			Vacunatorio vacunatorioBuscado = vacunatorioRepository.findById(vacunatorioId).get();
+			VacunatorioVacuna vacunVacuna = new VacunatorioVacuna(vacunatorioBuscado, vacunaBuscada);
+			vacunatorioBuscado.getVacunas().add(vacunVacuna);
+			vacunatorioRepository.save(vacunatorioBuscado);
+			return true;
+		}
+		else {			
+			return false;
 		}
 	}
 
