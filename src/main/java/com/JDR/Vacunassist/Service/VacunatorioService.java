@@ -16,6 +16,7 @@ import com.JDR.Vacunassist.Model.VacunatorioVacuna;
 import com.JDR.Vacunassist.Model.Zona;
 import com.JDR.Vacunassist.Repository.VacunaRepository;
 import com.JDR.Vacunassist.Repository.VacunatorioRepository;
+import com.JDR.Vacunassist.Repository.VacunatorioVacunaRepository;
 import com.JDR.Vacunassist.Repository.ZonaRepository;
 
 @Service
@@ -29,6 +30,9 @@ public class VacunatorioService {
 	
 	@Autowired
 	VacunaRepository vacunaRepository;
+	
+	@Autowired
+	VacunatorioVacunaRepository vacunatorioVacunaRepository;
 
 	public List<VacunatorioFullDTO> devolverVacunatorios() {
 		List<Vacunatorio> vacunatorioList = vacunatorioRepository.findAll();
@@ -98,6 +102,18 @@ public class VacunatorioService {
 		else {			
 			return false;
 		}
+	}
+
+	public Integer actualizarStock(Integer vacunatorioId, Integer vacunaId, Integer stock) {
+		Vacuna vacunaBuscada = vacunaRepository.findById(vacunaId).get();
+		Vacunatorio vacunatorioBuscado = vacunatorioRepository.findById(vacunatorioId).get();
+		if(vacunaBuscada != null && vacunatorioBuscado != null) {
+			VacunatorioVacuna vacunVacuna = vacunatorioVacunaRepository.findByVacunatorioAndVacuna(vacunatorioBuscado, vacunaBuscada);
+			vacunVacuna.setStock(stock);
+			vacunatorioVacunaRepository.save(vacunVacuna);
+			return vacunVacuna.getStock();
+		}
+		return null;
 	}
 
 
