@@ -38,6 +38,12 @@ public class VacunadorController {
 		return ResponseEntity.ok(vacunadorService.validarVacunador(validarVacunador));
 	}
 	
+	//Devuelvo true si existe sino false
+	@GetMapping("/validarVacunadorBoolean")
+	public ResponseEntity<Boolean> validarVacunadorBoolean(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunadorService.validarVacunadorBoolean(validarVacunador));
+	}
+	
 	@GetMapping("/validarVacunadorConCodigo")
 	public ResponseEntity<VacunadorDTO> validarVacunadorConCodigo(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunadorService.validarVacunadorConCodigo(validarVacunador));

@@ -128,6 +128,16 @@ public class VacunadorService {
 		}
 	}
 
+	public Boolean validarVacunadorBoolean(ValidarVacunador validarVacunador) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findByEmailAndPassword(validarVacunador.getEmail(), validarVacunador.getPassword());
+		if(vacunadorBuscado != null) {
+			return true;
+		}
+		else {			
+			return false;
+		}
+	}
+
 	public VacunadorDTO validarVacunadorConCodigo(ValidarVacunador validarVacunador) {
 		Vacunador vacunadorBuscado = vacunadorRepository.findByEmailAndPasswordAndCodigo(validarVacunador.getEmail(), validarVacunador.getPassword(), validarVacunador.getCodigo());
 		if(vacunadorBuscado != null) {
@@ -138,5 +148,6 @@ public class VacunadorService {
 			return null;
 		}
 	}
+
 
 }

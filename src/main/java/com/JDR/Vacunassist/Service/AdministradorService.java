@@ -87,6 +87,16 @@ public class AdministradorService {
 			return null;
 		}
 	}
+	
+	public Boolean validarAdminBoolean(ValidarAdmin validarAdmin) {
+		Administrador administradorBuscado = administradorRepository.findByEmailAndPassword(validarAdmin.getEmail(), validarAdmin.getPassword());
+		if(administradorBuscado != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	public AdministradorDTO validarAdminConCodigo(ValidarAdmin validarAdmin) {
 		Administrador administradorBuscado = administradorRepository.findByEmailAndPasswordAndCodigo(validarAdmin.getEmail(), validarAdmin.getPassword(), validarAdmin.getCodigo());
@@ -98,4 +108,5 @@ public class AdministradorService {
 			return null;
 		}
 	}
+
 }

@@ -49,6 +49,11 @@ public class AdministradorController {
 		return ResponseEntity.ok(administradorService.validarAdmin(validarAdmin));
 	}
 	
+	@GetMapping("/validarAdminBoolean")
+	public ResponseEntity<Boolean> validarAdminBoolean(@RequestBody ValidarAdmin validarAdmin) throws ResourceNotFoundException{
+		return ResponseEntity.ok(administradorService.validarAdminBoolean(validarAdmin));
+	}
+	
 	@GetMapping("/validarAdminConCodigo")
 	public ResponseEntity<AdministradorDTO> validarAdminConCodigo(@RequestBody ValidarAdmin validarAdmin) throws ResourceNotFoundException{
 		return ResponseEntity.ok(administradorService.validarAdminConCodigo(validarAdmin));
