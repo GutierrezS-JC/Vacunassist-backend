@@ -41,7 +41,7 @@ public class Vacunatorio {
 	private Set<Turno> turnos = new HashSet<>();
 	
 	@OneToMany(mappedBy = "vacunatorio")
-	private Set<VacunatorioVacuna> vacunas;
+	private Set<VacunatorioVacuna> vacunas = new HashSet<>();
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "zona_id", referencedColumnName = "id")
@@ -116,5 +116,21 @@ public class Vacunatorio {
 	public void setZona(Zona zona) {
 		this.zona = zona;
 	}
-	
+
+	public Set<VacunatorioVacuna> getVacunas() {
+		return vacunas;
+	}
+
+	public void setVacunas(Set<VacunatorioVacuna> vacunas) {
+		this.vacunas = vacunas;
+	}
+
+	public Set<Turno> getTurnos() {
+		return turnos;
+	}
+
+	public void setTurnos(Set<Turno> turnos) {
+		this.turnos = turnos;
+	}
+
 }

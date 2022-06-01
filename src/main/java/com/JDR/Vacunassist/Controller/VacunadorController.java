@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
-import com.JDR.Vacunassist.Model.DniValido;
 import com.JDR.Vacunassist.Service.VacunadorService;
 
 @RestController

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.ZonaDTO;
-import com.JDR.Vacunassist.Model.DniValido;
 import com.JDR.Vacunassist.Service.ZonaService;
 
 @RestController

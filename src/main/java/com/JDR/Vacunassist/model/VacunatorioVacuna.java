@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -28,13 +29,13 @@ public class VacunatorioVacuna {
 	private Integer stock;
 	
 	@Column
-	private Timestamp fecha;
+	private Date fecha;
 	
 	public VacunatorioVacuna() {
 		
 	}
 	
-	public VacunatorioVacuna(Integer id, Vacunatorio vacunatorio, Vacuna vacuna, Integer stock, Timestamp fecha) {
+	public VacunatorioVacuna(Integer id, Vacunatorio vacunatorio, Vacuna vacuna, Integer stock, Date fecha) {
 		super();
 		this.id = id;
 		this.vacunatorio = vacunatorio;
@@ -75,11 +76,11 @@ public class VacunatorioVacuna {
 		this.stock = stock;
 	}
 
-	public Timestamp getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Timestamp fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 	
