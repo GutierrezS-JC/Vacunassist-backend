@@ -12,6 +12,7 @@ import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
+import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Model.Permiso;
@@ -105,16 +106,26 @@ public class VacunadorService {
 		Vacunador nuevoVacunador = new Vacunador(vacunadorReq.getId(), vacunadorReq.getDni(), vacunadorReq.getEmail(), vacunadorReq.getPassword(),
 				vacunadorReq.getClave(), vacunadorReq.getNombre(), vacunadorReq.getApellido(), vacunadorReq.getFechaNacimiento(), rolBuscado);
 	
-		Vacunador vacunadorCreado = vacunadorRepository.save(nuevoVacunador);
+		Vacunador vacunadorCreado = vacunadorRepository.saveAndFlush(nuevoVacunador);
 
 		//Creo el objeto VacunadorZona que representa la union entre ambas entidades participantes
 		VacunadorZona vacunadorZona = new VacunadorZona(vacunadorCreado, zona);
 		vacunadorCreado.getZonas().add(vacunadorZona);
 		vacunadorRepository.save(vacunadorCreado);
-		
 		VacunadorDTO vacunadorResponse = this.mapearVacunador(vacunadorCreado);
 		
 		return vacunadorResponse;
+	}
+
+	public VacunadorDTO validarVacunador(ValidarVacunador validarVacunador) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findByEmailAndPassword(validarVacunador.getEmail(), validarVacunador.getPassword());
+		if(vacunadorBuscado != null) {
+			VacunadorDTO vacunadorDTO = this.mapearVacunador(vacunadorBuscado);
+			return vacunadorDTO;
+		}
+		else {			
+			return null;
+		}
 	}
 
 }

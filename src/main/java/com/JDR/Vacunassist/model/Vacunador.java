@@ -5,8 +5,10 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +52,7 @@ public class Vacunador {
 	@JoinColumn(name="rol_id", nullable=false)
 	private Rol rol;
 	
-	@OneToMany(mappedBy = "vacunador")
+	@OneToMany(mappedBy = "vacunador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<VacunadorZona> zonas = new HashSet<>();
 	
 	public Vacunador() {

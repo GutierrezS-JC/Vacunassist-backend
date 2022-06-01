@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
+import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Service.VacunadorService;
 
@@ -30,6 +31,11 @@ public class VacunadorController {
 	@GetMapping("/getVacunadoresEnRango")
 	public List<VacunadorDTO> getVacunadoresEnRango(@RequestParam("inferiorDni") Integer inferiorDni, @RequestParam("superiorDni") Integer superiorDni){
 		return vacunadorService.devolverVacunadoresEnRango(inferiorDni, superiorDni);
+	}
+
+	@GetMapping("/validarVacunador")
+	public ResponseEntity<VacunadorDTO> validarVacunador(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunadorService.validarVacunador(validarVacunador));
 	}
 	
 	@GetMapping("/getVacunador/{id}")

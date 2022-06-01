@@ -3,8 +3,10 @@ package com.JDR.Vacunassist.Model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +28,7 @@ public class Zona {
 	@OneToOne(mappedBy = "zona")
     private Vacunatorio vacunatorio;
 	
-	@OneToMany(mappedBy = "zona")
+	@OneToMany(mappedBy = "zona", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<VacunadorZona> vacunadores = new HashSet<>();
 	
 	@OneToMany(mappedBy = "zona")

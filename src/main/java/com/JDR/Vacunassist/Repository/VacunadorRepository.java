@@ -14,4 +14,7 @@ public interface VacunadorRepository extends JpaRepository<Vacunador, Integer>{
 	
 	List<Vacunador>findByDniGreaterThanAndDniLessThan(Integer dniStart, Integer dniEnd);
 
+//	Vacunador findByVacunadorAndPassword(Vacunador vacunadorBuscado, String password);
+
+	Vacunador findByEmailAndPassword(String email, String password);
 }
