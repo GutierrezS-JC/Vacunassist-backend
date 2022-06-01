@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,10 +28,10 @@ public class Vacuna {
 	
 	@NotNull
 	@Column(name="fecha_vencimiento")
-	private Timestamp fechaVencimiento;
+	private Date fechaVencimiento;
 
 	@OneToMany(mappedBy = "vacuna")
-	private Set<VacunatorioVacuna> vacunatorios;
+	private Set<VacunatorioVacuna> vacunatorios = new HashSet<>();
 	
 	@OneToMany(mappedBy="vacuna")
 	private Set<Turno> turnos = new HashSet<>();
@@ -39,7 +40,7 @@ public class Vacuna {
 		
 	}
 	
-	public Vacuna(int id, String nombre, int num_dosis, Timestamp fechaVencimiento) {
+	public Vacuna(int id, String nombre, int num_dosis, Date fechaVencimiento) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -71,11 +72,11 @@ public class Vacuna {
 		this.num_dosis = num_dosis;
 	}
 
-	public Timestamp getFechaVencimiento() {
+	public Date getFechaVencimiento() {
 		return fechaVencimiento;
 	}
 
-	public void setFechaVencimiento(Timestamp fechaVencimiento) {
+	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 	

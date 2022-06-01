@@ -50,6 +50,15 @@ public class Vacunatorio {
 	public Vacunatorio() {
 		
 	}
+	
+	public Vacunatorio(int id, @NotNull String nombre, String calle, String altura, Zona zona) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.calle = calle;
+		this.altura = altura;
+		this.zona = zona;
+	}
 
 	public Vacunatorio(int id, String nombre, String calle, String altura, int piso, int dpto) {
 		super();

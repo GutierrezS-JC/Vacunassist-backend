@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.AdministradorDTO;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
 import com.JDR.Vacunassist.Dto.VacunatorioFullDTO;
+import com.JDR.Vacunassist.Dto.VacunatorioPost;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
+import com.JDR.Vacunassist.Model.DniValido;
 import com.JDR.Vacunassist.Service.VacunatorioService;
 
 @RestController
@@ -35,6 +39,11 @@ public class VacunatorioController {
 	@GetMapping("/getVacunatorioPorNombre")
 	public ResponseEntity<VacunatorioFullDTO> getVacunatorioPorNombre(@RequestParam("nombre") String nombre) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunatorioService.devolverVacunatorioPorNombre(nombre));
+	}
+	
+	@PostMapping("/cargarVacunatorio")
+	public ResponseEntity<VacunatorioFullDTO> cargarVacunatorio(@RequestBody VacunatorioPost vacunatorioPost ){
+		return ResponseEntity.ok(vacunatorioService.cargarVacunatorio(vacunatorioPost));
 	}
 	
 	@PutMapping("/editarNombreVacunatorio")

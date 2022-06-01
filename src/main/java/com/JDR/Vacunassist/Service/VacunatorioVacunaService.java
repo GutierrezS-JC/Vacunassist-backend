@@ -24,6 +24,24 @@ public class VacunatorioVacunaService {
 	@Autowired 
 	VacunatorioRepository vacunatorioRepository;
 
+	public VacunatorioVacunaDTO devolverUnVacunatorioVacunas(Integer vacunatorioId) {
+		Vacunatorio vacunatorioBuscado = vacunatorioRepository.findById(vacunatorioId).get();
+
+		if(vacunatorioBuscado != null) {
+			List<VacunaStockDTO> listaStock = new ArrayList<>();
+			Set<VacunatorioVacuna> listaVacunatorioVacuna = vacunatorioBuscado.getVacunas();
+			for (VacunatorioVacuna vacunatorioVacuna : listaVacunatorioVacuna) {
+				listaStock.add(new VacunaStockDTO(vacunatorioVacuna.getVacuna().getId(), vacunatorioVacuna.getVacuna().getNombre(), vacunatorioVacuna.getFecha(), vacunatorioVacuna.getStock()));
+			}
+			
+			VacunatorioVacunaDTO response = new VacunatorioVacunaDTO(vacunatorioBuscado.getId(),vacunatorioBuscado.getNombre(), listaStock);
+			return response;
+		}
+		else {
+			return null;			
+		}
+	}
+	
 	public List<VacunatorioVacunaDTO> devolverAllVacunatoriosVacunas() {
 		List<Vacunatorio> listaVacunatorios = vacunatorioRepository.findAll();
 		//List<VacunatorioVacuna> listaVacunatoriosVacunas = vacunatorioVacunaRepository.findAll();
@@ -31,6 +49,8 @@ public class VacunatorioVacunaService {
 		return response;
 	}
 
+	
+	
 	private List<VacunatorioVacunaDTO> convertirVacunatoriosVacunas(List<Vacunatorio> listaVacunatoriosVacunas) {
 		return listaVacunatoriosVacunas.stream().map(vacunatorio -> mapearVacunatorioVacuna(vacunatorio)).collect(Collectors.toList());
 	}
@@ -44,5 +64,6 @@ public class VacunatorioVacunaService {
 		VacunatorioVacunaDTO vacunatorioVacunaDTO = new VacunatorioVacunaDTO(vacunatorio.getId(), vacunatorio.getNombre(), listaStock);
 		return vacunatorioVacunaDTO;
 	}
+
 	
 }
