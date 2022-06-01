@@ -52,10 +52,16 @@ public class VacunatorioController {
 		return ResponseEntity.ok(vacunatorioService.cargarVacuna(vacunatorioId, vacunaId));
 	}
 	
-	//Insertar vacunas al centro de vacunacion (no agregar stock)
+	//Agrega Stock reemplazando el valor completo
 	@PostMapping("/actualizarStock")
 	public ResponseEntity<Integer> actualizarStock(@RequestParam("vacunatorioId") Integer vacunatorioId, @RequestParam("vacunaId") Integer vacunaId, @RequestParam("stock") Integer stock){
 		return ResponseEntity.ok(vacunatorioService.actualizarStock(vacunatorioId, vacunaId, stock));
+	}
+	
+	//Agrega stock sumando lo recibido por parametro
+	@PostMapping("/actualizarStockSaumando")
+	public ResponseEntity<Integer> actualizarStockSumando(@RequestParam("vacunatorioId") Integer vacunatorioId, @RequestParam("vacunaId") Integer vacunaId, @RequestParam("stock") Integer stock){
+		return ResponseEntity.ok(vacunatorioService.actualizarStockSumando(vacunatorioId, vacunaId, stock));
 	}
 	
 	@PutMapping("/editarNombreVacunatorio")

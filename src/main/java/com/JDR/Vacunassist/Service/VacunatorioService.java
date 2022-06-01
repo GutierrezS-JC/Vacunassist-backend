@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,6 +111,19 @@ public class VacunatorioService {
 		if(vacunaBuscada != null && vacunatorioBuscado != null) {
 			VacunatorioVacuna vacunVacuna = vacunatorioVacunaRepository.findByVacunatorioAndVacuna(vacunatorioBuscado, vacunaBuscada);
 			vacunVacuna.setStock(stock);
+			vacunatorioVacunaRepository.save(vacunVacuna);
+			return vacunVacuna.getStock();
+		}
+		return null;
+	}
+	
+	public Integer actualizarStockSumando(Integer vacunatorioId, Integer vacunaId, Integer stock) {
+		Vacuna vacunaBuscada = vacunaRepository.findById(vacunaId).get();
+		Vacunatorio vacunatorioBuscado = vacunatorioRepository.findById(vacunatorioId).get();
+		if(vacunaBuscada != null && vacunatorioBuscado != null) {
+			VacunatorioVacuna vacunVacuna = vacunatorioVacunaRepository.findByVacunatorioAndVacuna(vacunatorioBuscado, vacunaBuscada);
+			vacunVacuna.setStock(vacunVacuna.getStock() + stock);
+			vacunVacuna.setFecha(new Date());
 			vacunatorioVacunaRepository.save(vacunVacuna);
 			return vacunVacuna.getStock();
 		}
