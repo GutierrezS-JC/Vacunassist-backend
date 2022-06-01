@@ -111,7 +111,7 @@ public class VacunadorService {
 		//Creo el objeto VacunadorZona que representa la union entre ambas entidades participantes
 		VacunadorZona vacunadorZona = new VacunadorZona(vacunadorCreado, zona);
 		vacunadorCreado.getZonas().add(vacunadorZona);
-		vacunadorRepository.save(vacunadorCreado);
+		vacunadorRepository.saveAndFlush(vacunadorCreado);
 		VacunadorDTO vacunadorResponse = this.mapearVacunador(vacunadorCreado);
 		
 		return vacunadorResponse;
