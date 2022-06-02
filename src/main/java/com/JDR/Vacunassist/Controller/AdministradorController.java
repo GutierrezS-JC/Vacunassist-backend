@@ -52,6 +52,7 @@ public class AdministradorController {
 		return ResponseEntity.ok(administradorService.validarAdmin(validarAdmin));
 	}
 	
+	//Con codigo, recupero objeto -- THIS SECOND
 	@PostMapping("/validarAdminEsPost")
 	public ResponseEntity<AdministradorDTO> validarAdminEsPost(@RequestBody ValidarAdmin validarAdmin) throws ResourceNotFoundException{
 		return ResponseEntity.ok(administradorService.validarAdmin(validarAdmin));
@@ -63,6 +64,7 @@ public class AdministradorController {
 		return ResponseEntity.ok(administradorService.validarAdminBoolean(validarAdmin));
 	}
 	
+	//Antes de ingresar el codigo -- THIS FIRST
 	@PostMapping("/validarAdminBooleanPost")
 	public ResponseEntity<Boolean> validarAdminBooleanPost(@RequestBody ValidarAdmin validarAdmin) throws ResourceNotFoundException{
 		return ResponseEntity.ok(administradorService.validarAdminBoolean(validarAdmin));

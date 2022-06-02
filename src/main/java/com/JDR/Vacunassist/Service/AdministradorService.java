@@ -78,7 +78,7 @@ public class AdministradorService {
 	}
 
 	public AdministradorDTO validarAdmin(ValidarAdmin validarAdmin) {
-		Administrador administradorBuscado = administradorRepository.findByEmailAndPassword(validarAdmin.getEmail(), validarAdmin.getPassword());
+		Administrador administradorBuscado = administradorRepository.findByEmailAndPasswordAndCodigo(validarAdmin.getEmail(), validarAdmin.getPassword(), validarAdmin.getCodigo());
 		if(administradorBuscado != null) {
 			AdministradorDTO adminDTO = this.mapearAdmin(administradorBuscado);
 			return adminDTO;

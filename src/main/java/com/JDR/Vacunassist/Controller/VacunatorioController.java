@@ -66,6 +66,7 @@ public class VacunatorioController {
 		return ResponseEntity.ok(vacunatorioService.actualizarStockSumando(vacunatorioId, vacunaId, stock));
 	}
 	
+	//THIS PARA EDITAR
 	@PutMapping("/editarNombreVacunatorio")
 	public ResponseEntity<Boolean> updateNombreVacunatorio(@RequestParam("nombre") String nombre, @RequestParam("id") Integer id) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunatorioService.editarNombreVacunatorio(nombre,id));

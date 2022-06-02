@@ -64,6 +64,9 @@ public class VacunatorioService {
 	public Boolean editarNombreVacunatorio(String nombre, Integer id) {
 		Vacunatorio vacunatorioBuscado = vacunatorioRepository.findById(id).get();
 		if(vacunatorioBuscado != null) {
+			if(vacunatorioBuscado.getNombre().trim().equals(nombre) || nombre.isBlank()) {
+				return false;
+			}
 			vacunatorioBuscado.setNombre(nombre);
 			vacunatorioRepository.save(vacunatorioBuscado);
 			return true;
