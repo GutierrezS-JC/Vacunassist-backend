@@ -149,5 +149,10 @@ public class VacunadorService {
 		}
 	}
 
+//	public List<VacunadorDTO> devolverVacunadoresEnZona(Integer zonaId) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
 
 }

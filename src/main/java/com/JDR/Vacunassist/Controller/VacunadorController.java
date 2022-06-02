@@ -34,6 +34,11 @@ public class VacunadorController {
 	public List<VacunadorDTO> getVacunadoresEnRango(@RequestParam("inferiorDni") Integer inferiorDni, @RequestParam("superiorDni") Integer superiorDni){
 		return vacunadorService.devolverVacunadoresEnRango(inferiorDni, superiorDni);
 	}
+	
+//	@GetMapping("/getVacunadoresEnZona")
+//	public List<VacunadorDTO> getVacunadoresEnZona(@RequestParam("zonaId") Integer zonaId){
+//		return vacunadorService.devolverVacunadoresEnZona(zonaId);
+//	}
 
 	@GetMapping("/validarVacunador")
 	public ResponseEntity<VacunadorDTO> validarVacunador(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
