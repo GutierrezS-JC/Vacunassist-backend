@@ -19,4 +19,6 @@ public interface VacunadorRepository extends JpaRepository<Vacunador, Integer>{
 	Vacunador findByEmailAndPassword(String email, String password);
 
 	Vacunador findByEmailAndPasswordAndCodigo(String email, String password, Integer codigo);
+
+	Vacunador findByCodigo(Integer codigo);
 }

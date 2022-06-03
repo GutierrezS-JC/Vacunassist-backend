@@ -36,7 +36,7 @@ public class Vacunador {
 	@Column
 	private String password;
 	
-	@Column
+	@Column(unique=true)
 	private int codigo;
 	
 	@Column

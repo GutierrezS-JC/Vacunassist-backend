@@ -149,6 +149,58 @@ public class VacunadorService {
 		}
 	}
 
+	public Boolean devolverSiExisteCodigoVacunadorEnTabla(Integer codigo) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findByCodigo(codigo);
+		if(vacunadorBuscado != null) {
+			return true;
+		}
+		else {			
+			return null;
+		}
+	}
+
+	public List<Integer> getCodigosVacunadores() {
+		List<Vacunador> vacunadores = vacunadorRepository.findAll();
+		List<Integer> response = new ArrayList<>();
+		if(vacunadores!=null) {
+			for(Vacunador vacun : vacunadores) {
+				response.add(vacun.getCodigo());
+			}
+			return response;
+		}
+		else {			
+			return null;
+		}
+	}
+
+	public List<String> getMailsVacunadores() {
+		List<Vacunador> vacunadores = vacunadorRepository.findAll();
+		List<String> response = new ArrayList<>();
+		if(vacunadores!=null) {
+			for(Vacunador vacun : vacunadores) {
+				response.add(vacun.getEmail());
+			}
+			return response;
+		}
+		else {			
+			return null;
+		}
+	}
+
+	public List<Integer> getDnisVacunadores() {
+		List<Vacunador> vacunadores = vacunadorRepository.findAll();
+		List<Integer> response = new ArrayList<>();
+		if(vacunadores!=null) {
+			for(Vacunador vacun : vacunadores) {
+				response.add(vacun.getDni());
+			}
+			return response;
+		}
+		else {			
+			return null;
+		}
+	}
+
 //	public List<VacunadorDTO> devolverVacunadoresEnZona(Integer zonaId) {
 //		// TODO Auto-generated method stub
 //		return null;

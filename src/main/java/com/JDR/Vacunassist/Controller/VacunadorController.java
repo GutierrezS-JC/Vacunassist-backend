@@ -30,6 +30,30 @@ public class VacunadorController {
 		return vacunadorService.devolverVacunadores();
 	}
 	
+	@GetMapping("/getExisteCodigoVacunador")
+	public ResponseEntity<Boolean> getExisteCodigoVacunador(@RequestParam("codigo") Integer codigo) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunadorService.devolverSiExisteCodigoVacunadorEnTabla(codigo));
+	}
+	//=======================================================================//
+	
+	//For Register Only and Only Okk - Registro Vacunador
+	@GetMapping("/getCodigosVacunadores")
+	public List<Integer> getCodigosVacunadores(){
+		return vacunadorService.getCodigosVacunadores();
+	}
+	
+	@GetMapping("/getMailsVacunadores")
+	public List<String> getMailsVacunadores(){
+		return vacunadorService.getMailsVacunadores();
+	}
+	
+	@GetMapping("/getDnisVacunadores")
+	public List<Integer> getDnisVacunadores(){
+		return vacunadorService.getDnisVacunadores();
+	}
+	
+	//=============================================================//
+	
 	@GetMapping("/getVacunadoresEnRango")
 	public List<VacunadorDTO> getVacunadoresEnRango(@RequestParam("inferiorDni") Integer inferiorDni, @RequestParam("superiorDni") Integer superiorDni){
 		return vacunadorService.devolverVacunadoresEnRango(inferiorDni, superiorDni);
