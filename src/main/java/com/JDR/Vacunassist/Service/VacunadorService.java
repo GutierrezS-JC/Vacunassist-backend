@@ -1,6 +1,7 @@
 package com.JDR.Vacunassist.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -200,6 +201,33 @@ public class VacunadorService {
 			return null;
 		}
 	}
+	
+	public Boolean editarVacunador(String nombre, String apellido, String password, Integer idZona, Integer dni) {
+        Zona zona = zonaRepository.findById(idZona).get();
+        Vacunador vacunadorBuscado = vacunadorRepository.findByDni(dni);
+        if(vacunadorBuscado != null) {
+            if(!vacunadorBuscado.getNombre().trim().equals(nombre) && !nombre.isBlank()) {    //si nombre no es = a el nombre original y si no es blank, cambia el nombre
+                vacunadorBuscado.setNombre(nombre);
+            }
+            if(!vacunadorBuscado.getApellido().trim().equals(apellido) && !apellido.isBlank()) {    //si apellido no es = a el apellido original y si no es blank, cambia el apellido
+                vacunadorBuscado.setApellido(apellido);
+            }
+            if(!vacunadorBuscado.getPassword().equals(password) && !password.isBlank()) {    //si password no es = a la password original y si no es blank, cambia la passsword
+                vacunadorBuscado.setPassword(password);
+            }
+
+            VacunadorZona ultZona = vacunadorBuscado.getZonas().stream().max(Comparator.comparingInt(zo -> zo.getId())).get();    //obtiene ultima zona asignada al vacunador (su zona actual)
+
+            if(!ultZona.getZona().getNombreZona().equals(zona.getNombreZona())) {    // si zona no es = a la asignada actualmente, lo cambia de zona
+                VacunadorZona aux = new VacunadorZona(vacunadorBuscado, zona);
+                vacunadorBuscado.getZonas().add(aux);    //agrega la nueva zona al set, la nueva zona queda cn el mayor id
+            }
+            vacunadorRepository.save(vacunadorBuscado); //actualiza los datos
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 //	public List<VacunadorDTO> devolverVacunadoresEnZona(Integer zonaId) {
 //		// TODO Auto-generated method stub

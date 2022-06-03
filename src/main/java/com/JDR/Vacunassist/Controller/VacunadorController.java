@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,4 +100,10 @@ public class VacunadorController {
 	public ResponseEntity<VacunadorDTO> cargarVacunador(@RequestBody VacunadorRequest vacunadorRequest ){
 		return ResponseEntity.ok(vacunadorService.cargarVacunador(vacunadorRequest));
 	}
+	
+	@PutMapping("/editarVacunador")
+    public Boolean editarVacunador(@RequestParam("nombre") String nombre, @RequestParam("apellido") String apellido,
+                                    @RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni){
+        return vacunadorService.editarVacunador(nombre, apellido, password, idZona, dni);
+    }
 }
