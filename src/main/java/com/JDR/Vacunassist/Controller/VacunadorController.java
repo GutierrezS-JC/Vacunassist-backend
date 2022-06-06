@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.VacunadorListNative;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
@@ -60,10 +61,11 @@ public class VacunadorController {
 		return vacunadorService.devolverVacunadoresEnRango(inferiorDni, superiorDni);
 	}
 	
-//	@GetMapping("/getVacunadoresEnZona")
-//	public List<VacunadorDTO> getVacunadoresEnZona(@RequestParam("zonaId") Integer zonaId){
-//		return vacunadorService.devolverVacunadoresEnZona(zonaId);
-//	}
+	//Vacunadores en Zona para la solicitud de listado nativo
+	@GetMapping("/getVacunadoresEnZona")
+	public List<VacunadorDTO> getVacunadoresEnZona(@RequestParam("zonaId") Integer zonaId){
+		return vacunadorService.devolverVacunadoresEnZona(zonaId);
+	}
 
 	@GetMapping("/validarVacunador")
 	public ResponseEntity<VacunadorDTO> validarVacunador(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
@@ -86,10 +88,17 @@ public class VacunadorController {
 		return ResponseEntity.ok(vacunadorService.devolverVacunadorPorId(id));
 	}
 	
+//	@GetMapping("/getVacunadorByDni/{dni}")
+//	public ResponseEntity<VacunadorDTO> getVacunadorPorDni(@PathVariable(name="dni") Integer dni) throws ResourceNotFoundException{
+//		return ResponseEntity.ok(vacunadorService.devolverVacunadorPorDni(dni));
+//	}
+	
+	//NEWWW
 	@GetMapping("/getVacunadorByDni/{dni}")
-	public ResponseEntity<VacunadorDTO> getVacunadorPorDni(@PathVariable(name="dni") Integer dni) throws ResourceNotFoundException{
-		return ResponseEntity.ok(vacunadorService.devolverVacunadorPorDni(dni));
+	public List<VacunadorDTO> getVacunadorPorDni(@PathVariable(name="dni") Integer dni) throws ResourceNotFoundException{
+		return vacunadorService.devolverVacunadorPorDni(dni);
 	}
+	
 	
 	@GetMapping("/getExisteDniVacunador")
 	public ResponseEntity<Boolean> getExisteDniVacunador(@RequestParam("dni") Integer dni) throws ResourceNotFoundException{

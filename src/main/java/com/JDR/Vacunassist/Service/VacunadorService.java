@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.JDR.Vacunassist.Dto.PermisoDTO;
 import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.VacunadorListNative;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
 import com.JDR.Vacunassist.Dto.ValidarVacunador;
@@ -81,10 +82,13 @@ public class VacunadorService {
 		return mapearVacunador(vacunador);
 	}
 
-	public VacunadorDTO devolverVacunadorPorDni(Integer dni) {
+	public List<VacunadorDTO> devolverVacunadorPorDni(Integer dni) {
+		List<VacunadorDTO> listaResponse = new ArrayList<>();
 		Vacunador vacunador = vacunadorRepository.findByDni(dni);
 		if(vacunador!= null) {
-			return mapearVacunador(vacunador);
+			VacunadorDTO vacunadorDto = mapearVacunador(vacunador);
+			listaResponse.add(vacunadorDto);
+			return listaResponse;
 		}
 		else return null;
 	}
@@ -229,10 +233,17 @@ public class VacunadorService {
         }
     }
 
-//	public List<VacunadorDTO> devolverVacunadoresEnZona(Integer zonaId) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	public List<VacunadorDTO> devolverVacunadoresEnZona(Integer zonaId) {
+		List<Object[]> query = vacunadorRepository.getVacunadoresEnZona(zonaId);
+		List<VacunadorDTO> response = new ArrayList<>();
+		for(Object[] vacunDB : query) {
+			Vacunador vacunadorBuscado = vacunadorRepository.findByDni((Integer) vacunDB[1]);
+			if(vacunadorBuscado!= null) {
+				response.add(this.mapearVacunador(vacunadorBuscado));
+			}
+		}
+		return (response.size() == 0 ?  null :  response);
+	}
 
 
 }
