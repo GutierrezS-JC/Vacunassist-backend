@@ -78,6 +78,18 @@ public class VacunadorController {
 		return ResponseEntity.ok(vacunadorService.validarVacunadorBoolean(validarVacunador));
 	}
 	
+	// THIS FIRST FOR LOGIN
+	@PostMapping("/validarVacunadorBooleanPost")
+	public ResponseEntity<Boolean> validarVacunadorBooleanPost(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunadorService.validarVacunadorBoolean(validarVacunador));
+	}
+	
+	// THIS SECOND FOR LOGIN 
+	@PostMapping("/validarVacunadorConCodigoPost")
+	public ResponseEntity<VacunadorDTO> validarVacunadorConCodigoPost(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
+		return ResponseEntity.ok(vacunadorService.validarVacunadorConCodigo(validarVacunador));
+	}
+	
 	@GetMapping("/validarVacunadorConCodigo")
 	public ResponseEntity<VacunadorDTO> validarVacunadorConCodigo(@RequestBody ValidarVacunador validarVacunador) throws ResourceNotFoundException{
 		return ResponseEntity.ok(vacunadorService.validarVacunadorConCodigo(validarVacunador));
