@@ -122,9 +122,23 @@ public class VacunadorController {
 		return ResponseEntity.ok(vacunadorService.cargarVacunador(vacunadorRequest));
 	}
 	
+	// EDITAR VACUNADOR //
+	
+	@GetMapping("/validarPasswordsSonIguales")
+	public Boolean validarPasswordsSonIguales(@RequestParam("password") Integer password, @RequestParam("dni") Integer dni) {
+		return null;
+	}
+	
+	@GetMapping("/getPassword")
+	public ResponseEntity<String> getPassword(@RequestParam("dni") Integer dni) {
+		return ResponseEntity.ok(vacunadorService.getPassword(dni));
+	}
+	
 	@PutMapping("/editarVacunador")
     public Boolean editarVacunador(@RequestParam("nombre") String nombre, @RequestParam("apellido") String apellido,
                                     @RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni){
         return vacunadorService.editarVacunador(nombre, apellido, password, idZona, dni);
     }
+	
+	// FIN EDITAR VACUNADOR //
 }

@@ -244,6 +244,17 @@ public class VacunadorService {
 		}
 		return (response.size() == 0 ?  null :  response);
 	}
+	
+	
+	// HACK para editar
+	public String getPassword(Integer dni) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findByDni(dni);
+		if(vacunadorBuscado!= null) {
+			return vacunadorBuscado.getPassword();
+		}
+		return null;
+	}
 
 
 }
+
