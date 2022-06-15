@@ -13,14 +13,14 @@ public class VacunadorDTO {
 	private String apellido;
 	private Date fechaNacimiento;
 	private RolDTO rol;
-	private List<ZonaDTO> zonas = new ArrayList<>();
+	private ZonaDTO zona;
 	
 	public VacunadorDTO() {
 		
 	}
 	
 	public VacunadorDTO(Integer id, Integer dni, String email, String nombre, String apellido, Date fechaNacimiento,
-			RolDTO rol, List<ZonaDTO> zonas) {
+			RolDTO rol, ZonaDTO zona) {
 		super();
 		this.id = id;
 		this.dni = dni;
@@ -29,7 +29,7 @@ public class VacunadorDTO {
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
 		this.rol = rol;
-		this.zonas = zonas;
+		this.zona = zona;
 	}
 
 	public Integer getId() {
@@ -88,12 +88,12 @@ public class VacunadorDTO {
 		this.rol = rol;
 	}
 
-	public List<ZonaDTO> getZonas() {
-		return zonas;
+	public ZonaDTO getZona() {
+		return zona;
 	}
 
-	public void setZonas(List<ZonaDTO> zonas) {
-		this.zonas = zonas;
+	public void setZona(ZonaDTO zona) {
+		this.zona = zona;
 	}
 
 }

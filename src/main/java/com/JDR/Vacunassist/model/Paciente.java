@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,8 +56,13 @@ public class Paciente {
 	@JoinColumn(name="rol_id", nullable=false)
 	private Rol rol;
 	
-	@OneToMany(mappedBy = "paciente")
-	private Set<PacienteZona> zonas;
+//	@OneToMany(mappedBy = "paciente")
+//	private Set<PacienteZona> zonas;
+//		
+	@NotNull
+	@ManyToOne
+    @JoinColumn(name = "zona_id")
+	private Zona zona;
 	
 	@OneToMany(mappedBy="paciente")
 	private Set<Turno> turnos = new HashSet<>();
@@ -76,6 +82,14 @@ public class Paciente {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public int getDni() {
 		return dni;
 	}
@@ -131,4 +145,21 @@ public class Paciente {
 	public void setFechaNacimiento(Timestamp fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+
+	public Boolean getEsDeRiesgo() {
+		return esDeRiesgo;
+	}
+
+	public void setEsDeRiesgo(Boolean esDeRiesgo) {
+		this.esDeRiesgo = esDeRiesgo;
+	}
+
+	public Zona getZona() {
+		return zona;
+	}
+
+	public void setZona(Zona zona) {
+		this.zona = zona;
+	}
+	
 }

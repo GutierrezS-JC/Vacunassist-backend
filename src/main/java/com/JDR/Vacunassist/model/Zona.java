@@ -28,11 +28,17 @@ public class Zona {
 	@OneToOne(mappedBy = "zona")
     private Vacunatorio vacunatorio;
 	
-	@OneToMany(mappedBy = "zona", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<VacunadorZona> vacunadores = new HashSet<>();
+//	@OneToMany(mappedBy = "zona", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	private Set<VacunadorZona> vacunadores = new HashSet<>();
+//	
+//	@OneToMany(mappedBy = "zona")
+//	private Set<PacienteZona> pacientes = new HashSet<>();
 	
 	@OneToMany(mappedBy = "zona")
-	private Set<PacienteZona> pacientes = new HashSet<>();
+	private Set<Paciente> pacientes;
+	
+	@OneToMany(mappedBy = "zona")
+	private Set<Vacunador> vacunadores;
 	
 	public Zona() {
 		
@@ -68,19 +74,19 @@ public class Zona {
 		this.vacunatorio = vacunatorio;
 	}
 
-	public Set<VacunadorZona> getVacunadores() {
+	public Set<Vacunador> getVacunadores() {
 		return vacunadores;
 	}
 
-	public void setVacunadores(Set<VacunadorZona> vacunadores) {
+	public void setVacunadores(Set<Vacunador> vacunadores) {
 		this.vacunadores = vacunadores;
 	}
 
-	public Set<PacienteZona> getPacientes() {
+	public Set<Paciente> getPacientes() {
 		return pacientes;
 	}
 
-	public void setPacientes(Set<PacienteZona> pacientes) {
+	public void setPacientes(Set<Paciente> pacientes) {
 		this.pacientes = pacientes;
 	}
 	

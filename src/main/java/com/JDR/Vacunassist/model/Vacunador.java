@@ -52,12 +52,16 @@ public class Vacunador {
 	@JoinColumn(name="rol_id", nullable=false)
 	private Rol rol;
 	
-	@OneToMany(mappedBy = "vacunador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<VacunadorZona> zonas = new HashSet<>();
+//	@OneToMany(mappedBy = "vacunador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	private Set<VacunadorZona> zonas = new HashSet<>();
+	
+	@NotNull
+	@ManyToOne
+    @JoinColumn(name = "zona_id")
+	private Zona zona;
 	
 	public Vacunador() {
 	}
-	
 	
 	//Para cargar el Vacunador
 	public Vacunador(int id, @NotNull int dni, @NotNull String email, @NotNull String password, int codigo,
@@ -75,7 +79,7 @@ public class Vacunador {
 	}
 
 	public Vacunador(int id, @NotNull int dni, @NotNull String email, @NotNull String password, int codigo,
-			String nombre, String apellido, Date fechaNacimiento, Rol rol, Set<VacunadorZona> zonas) {
+			String nombre, String apellido, Date fechaNacimiento, Rol rol, Zona zona) {
 		super();
 		this.id = id;
 		this.dni = dni;
@@ -86,7 +90,7 @@ public class Vacunador {
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
 		this.rol = rol;
-		this.zonas = zonas;
+		this.zona = zona;
 	}
 
 	public Vacunador(int dni, String password, int codigo, String nombre, String apellido, String email,
@@ -173,12 +177,12 @@ public class Vacunador {
 		this.rol = rol;
 	}
 
-	public Set<VacunadorZona> getZonas() {
-		return zonas;
+	public Zona getZona() {
+		return zona;
 	}
 
-	public void setZonas(Set<VacunadorZona> zonas) {
-		this.zonas = zonas;
+	public void setZona(Zona zona) {
+		this.zona = zona;
 	}
 	
 }
