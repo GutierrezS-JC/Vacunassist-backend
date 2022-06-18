@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.JDR.Vacunassist.Model.Turno;
 
 @Repository
-public interface TurnoRepository extends JpaRepository<Turno, Long>{
+public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 
 }

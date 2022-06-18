@@ -1,6 +1,8 @@
 package com.JDR.Vacunassist.Model;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +46,7 @@ public class Paciente {
 	private String apellido;
 	
 	@Column(name="fecha_nacimiento")
-	private Timestamp fechaNacimiento;
+	private LocalDate fechaNacimiento;
 	
 	@Column
 	private Boolean esDeRiesgo;
@@ -71,7 +73,7 @@ public class Paciente {
 	}
 	
 	public Paciente(int dni, String password, int codigo, String nombre, String apellido, String email,
-			Timestamp fechaNacimiento) {
+			LocalDate fechaNacimiento) {
 		super();
 		this.dni = dni;
 		this.password = password;
@@ -80,6 +82,23 @@ public class Paciente {
 		this.apellido = apellido;
 		this.email = email;
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	
+	public Paciente(@NotNull int dni, @NotNull String email, String password, int codigo, String nombre,
+			String apellido, LocalDate fechaNacimiento, Boolean esDeRiesgo, Rol rol,
+			@NotNull Zona zona) {
+		super();
+		this.dni = dni;
+		this.email = email;
+		this.password = password;
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fechaNacimiento = fechaNacimiento;
+		this.esDeRiesgo = esDeRiesgo;
+		this.rol = rol;
+		this.zona = zona;
 	}
 
 	public int getId() {
@@ -138,11 +157,11 @@ public class Paciente {
 		this.email = email;
 	}
 
-	public Timestamp getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Timestamp fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -161,5 +180,14 @@ public class Paciente {
 	public void setZona(Zona zona) {
 		this.zona = zona;
 	}
+
+	public Set<Turno> getTurnos() {
+		return turnos;
+	}
+
+	public void setTurnos(Set<Turno> turnos) {
+		this.turnos = turnos;
+	}
+	
 	
 }

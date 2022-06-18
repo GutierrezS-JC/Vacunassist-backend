@@ -32,7 +32,7 @@ public class VacunaService {
 	}
 
 	public VacunaPost cargarVacuna(VacunaPost vacunaPost) {
-		Vacuna vacunaExiste = vacunaRepository.findByNombre(vacunaPost.getNombre()).orElse(null);
+		Vacuna vacunaExiste = vacunaRepository.findByNombre(vacunaPost.getNombre());
 		if(vacunaExiste == null) {
 			Vacuna vacunaNueva = new Vacuna(vacunaPost.getId(), vacunaPost.getNombre(), vacunaPost.getNum_dosis(), vacunaPost.getFechaVencimiento());
 			Vacuna vacunaRef = vacunaRepository.save(vacunaNueva);

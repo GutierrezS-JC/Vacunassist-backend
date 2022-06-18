@@ -1,6 +1,8 @@
 package com.JDR.Vacunassist.Model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,10 +22,10 @@ public class Turno {
 	
 	@NotNull
 	@Column(name="fecha_asignacion")
-	private Timestamp fechaAsignacion;
+	private LocalDateTime fechaAsignacion;
 	
 	@Column(name="fecha_aplicacion")
-	private Timestamp fechaAplicacion;
+	private LocalDateTime fechaAplicacion;
 	
 	@Column
 	private Boolean asistio;
@@ -44,12 +46,26 @@ public class Turno {
 		
 	}
 
-	public Turno(int id, Timestamp fechaAsignacion, Timestamp fechaAplicacion, Boolean asistio) {
+	public Turno(int id, LocalDateTime fechaAsignacion, LocalDateTime fechaAplicacion, Boolean asistio) {
 		super();
 		this.id = id;
 		this.fechaAsignacion = fechaAsignacion;
 		this.fechaAplicacion = fechaAplicacion;
 		this.asistio = asistio;
+	}
+	
+	
+
+	public Turno(int id, @NotNull LocalDateTime fechaAsignacion, LocalDateTime fechaAplicacion, Boolean asistio, Vacuna vacuna,
+			Vacunatorio vacunatorio, Paciente paciente) {
+		super();
+		this.id = id;
+		this.fechaAsignacion = fechaAsignacion;
+		this.fechaAplicacion = fechaAplicacion;
+		this.asistio = asistio;
+		this.vacuna = vacuna;
+		this.vacunatorio = vacunatorio;
+		this.paciente = paciente;
 	}
 
 	public int getId() {
@@ -60,19 +76,19 @@ public class Turno {
 		this.id = id;
 	}
 
-	public Timestamp getFechaAsignacion() {
+	public LocalDateTime getFechaAsignacion() {
 		return fechaAsignacion;
 	}
 
-	public void setFechaAsignacion(Timestamp fechaAsignacion) {
+	public void setFechaAsignacion(LocalDateTime fechaAsignacion) {
 		this.fechaAsignacion = fechaAsignacion;
 	}
 
-	public Timestamp getFechaAplicacion() {
+	public LocalDateTime getFechaAplicacion() {
 		return fechaAplicacion;
 	}
 
-	public void setFechaAplicacion(Timestamp fechaAplicacion) {
+	public void setFechaAplicacion(LocalDateTime fechaAplicacion) {
 		this.fechaAplicacion = fechaAplicacion;
 	}
 
