@@ -1,6 +1,7 @@
 package com.JDR.Vacunassist.Model;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,16 +21,16 @@ public class Solicitud {
 	private int id;  
 	
 	@Column(name="fecha_solicitud")
-	private Timestamp fechaSolicitud;
+	private LocalDate fechaSolicitud;
 	
 	@Column(name="fecha_actualizacion")
-	private Timestamp fechaActualizacion;
+	private LocalDate fechaActualizacion;
 	
 	@Column
 	private Boolean aprobado;
 	
 	@ManyToOne
-	@JoinColumn(name="administrador_id", nullable=false)
+	@JoinColumn(name="administrador_id")
 	private Administrador administrador;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -40,7 +41,7 @@ public class Solicitud {
 		
 	}
 	
-	public Solicitud(int id, Timestamp fechaSolicitud, Timestamp fechaActualizacion, Boolean aprobado,
+	public Solicitud(int id, LocalDate fechaSolicitud, LocalDate fechaActualizacion, Boolean aprobado,
 			Administrador administrador, Paciente paciente) {
 		super();
 		this.id = id;
@@ -59,19 +60,19 @@ public class Solicitud {
 		this.id = id;
 	}
 
-	public Timestamp getFechaSolicitud() {
+	public LocalDate getFechaSolicitud() {
 		return fechaSolicitud;
 	}
 
-	public void setFechaSolicitud(Timestamp fechaSolicitud) {
+	public void setFechaSolicitud(LocalDate fechaSolicitud) {
 		this.fechaSolicitud = fechaSolicitud;
 	}
 
-	public Timestamp getFechaActualizacion() {
+	public LocalDate getFechaActualizacion() {
 		return fechaActualizacion;
 	}
 
-	public void setFechaActualizacion(Timestamp fechaActualizacion) {
+	public void setFechaActualizacion(LocalDate fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
 

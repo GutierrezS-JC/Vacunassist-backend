@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.JDR.Vacunassist.Model.Solicitud;
 
 @Repository
-public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
+public interface SolicitudRepository extends JpaRepository<Solicitud, Integer> {
 
 }

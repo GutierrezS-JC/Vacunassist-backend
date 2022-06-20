@@ -18,6 +18,7 @@ import com.JDR.Vacunassist.Dto.PacienteDTO;
 import com.JDR.Vacunassist.Dto.PacienteRequest;
 import com.JDR.Vacunassist.Dto.PermisoDTO;
 import com.JDR.Vacunassist.Dto.RolDTO;
+import com.JDR.Vacunassist.Dto.SolicitudFiebreAmarilla;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunasAnterioresRequest;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
@@ -26,6 +27,7 @@ import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Model.Paciente;
 import com.JDR.Vacunassist.Model.Permiso;
 import com.JDR.Vacunassist.Model.Rol;
+import com.JDR.Vacunassist.Model.Solicitud;
 import com.JDR.Vacunassist.Model.Turno;
 import com.JDR.Vacunassist.Model.Vacuna;
 import com.JDR.Vacunassist.Model.Vacunador;
@@ -33,6 +35,7 @@ import com.JDR.Vacunassist.Model.Vacunatorio;
 import com.JDR.Vacunassist.Model.Zona;
 import com.JDR.Vacunassist.Repository.PacienteRepository;
 import com.JDR.Vacunassist.Repository.RolRepository;
+import com.JDR.Vacunassist.Repository.SolicitudRepository;
 import com.JDR.Vacunassist.Repository.TurnoRepository;
 import com.JDR.Vacunassist.Repository.VacunaRepository;
 import com.JDR.Vacunassist.Repository.VacunatorioRepository;
@@ -58,6 +61,9 @@ public class PacienteService {
 	
 	@Autowired
 	TurnoRepository turnoRepository;
+	
+	@Autowired
+	SolicitudRepository solicitudRepository;
 	
 	public List<Integer> getDnisPacientes() {
 		List<Paciente> pacientes = pacienteRepository.findAll();
@@ -156,6 +162,22 @@ public class PacienteService {
 		else {			
 			return null;
 		}
+	}
+	
+	public Boolean solicitarTurnoFiebreAmarilla(SolicitudFiebreAmarilla solicitudRequest) {
+		Object objectPaciente = pacienteRepository.getAlreadyHasYellow(5, solicitudRequest.getPacienteId());
+		
+		//No tiene turno registrado de fiebre amarilla --> Creamos solicitud
+		if(objectPaciente == null) {
+			Paciente pacienteBuscado = pacienteRepository.findByDni(solicitudRequest.getDni());
+			if(convertirALocalDate(new Date()).getYear() - pacienteBuscado.getFechaNacimiento().getYear() < 60) {
+				Solicitud solicitudNueva = new Solicitud(0,LocalDate.now(), LocalDate.now(), null, null, pacienteBuscado);
+				solicitudRepository.saveAndFlush(solicitudNueva);
+				return true;
+			}
+			else return false;
+		}
+		else return false;
 	}
 	
 	private LocalDate convertirALocalDate(Date dateToConvert) {

@@ -34,4 +34,13 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			nativeQuery = true)
 	List<Object[]> getPacientesEnZona(Integer zonaId);
 
+	@Query(value="SELECT distinct(p.id), p.nombre, p.apellido, p.codigo, p.dni, p.email,\r\n"
+			+ " p.es_de_riesgo, p.fecha_nacimiento, p.password, p.rol_id, p.zona_id from paciente p\r\n"
+			+ "INNER JOIN turno t ON (t.paciente_id = p.id)\r\n"
+			+ "INNER JOIN vacuna v ON (t.vacuna_id = v.id)\r\n"
+			+ "INNER JOIN solicitud s ON (s.paciente_id = p.id)\r\n"
+			+ "WHERE (t.vacuna_id = :vacunaId and p.id = :pacienteId) OR (s.paciente_id = :pacienteId)",
+			nativeQuery = true)
+	Object getAlreadyHasYellow(Integer vacunaId, Integer pacienteId);
+
 }

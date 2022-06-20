@@ -196,6 +196,13 @@ public class Paciente {
 	public void setRol(Rol rol) {
 		this.rol = rol;
 	}
-	
+
+	public Solicitud getSolicitud() {
+		return solicitud;
+	}
+
+	public void setSolicitud(Solicitud solicitud) {
+		this.solicitud = solicitud;
+	}
 	
 }

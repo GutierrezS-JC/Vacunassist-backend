@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.PacienteDTO;
 import com.JDR.Vacunassist.Dto.PacienteRequest;
+import com.JDR.Vacunassist.Dto.SolicitudFiebreAmarilla;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.ValidarPaciente;
 import com.JDR.Vacunassist.Dto.ValidarVacunador;
@@ -27,9 +28,6 @@ public class PacienteController {
 
 	@Autowired
 	PacienteService pacienteService;
-	
-	@Autowired
-	PacienteRepository pacienteRepository;
 	
 	@GetMapping("/getPacientes")
 	public List<PacienteDTO> getPacientes(){
@@ -54,6 +52,11 @@ public class PacienteController {
 	@GetMapping("/getEmailsPacientes")
 	public List<String> getEmailsPacientes(){
 		return pacienteService.getEmailsPacientes();
+	}
+	
+	@PostMapping("/solicitarTurnoFiebreAmarilla")
+	public ResponseEntity<Boolean> solicitarTurnoFiebreAmarilla(@RequestBody SolicitudFiebreAmarilla solicitudRequest) throws ResourceNotFoundException{
+		return ResponseEntity.ok(pacienteService.solicitarTurnoFiebreAmarilla(solicitudRequest));
 	}
 	
 	// THIS FIRST FOR LOGIN
