@@ -86,12 +86,35 @@ public class PacienteService {
 		}
 	}
 	
+	public List<PacienteDTO> devolverPacientePorDni(Integer dni) {
+		List<PacienteDTO> listaResponse = new ArrayList<>();
+		Paciente paciente = pacienteRepository.findByDni(dni);
+		if(paciente!= null) {
+			PacienteDTO pacienteDto = mapearPaciente(paciente);
+			listaResponse.add(pacienteDto);
+			return listaResponse;
+		}
+		else return null;
+	}
+	
+	public List<PacienteDTO> devolverPacientesEnZona(Integer zonaId) {
+		List<Object[]> query = pacienteRepository.getPacientesEnZona(zonaId);
+		List<PacienteDTO> response = new ArrayList<>();
+		for(Object[] vacunDB : query) {
+			Paciente pacienteBuscado = pacienteRepository.findByDni((Integer) vacunDB[1]);
+			if(pacienteBuscado!= null) {
+				response.add(this.mapearPaciente(pacienteBuscado));
+			}
+		}
+		return (response.size() == 0 ?  null :  response);
+	}
+	
+	
 	public List<PacienteDTO> getPacientes() {
 		List<Paciente> pacienteList = pacienteRepository.findAll();
 		List<PacienteDTO> response = this.convertirPaciente(pacienteList);
 		return response;	
 	}
-	
 
 	private List<PacienteDTO> convertirPaciente(List<Paciente> pacienteList) {
 		return pacienteList.stream().map(paciente -> mapearPaciente(paciente)).collect(Collectors.toList());
