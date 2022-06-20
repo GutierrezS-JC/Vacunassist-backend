@@ -9,16 +9,25 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.JDR.Vacunassist.Dto.PacienteDTO;
 import com.JDR.Vacunassist.Dto.PacienteRequest;
+import com.JDR.Vacunassist.Dto.PermisoDTO;
+import com.JDR.Vacunassist.Dto.RolDTO;
+import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunasAnterioresRequest;
+import com.JDR.Vacunassist.Dto.VacunatorioDTO;
+import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Model.Paciente;
+import com.JDR.Vacunassist.Model.Permiso;
 import com.JDR.Vacunassist.Model.Rol;
 import com.JDR.Vacunassist.Model.Turno;
 import com.JDR.Vacunassist.Model.Vacuna;
+import com.JDR.Vacunassist.Model.Vacunador;
 import com.JDR.Vacunassist.Model.Vacunatorio;
 import com.JDR.Vacunassist.Model.Zona;
 import com.JDR.Vacunassist.Repository.PacienteRepository;
@@ -76,6 +85,35 @@ public class PacienteService {
 			return null;
 		}
 	}
+	
+	public List<PacienteDTO> getPacientes() {
+		List<Paciente> pacienteList = pacienteRepository.findAll();
+		List<PacienteDTO> response = this.convertirPaciente(pacienteList);
+		return response;	
+	}
+	
+
+	private List<PacienteDTO> convertirPaciente(List<Paciente> pacienteList) {
+		return pacienteList.stream().map(paciente -> mapearPaciente(paciente)).collect(Collectors.toList());
+	}
+	
+	private PacienteDTO mapearPaciente(Paciente paciente) {
+		List<PermisoDTO> listaPermisosDTO = new ArrayList<>();
+		for(Permiso permiso : paciente.getRol().getPermisos()) {
+			PermisoDTO permisoNuevo = new PermisoDTO(permiso.getId(), permiso.getNombrePermiso());
+			listaPermisosDTO.add(permisoNuevo);
+		}
+		
+		VacunatorioDTO vacunatorioDTO = new VacunatorioDTO(paciente.getZona().getVacunatorio().getId(), paciente.getZona().getVacunatorio().getNombre());
+		ZonaDTO zonaNueva = new ZonaDTO(paciente.getZona().getId(), paciente.getZona().getNombreZona(), vacunatorioDTO);
+		
+		PacienteDTO pacienteDTO = new PacienteDTO(paciente.getId(), paciente.getDni(), paciente.getEmail(), paciente.getNombre(), paciente.getApellido(),
+				paciente.getFechaNacimiento(), paciente.getEsDeRiesgo(), new RolDTO(paciente.getRol().getId(), paciente.getRol().getNombreRol(), listaPermisosDTO),
+				zonaNueva);
+		
+		return pacienteDTO;
+	}
+	
 
 	private LocalDate convertirALocalDate(Date dateToConvert) {
 	    return LocalDate.ofInstant(
@@ -313,6 +351,5 @@ public class PacienteService {
 			return null;
 		}
 	}
-	
 	
 }

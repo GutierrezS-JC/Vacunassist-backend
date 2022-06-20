@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.JDR.Vacunassist.Dto.PacienteDTO;
 import com.JDR.Vacunassist.Dto.PacienteRequest;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
@@ -34,6 +35,11 @@ public class PacienteController {
 	
 	@Autowired
 	PacienteRepository pacienteRepository;
+	
+	@GetMapping("/getPacientes")
+	public List<PacienteDTO> getPacientes(){
+		return pacienteService.getPacientes();
+	}
 	
 	@GetMapping("/getDnisPacientes")
 	public List<Integer> getDnisPacientes(){
