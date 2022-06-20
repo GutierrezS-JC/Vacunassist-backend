@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -155,24 +156,69 @@ public class PacienteService {
 				// SI ES MAYOR A 60 //
 				if(convertirALocalDate(new Date()).getYear() - pacienteRequest.getFechaNacimiento().getYear() >= 60 ){
 					LocalDateTime fecha = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+					System.out.println("(GRIPE) Fecha incial - 159: " + fecha);
 					Vacunatorio vacunatorioElegido = vacunatorioRepository.getVacunatorioByZona(pacienteRequest.getZonaId());
 					
 					if(!seVacunoPreviamenteGripe || (seVacunoPreviamenteGripe && ChronoUnit.MONTHS.between(fechaVacunaGripeAnterior, convertirALocalDate(new Date())) >= 12)) {
 						fecha = fecha.plusMonths(3);
+						System.out.println("(GRIPE) Fecha plus 3 meses - 164: " + fecha);
 						Vacuna vacunaGripe = vacunaRepository.findByNombre("Gripe");
 						
-						Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), fecha, null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
-						turnoRepository.save(nuevoTurno);
+						String fechaQuery = fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+						System.out.println("(GRIPE) Fecha Query Gripe - 168: " + fechaQuery);
+						
+						Object ultimoTurnoFecha = pacienteRepository.getUltimoTurnoEnFecha(fechaQuery, vacunatorioElegido.getId());
+						Turno nuevoTurno;
+						
+						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
+						if(ultimoTurnoFecha == null) {
+							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
+									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 10, 0),
+									null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
+						} else {
+							System.out.println("(GRIPE) Fecha (Hora) devuelta por BD - 179: " + ultimoTurnoFecha.toString());
+							
+							LocalDateTime fechaPlus = LocalDateTime.parse(fechaQuery + " " + ultimoTurnoFecha.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+							fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 10));
+							
+							System.out.println("(GRIPE) Fecha plus 10 minutos por turno existente - 184: " + fechaPlus);
+							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
+									fechaPlus, null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
+						}
+						turnoRepository.saveAndFlush(nuevoTurno);
 					}
 					
 					if(!seVacunoPreviamenteCovid || (seVacunoPreviamenteCovid && ChronoUnit.MONTHS.between(fechaVacunaCovidAnterior, convertirALocalDate(new Date())) >= 3)) {
 						fecha = fecha.plusDays(7);
+						System.out.println("(COVID) Fecha plus 7 dias - 193: " + fecha);
 						Vacuna vacunaCovid = vacunaRepository.getVacunaCovidRandom();
+
+						String fechaQuery = fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+						System.out.println("(COVID) Fecha Query Covid - 197: " + fechaQuery);
 						
-						Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), fecha, null, vacunaCovid, vacunatorioElegido, nuevoPaciente);
-						turnoRepository.save(nuevoTurno);
+						Object ultimoTurnoFecha = pacienteRepository.getUltimoTurnoEnFecha(fechaQuery, vacunatorioElegido.getId());
+						Turno nuevoTurno;
+						
+						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
+						if(ultimoTurnoFecha == null) {
+							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
+									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 10, 0),
+									null, vacunaCovid, vacunatorioElegido, nuevoPaciente);
+						} else {
+							System.out.println("(COVID) Fecha devuelta por BD - 208: " + ultimoTurnoFecha.toString());
+							
+							LocalDateTime fechaPlus = LocalDateTime.parse(fechaQuery + " " + ultimoTurnoFecha.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+							fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 10));
+
+							System.out.println("(COVID) Fecha plus 10 minutos por turno existente - 213: " + fechaPlus.toString());
+							
+							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
+									fechaPlus, null, vacunaCovid, vacunatorioElegido, nuevoPaciente);
+						}
+						
+						turnoRepository.saveAndFlush(nuevoTurno);
 					}
-					pacienteRepository.save(nuevoPaciente);
+//					pacienteRepository.save(nuevoPaciente);
 				}
 				
 				// SI ES MENOR A 18 //
@@ -185,7 +231,25 @@ public class PacienteService {
 							fecha = fecha.plusMonths(3);
 							Vacuna vacunaGripe = vacunaRepository.findByNombre("Gripe");
 							
-							Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), fecha, null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
+							String fechaQuery = fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+							System.out.println("Fecha Query: " + fechaQuery);
+						
+							Object ultimoTurnoFecha = pacienteRepository.getUltimoTurnoEnFecha(fechaQuery, vacunatorioElegido.getId());
+							Turno nuevoTurno;
+							
+							// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
+							if(ultimoTurnoFecha == null) {
+								nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
+										LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 10, 0),
+										null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
+							} else {
+								LocalDateTime fechaPlus = LocalDateTime.parse(ultimoTurnoFecha.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+								fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 10));
+								nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
+										fechaPlus, null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
+							}
+							
+//							Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), fecha, null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
 							turnoRepository.save(nuevoTurno);
 						}
 					}
