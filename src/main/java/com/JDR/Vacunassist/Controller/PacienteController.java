@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.JDR.Vacunassist.Dto.PacienteDTO;
 import com.JDR.Vacunassist.Dto.PacienteRequest;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.ValidarPaciente;
+import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Repository.PacienteRepository;
 import com.JDR.Vacunassist.Service.PacienteService;
@@ -52,6 +54,18 @@ public class PacienteController {
 	@GetMapping("/getEmailsPacientes")
 	public List<String> getEmailsPacientes(){
 		return pacienteService.getEmailsPacientes();
+	}
+	
+	// THIS FIRST FOR LOGIN
+	@PostMapping("/validarPacienteBooleanPost")
+	public ResponseEntity<Boolean> validarPacienteBooleanPost(@RequestBody ValidarPaciente validarPaciente) throws ResourceNotFoundException{
+		return ResponseEntity.ok(pacienteService.validarPacienteBoolean(validarPaciente));
+	}
+	
+	// THIS SECOND FOR LOGIN 
+	@PostMapping("/validarPacientePost")
+	public ResponseEntity<PacienteDTO> validarPacientePost(@RequestBody ValidarPaciente validarPaciente) throws ResourceNotFoundException{
+		return ResponseEntity.ok(pacienteService.validarPacienteConCodigo(validarPaciente));
 	}
 	
 	@PostMapping("/cargarPaciente")

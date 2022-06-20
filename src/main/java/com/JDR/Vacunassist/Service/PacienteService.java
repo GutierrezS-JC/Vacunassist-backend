@@ -21,6 +21,7 @@ import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunasAnterioresRequest;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
+import com.JDR.Vacunassist.Dto.ValidarPaciente;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Model.Paciente;
 import com.JDR.Vacunassist.Model.Permiso;
@@ -109,7 +110,6 @@ public class PacienteService {
 		return (response.size() == 0 ?  null :  response);
 	}
 	
-	
 	public List<PacienteDTO> getPacientes() {
 		List<Paciente> pacienteList = pacienteRepository.findAll();
 		List<PacienteDTO> response = this.convertirPaciente(pacienteList);
@@ -137,7 +137,27 @@ public class PacienteService {
 		return pacienteDTO;
 	}
 	
-
+	public Boolean validarPacienteBoolean(ValidarPaciente validarPaciente) {
+		Paciente pacienteBuscado = pacienteRepository.findByEmailAndPassword(validarPaciente.getEmail(), validarPaciente.getPassword());
+		if(pacienteBuscado != null) {
+			return true;
+		}
+		else {			
+			return false;
+		}
+	}
+	
+	public PacienteDTO validarPacienteConCodigo(ValidarPaciente validarPaciente) {
+		Paciente pacienteBuscado = pacienteRepository.findByEmailAndPasswordAndCodigo(validarPaciente.getEmail(), validarPaciente.getPassword(), validarPaciente.getCodigo());
+		if(pacienteBuscado != null) {
+			PacienteDTO pacienteDTO = this.mapearPaciente(pacienteBuscado);
+			return pacienteDTO;
+		}
+		else {			
+			return null;
+		}
+	}
+	
 	private LocalDate convertirALocalDate(Date dateToConvert) {
 	    return LocalDate.ofInstant(
 	      dateToConvert.toInstant(), ZoneId.systemDefault());

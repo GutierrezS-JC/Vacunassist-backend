@@ -14,7 +14,11 @@ import com.JDR.Vacunassist.Model.Paciente;
 public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 
 	Paciente findByDni(Integer dni);
+
+	Paciente findByEmailAndPassword(String email, String password);
 	
+	Paciente findByEmailAndPasswordAndCodigo(String email, String password, Integer codigo);
+
 	@Query(value="SELECT coalesce(MAX(paciente.codigo),1000) from paciente", nativeQuery = true)
 	Integer getUltimoCodigoCreado();
 	
@@ -29,4 +33,5 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			+ "WHERE z.id = :zonaId",
 			nativeQuery = true)
 	List<Object[]> getPacientesEnZona(Integer zonaId);
+
 }
