@@ -99,5 +99,14 @@ public class Turno {
 	public void setAsistio(Boolean asistio) {
 		this.asistio = asistio;
 	}
+
+	public Vacunatorio getVacunatorio() {
+		return vacunatorio;
+	}
+
+	public void setVacunatorio(Vacunatorio vacunatorio) {
+		this.vacunatorio = vacunatorio;
+	}
+	
 	
 }

@@ -19,6 +19,7 @@ import com.JDR.Vacunassist.Dto.PacienteRequest;
 import com.JDR.Vacunassist.Dto.PermisoDTO;
 import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.SolicitudFiebreAmarilla;
+import com.JDR.Vacunassist.Dto.TurnosPacienteResponse;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunasAnterioresRequest;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
@@ -180,6 +181,24 @@ public class PacienteService {
 		else return false;
 	}
 	
+	public List<TurnosPacienteResponse> getTurnosPaciente(Integer pacienteId) {
+		List<Object[]> listaDB = pacienteRepository.getTurnosPaciente(pacienteId);
+		List<TurnosPacienteResponse> listaResponse = new ArrayList<>();
+		if(listaDB != null) {
+			for(Object[] objectDB : listaDB){
+				
+				TurnosPacienteResponse nuevaResponse= new TurnosPacienteResponse((Integer)objectDB[0],(Integer)objectDB[1],
+						(String)objectDB[2].toString(),
+						(String)objectDB[3].toString(), (Boolean)objectDB[4], (String)objectDB[5], (String)objectDB[6],
+						(String)objectDB[7], (String)objectDB[8], (String)objectDB[9], (Integer)objectDB[10]);
+				listaResponse.add(nuevaResponse);
+			}
+		}
+		return listaResponse; 
+	}
+	
+	// ====================== REGISTRO ====================== //
+	
 	private LocalDate convertirALocalDate(Date dateToConvert) {
 	    return LocalDate.ofInstant(
 	      dateToConvert.toInstant(), ZoneId.systemDefault());
@@ -276,7 +295,7 @@ public class PacienteService {
 						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
 						if(ultimoTurnoFecha == null) {
 							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
-									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 10, 0),
+									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 15, 0),
 									null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
 						} else {
 							System.out.println("(GRIPE) Fecha (Hora) devuelta por BD - 179: " + ultimoTurnoFecha.toString());

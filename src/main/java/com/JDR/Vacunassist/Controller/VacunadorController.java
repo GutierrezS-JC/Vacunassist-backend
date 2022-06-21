@@ -140,5 +140,11 @@ public class VacunadorController {
         return vacunadorService.editarVacunador(nombre, apellido, password, idZona, dni);
     }
 	
+	@PutMapping("/editarVacunador")
+    public VacunadorDTO editarVacunadorObject(@RequestParam("nombre") String nombre, @RequestParam("apellido") String apellido,
+                                    @RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni){
+        return vacunadorService.editarVacunadorObject(nombre, apellido, password, idZona, dni);
+    }
+	
 	// FIN EDITAR VACUNADOR //
 }
