@@ -27,6 +27,33 @@ public class SolicitudService {
 		return listaResponse;
 	}
 
+	public List<SolicitudDTO> getSolicitudesAprobadas() {
+		List<Object[]> listaDB = solicitudRepository.getSolicitudesAprobadas();
+		List<SolicitudDTO> listaResponse = new ArrayList<>();
+		if(listaDB != null) {
+			listaResponse = this.mapearListaSolicitud(listaDB);
+		}
+		return listaResponse;
+	}
+	
+	public List<SolicitudDTO> getSolicitudesRechazadas() {
+		List<Object[]> listaDB = solicitudRepository.getSolicitudesRechazadas();
+		List<SolicitudDTO> listaResponse = new ArrayList<>();
+		if(listaDB != null) {
+			listaResponse = this.mapearListaSolicitud(listaDB);
+		}
+		return listaResponse;
+	}
+	
+	public List<SolicitudDTO> getSolicitudesPendientes() {
+		List<Object[]> listaDB = solicitudRepository.getSolicitudesPendientes();
+		List<SolicitudDTO> listaResponse = new ArrayList<>();
+		if(listaDB != null) {
+			listaResponse = this.mapearListaSolicitud(listaDB);
+		}
+		return listaResponse;
+	}
+	
 	private List<SolicitudDTO> mapearListaSolicitud(List<Object[]> listaDB) {
 		List<SolicitudDTO> listaResponse = new ArrayList<>();
 		for(Object[] objectDB : listaDB) {
@@ -39,4 +66,5 @@ public class SolicitudService {
 		}
 		return listaResponse;
 	}
+
 }

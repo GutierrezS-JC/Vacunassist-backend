@@ -21,4 +21,20 @@ public class SolicitudController {
 	public List<SolicitudDTO> getSolicitudes(){
 		return solicitudService.getSolicitudes();
 	}
+
+	@GetMapping("/getSolicitudesAprobadas")
+	public List<SolicitudDTO> getSolicitudesAprobadas(){
+		return solicitudService.getSolicitudesAprobadas();
+	}
+	
+	@GetMapping("/getSolicitudesRechazadas")
+	public List<SolicitudDTO> getSolicitudesRechazadas(){
+		return solicitudService.getSolicitudesRechazadas();
+	}
+	
+	@GetMapping("/getSolicitudesPendientes")
+	public List<SolicitudDTO> getSolicitudesPendientes(){
+		return solicitudService.getSolicitudesPendientes();
+	}
+	
 }
