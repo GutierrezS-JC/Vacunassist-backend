@@ -25,7 +25,7 @@ public class ZonaService {
 	}
 
 	public List<ZonaDTO> devolverZonas() {
-		List<Zona> listaZonas = zonaRepository.findAll();
+		List<Zona> listaZonas = zonaRepository.findByOrderByIdAsc();
 		List<ZonaDTO> listaResponse = this.convertirZonas(listaZonas);
 		return listaResponse;
 	}
