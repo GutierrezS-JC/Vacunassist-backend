@@ -201,4 +201,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
 			nativeQuery = true)
 	List<Object[]> getVacunasFiebreAmarillaPaciente(Integer pacienteId);
+
+	@Query(value="SELECT id, CASE id WHEN 5 THEN 'Fiebre Amarilla' END AS tipo_vacuna FROM vacuna WHERE id = 5", nativeQuery = true)
+	Object[] getFiebreAmarillaDummmy();
 }

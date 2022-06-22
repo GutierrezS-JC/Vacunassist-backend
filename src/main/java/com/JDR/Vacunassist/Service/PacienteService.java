@@ -200,16 +200,41 @@ public class PacienteService {
 	}
 	
 	public List<VacunasPacienteResponse> getVacunasPaciente(Integer pacienteId) {
-		List<VacunasPacienteResponse> listaResponse = new ArrayList<>();
-		VacunasPacienteResponse vacunasCovidPaciente = this.getVacunasCovidPaciente(pacienteId);
-		VacunasPacienteResponse vacunasGripePaciente = this.getVacunasGripePaciente(pacienteId);
-		VacunasPacienteResponse vacunasFiebreAmarillaPaciente = this.getVacunasFiebreAmarillaPaciente(pacienteId);
-		listaResponse.add(vacunasCovidPaciente);
-		listaResponse.add(vacunasGripePaciente);
-		listaResponse.add(vacunasFiebreAmarillaPaciente);
-		return listaResponse;
+		Paciente pacienteBuscado = pacienteRepository.findById(pacienteId).orElse(null);
+		if (pacienteBuscado != null) {			
+			List<VacunasPacienteResponse> listaResponse = new ArrayList<>();
+			VacunasPacienteResponse vacunasCovidPaciente = this.getVacunasCovidPaciente(pacienteId);
+			VacunasPacienteResponse vacunasGripePaciente = this.getVacunasGripePaciente(pacienteId);
+			VacunasPacienteResponse vacunasFiebreAmarillaPaciente = this.getVacunasFiebreAmarillaPaciente(pacienteId);
+			if(vacunasCovidPaciente == null) {
+				vacunasCovidPaciente = this.falsificarCovid();
+			}
+			if(vacunasGripePaciente == null) {
+				vacunasGripePaciente = this.falsificarGripe();
+			}
+			if(vacunasFiebreAmarillaPaciente == null) {
+				vacunasFiebreAmarillaPaciente = this.falsificarFiebreAmarilla();
+			}
+			listaResponse.add(vacunasCovidPaciente);
+			listaResponse.add(vacunasGripePaciente);
+			listaResponse.add(vacunasFiebreAmarillaPaciente);
+			return listaResponse;
+		}
+		return null;
 	}
 	
+	private VacunasPacienteResponse falsificarFiebreAmarilla() {
+		return new VacunasPacienteResponse(5,"Fiebre Amarilla", "-");
+	}
+
+	private VacunasPacienteResponse falsificarGripe() {
+		return new VacunasPacienteResponse(4,"Gripe", "-");
+	}
+
+	private VacunasPacienteResponse falsificarCovid() {
+		return new VacunasPacienteResponse(1,"Covid", "-");
+	}
+
 	public VacunasPacienteResponse getVacunasCovidPaciente(Integer pacienteId) {
 		List<Object[]> listaDB = pacienteRepository.getVacunasCovidPaciente(pacienteId);
 		List<VacunasPacienteDetalle> listaDetalles = new ArrayList<>();
