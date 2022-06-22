@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -145,6 +146,11 @@ public class VacunadorController {
                                     @RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni){
         return vacunadorService.editarVacunadorObject(nombre, apellido, password, idZona, dni);
     }
+	
+	@DeleteMapping("/deleteVacunador")
+	public ResponseEntity<Boolean> deleteVacunador(@RequestParam("vacunadorId") Integer vacunadorId) {
+		return ResponseEntity.ok(vacunadorService.deleteVacunador(vacunadorId));
+	}
 	
 	// FIN EDITAR VACUNADOR //
 }

@@ -294,5 +294,14 @@ public class VacunadorService {
 		return null;
 	}
 
+	public Boolean deleteVacunador(Integer vacunadorId) {
+		Vacunador vacunadorBuscado = vacunadorRepository.findById(vacunadorId).get();
+		if(vacunadorBuscado!= null) {
+			vacunadorRepository.deleteById(vacunadorId);
+			return true;
+		}
+		return false;
+	}
+
 }
 
