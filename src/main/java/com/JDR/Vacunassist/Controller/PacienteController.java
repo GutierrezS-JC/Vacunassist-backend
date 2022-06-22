@@ -17,6 +17,7 @@ import com.JDR.Vacunassist.Dto.PacienteRequest;
 import com.JDR.Vacunassist.Dto.SolicitudFiebreAmarilla;
 import com.JDR.Vacunassist.Dto.TurnosPacienteResponse;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
+import com.JDR.Vacunassist.Dto.VacunasPacienteResponse;
 import com.JDR.Vacunassist.Dto.ValidarPaciente;
 import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
@@ -58,6 +59,26 @@ public class PacienteController {
 	@GetMapping("/getTurnosPaciente")
 	public List<TurnosPacienteResponse> getTurnosPaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
 		return pacienteService.getTurnosPaciente(pacienteId);
+	}
+	
+	@GetMapping("/getVacunasPaciente")
+	public List<VacunasPacienteResponse> getVacunasPaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
+		return pacienteService.getVacunasPaciente(pacienteId);
+	}
+	
+	@GetMapping("/getVacunasCovidPaciente")
+	public VacunasPacienteResponse getVacunasCovidPaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
+		return pacienteService.getVacunasCovidPaciente(pacienteId);
+	}
+	
+	@GetMapping("/getVacunasGripePaciente")
+	public VacunasPacienteResponse getVacunasGripePaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
+		return pacienteService.getVacunasGripePaciente(pacienteId);
+	}
+	
+	@GetMapping("/getVacunasFiebreAmarillaPaciente")
+	public VacunasPacienteResponse getVacunasFiebreAmarillaPaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
+		return pacienteService.getVacunasFiebreAmarillaPaciente(pacienteId);
 	}
 	
 	@PostMapping("/solicitarTurnoFiebreAmarilla")

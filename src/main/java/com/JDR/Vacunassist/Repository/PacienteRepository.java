@@ -57,4 +57,148 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			nativeQuery = true)
 	List<Object[]> getTurnosPaciente(Integer pacienteId);
 
+	@Query(value="SELECT vacuna.id as vacuna_id, vacuna.nombre as vacuna_nombre,\r\n"
+			+ "t.fecha_aplicacion as fecha_aplicacion,\r\n"
+			+ "t.fecha_aplicacion as fecha_detalle, z.id as zona_id, z.nombre_zona as zona_nombre,\r\n"
+			+ "vac.id as vacunatorio_id, vac.nombre as nombre_vacunatorio,\r\n"
+			+ "vacuna.id as vacuna_id_detalle, vacuna.nombre as nombre_vacuna_detalle\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = :pacienteId\r\n"
+			+ "GROUP BY vacuna_id, vacuna.nombre, fecha_detalle, z.id, z.nombre_zona, vac.id, vac.nombre,\r\n"
+			+ "vacuna.id, vacuna.nombre\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
+			nativeQuery = true)
+	List<Object[]> getVacunasPaciente(Integer pacienteId);
+
+	@Query(value="SELECT vacuna.id as vacuna_id, vacuna.nombre as vacuna_nombre,\r\n"
+			+ "CASE t.vacuna_id\r\n"
+			+ "  WHEN 1 THEN 'Covid'\r\n"
+			+ "  WHEN 2 THEN 'Covid'\r\n"
+			+ "  WHEN 3 THEN 'Covid'\r\n"
+			+ "  WHEN 4 THEN 'Gripe'\r\n"
+			+ "  WHEN 5 THEN 'Amarilla'\r\n"
+			+ "END AS tipo_vacuna,\r\n"
+			+ "t.fecha_aplicacion as fecha_aplicacion,\r\n"
+			+ "t.fecha_aplicacion as fecha_detalle, z.id as zona_id, z.nombre_zona as zona_nombre,\r\n"
+			+ "vac.id as vacunatorio_id, vac.nombre as nombre_vacunatorio,\r\n"
+			+ "vacuna.id as vacuna_id_detalle, vacuna.nombre as nombre_vacuna_detalle\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = :pacienteId\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
+			nativeQuery = true)
+	List<Object[]> getVacunasPacienteV2(Integer pacienteId);
+	
+	@Query(value="SELECT vacuna.id as vacuna_id,\r\n"
+			+ "CASE t.vacuna_id\r\n"
+			+ "  WHEN 1 THEN 'Covid'\r\n"
+			+ "  WHEN 2 THEN 'Covid'\r\n"
+			+ "  WHEN 3 THEN 'Covid'\r\n"
+			+ "  WHEN 4 THEN 'Gripe'\r\n"
+			+ "  WHEN 5 THEN 'Amarilla'\r\n"
+			+ "END AS tipo_vacuna,\r\n"
+			+ "t.fecha_aplicacion as fecha_aplicacion\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = 10\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC",
+			nativeQuery = true)
+	List<Object[]> getVacunasPacienteV3(Integer pacienteId);
+
+	@Query(value="SELECT\r\n"
+			+ "CASE t.vacuna_id\r\n"
+			+ "  WHEN 1 THEN 'Covid'\r\n"
+			+ "  WHEN 2 THEN 'Covid'\r\n"
+			+ "  WHEN 3 THEN 'Covid'\r\n"
+			+ "  WHEN 4 THEN 'Gripe'\r\n"
+			+ "  WHEN 5 THEN 'Amarilla'\r\n"
+			+ "END AS tipo_vacuna,\r\n"
+			+ "t.fecha_aplicacion as fecha_detalle, z.id as zona_id, z.nombre_zona as zona_nombre,\r\n"
+			+ "vac.id as vacunatorio_id, vac.nombre as nombre_vacunatorio,\r\n"
+			+ "vacuna.id as vacuna_id_detalle, vacuna.nombre as nombre_vacuna_detalle\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = 10\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
+			nativeQuery = true)
+	List<Object[]> getDetallesPacienteV3(Integer pacienteId);
+	
+	@Query(value="SELECT vacuna.id as vacuna_id,\r\n"
+			+ "CASE t.vacuna_id\r\n"
+			+ "  WHEN 1 THEN 'Covid'\r\n"
+			+ "  WHEN 2 THEN 'Covid'\r\n"
+			+ "  WHEN 3 THEN 'Covid'\r\n"
+			+ "  WHEN 4 THEN 'Gripe'\r\n"
+			+ "  WHEN 5 THEN 'Amarilla'\r\n"
+			+ "END AS tipo_vacuna,\r\n"
+			+ "t.fecha_aplicacion as fecha_aplicacion,\r\n"
+			+ "t.fecha_aplicacion as fecha_detalle, z.id as zona_id, z.nombre_zona as zona_nombre,\r\n"
+			+ "vac.id as vacunatorio_id, vac.nombre as nombre_vacunatorio,\r\n"
+			+ "vacuna.id as vacuna_id_detalle, vacuna.nombre as nombre_vacuna_detalle\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = :pacienteId and vacuna.id IN (1,2,3)\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
+			nativeQuery = true)
+	List<Object[]> getVacunasCovidPaciente(Integer pacienteId);
+	
+	@Query(value="SELECT vacuna.id as vacuna_id,\r\n"
+			+ "CASE t.vacuna_id\r\n"
+			+ "  WHEN 1 THEN 'Covid'\r\n"
+			+ "  WHEN 2 THEN 'Covid'\r\n"
+			+ "  WHEN 3 THEN 'Covid'\r\n"
+			+ "  WHEN 4 THEN 'Gripe'\r\n"
+			+ "  WHEN 5 THEN 'Amarilla'\r\n"
+			+ "END AS tipo_vacuna,\r\n"
+			+ "t.fecha_aplicacion as fecha_aplicacion,\r\n"
+			+ "t.fecha_aplicacion as fecha_detalle, z.id as zona_id, z.nombre_zona as zona_nombre,\r\n"
+			+ "vac.id as vacunatorio_id, vac.nombre as nombre_vacunatorio,\r\n"
+			+ "vacuna.id as vacuna_id_detalle, vacuna.nombre as nombre_vacuna_detalle\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = :pacienteId and vacuna.id IN (4)\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
+			nativeQuery = true)
+	List<Object[]> getVacunasGripePaciente(Integer pacienteId);
+	
+	@Query(value="SELECT vacuna.id as vacuna_id,\r\n"
+			+ "CASE t.vacuna_id\r\n"
+			+ "  WHEN 1 THEN 'Covid'\r\n"
+			+ "  WHEN 2 THEN 'Covid'\r\n"
+			+ "  WHEN 3 THEN 'Covid'\r\n"
+			+ "  WHEN 4 THEN 'Gripe'\r\n"
+			+ "  WHEN 5 THEN 'Amarilla'\r\n"
+			+ "END AS tipo_vacuna,\r\n"
+			+ "t.fecha_aplicacion as fecha_aplicacion,\r\n"
+			+ "t.fecha_aplicacion as fecha_detalle, z.id as zona_id, z.nombre_zona as zona_nombre,\r\n"
+			+ "vac.id as vacunatorio_id, vac.nombre as nombre_vacunatorio,\r\n"
+			+ "vacuna.id as vacuna_id_detalle, vacuna.nombre as nombre_vacuna_detalle\r\n"
+			+ "FROM vacuna \r\n"
+			+ "LEFT JOIN turno t ON (t.vacuna_id = vacuna.id)\r\n"
+			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
+			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
+			+ "WHERE paciente_id = :pacienteId and vacuna.id IN (5)\r\n"
+			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
+			nativeQuery = true)
+	List<Object[]> getVacunasFiebreAmarillaPaciente(Integer pacienteId);
 }

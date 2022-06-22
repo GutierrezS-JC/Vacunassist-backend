@@ -22,6 +22,8 @@ import com.JDR.Vacunassist.Dto.SolicitudFiebreAmarilla;
 import com.JDR.Vacunassist.Dto.TurnosPacienteResponse;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunasAnterioresRequest;
+import com.JDR.Vacunassist.Dto.VacunasPacienteDetalle;
+import com.JDR.Vacunassist.Dto.VacunasPacienteResponse;
 import com.JDR.Vacunassist.Dto.VacunatorioDTO;
 import com.JDR.Vacunassist.Dto.ValidarPaciente;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
@@ -197,6 +199,77 @@ public class PacienteService {
 		return listaResponse; 
 	}
 	
+	public List<VacunasPacienteResponse> getVacunasPaciente(Integer pacienteId) {
+		List<VacunasPacienteResponse> listaResponse = new ArrayList<>();
+		VacunasPacienteResponse vacunasCovidPaciente = this.getVacunasCovidPaciente(pacienteId);
+		VacunasPacienteResponse vacunasGripePaciente = this.getVacunasGripePaciente(pacienteId);
+		VacunasPacienteResponse vacunasFiebreAmarillaPaciente = this.getVacunasFiebreAmarillaPaciente(pacienteId);
+		listaResponse.add(vacunasCovidPaciente);
+		listaResponse.add(vacunasGripePaciente);
+		listaResponse.add(vacunasFiebreAmarillaPaciente);
+		return listaResponse;
+	}
+	
+	public VacunasPacienteResponse getVacunasCovidPaciente(Integer pacienteId) {
+		List<Object[]> listaDB = pacienteRepository.getVacunasCovidPaciente(pacienteId);
+		List<VacunasPacienteDetalle> listaDetalles = new ArrayList<>();
+		VacunasPacienteResponse vacunaPacienteResponse = null;
+		boolean set = false;
+		if(listaDB.size() != 0) {
+			for(Object[] objectDB : listaDB) {
+				if(set == false) {
+					vacunaPacienteResponse = new VacunasPacienteResponse((Integer)objectDB[0],(String)objectDB[1], (String)objectDB[2].toString());
+					set = true;
+				}
+				VacunasPacienteDetalle detalle = new VacunasPacienteDetalle((String)objectDB[3].toString(), (Integer)objectDB[4], (String)objectDB[5],
+                        (Integer)objectDB[6], (String)objectDB[7], (Integer)objectDB[8], (String)objectDB[9]);
+				listaDetalles.add(detalle);
+			}
+			vacunaPacienteResponse.setListaDetalles(listaDetalles);
+		}
+		return vacunaPacienteResponse;
+	}
+	
+	public VacunasPacienteResponse getVacunasFiebreAmarillaPaciente(Integer pacienteId) {
+		List<Object[]> listaDB = pacienteRepository.getVacunasFiebreAmarillaPaciente(pacienteId);
+		List<VacunasPacienteDetalle> listaDetalles = new ArrayList<>();
+		VacunasPacienteResponse vacunaPacienteResponse = null;
+		boolean set = false;
+		if(listaDB.size() != 0) {
+			for(Object[] objectDB : listaDB) {
+				if(set == false) {
+					vacunaPacienteResponse = new VacunasPacienteResponse((Integer)objectDB[0],(String)objectDB[1], (String)objectDB[2].toString());
+					set = true;
+				}
+				VacunasPacienteDetalle detalle = new VacunasPacienteDetalle((String)objectDB[3].toString(), (Integer)objectDB[4], (String)objectDB[5],
+                        (Integer)objectDB[6], (String)objectDB[7], (Integer)objectDB[8], (String)objectDB[9]);
+				listaDetalles.add(detalle);
+			}
+			vacunaPacienteResponse.setListaDetalles(listaDetalles);
+		}
+		return vacunaPacienteResponse;
+	}
+	
+	public VacunasPacienteResponse getVacunasGripePaciente(Integer pacienteId) {
+		List<Object[]> listaDB = pacienteRepository.getVacunasGripePaciente(pacienteId);
+		List<VacunasPacienteDetalle> listaDetalles = new ArrayList<>();
+		VacunasPacienteResponse vacunaPacienteResponse = null;
+		boolean set = false;
+		if(listaDB.size() != 0) {
+			for(Object[] objectDB : listaDB) {
+				if(set == false) {
+					vacunaPacienteResponse = new VacunasPacienteResponse((Integer)objectDB[0],(String)objectDB[1], (String)objectDB[2].toString());
+					set = true;
+				}
+				VacunasPacienteDetalle detalle = new VacunasPacienteDetalle((String)objectDB[3].toString(), (Integer)objectDB[4], (String)objectDB[5],
+                        (Integer)objectDB[6], (String)objectDB[7], (Integer)objectDB[8], (String)objectDB[9]);
+				listaDetalles.add(detalle);
+			}
+			vacunaPacienteResponse.setListaDetalles(listaDetalles);
+		}
+		return vacunaPacienteResponse;
+	}
+
 	// ====================== REGISTRO ====================== //
 	
 	private LocalDate convertirALocalDate(Date dateToConvert) {
