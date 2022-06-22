@@ -46,7 +46,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 	@Query(value="SELECT t.id as turno_id, p.id as paciente_id, t.fecha_aplicacion, t.fecha_asignacion, t.asistio,\r\n"
 			+ "vac.nombre as nombre_vacunatorio, vac.calle, vac.altura, \r\n"
 			+ "z.nombre_zona,\r\n"
-			+ "vacuna.nombre as vacuna_nombre, vac.id as vacuna_id\r\n"
+			+ "vacuna.nombre as vacuna_nombre, vacuna.id as vacuna_id\r\n"
 			+ "FROM turno t \r\n"
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
