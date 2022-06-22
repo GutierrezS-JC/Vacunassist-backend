@@ -52,7 +52,8 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
 			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
 			+ "LEFT JOIN vacuna ON (vacuna.id = t.vacuna_id)\r\n"
-			+ "WHERE t.paciente_id = :pacienteId",
+			+ "WHERE t.paciente_id = :pacienteId\r\n"
+			+ "ORDER BY date(fecha_aplicacion) DESC",
 			nativeQuery = true)
 	List<Object[]> getTurnosPaciente(Integer pacienteId);
 
