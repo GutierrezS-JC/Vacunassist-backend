@@ -81,6 +81,11 @@ public class PacienteController {
 		return pacienteService.getVacunasFiebreAmarillaPaciente(pacienteId);
 	}
 	
+	@GetMapping("/getTieneSolicitudFiebreAmarillaPaciente")
+	public Boolean getTieneSolicitudFiebreAmarillaPaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
+		return pacienteService.getTieneSolicitudFiebreAmarillaPaciente(pacienteId);
+	}
+	
 	@PostMapping("/solicitarTurnoFiebreAmarilla")
 	public ResponseEntity<Boolean> solicitarTurnoFiebreAmarilla(@RequestBody SolicitudFiebreAmarilla solicitudRequest) throws ResourceNotFoundException{
 		return ResponseEntity.ok(pacienteService.solicitarTurnoFiebreAmarilla(solicitudRequest));

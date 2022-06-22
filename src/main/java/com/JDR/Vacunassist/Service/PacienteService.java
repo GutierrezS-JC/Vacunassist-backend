@@ -294,6 +294,14 @@ public class PacienteService {
 		}
 		return vacunaPacienteResponse;
 	}
+	
+	public Boolean getTieneSolicitudFiebreAmarillaPaciente(Integer pacienteId) {
+		Paciente pacienteBuscado = pacienteRepository.findById(pacienteId).orElse(null);
+		if(pacienteBuscado != null) {
+			return pacienteBuscado.getSolicitud() == null ? false : true;
+		}
+		return false;
+	}
 
 	// ====================== REGISTRO ====================== //
 	
