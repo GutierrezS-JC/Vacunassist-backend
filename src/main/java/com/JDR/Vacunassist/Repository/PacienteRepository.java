@@ -153,7 +153,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
 			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
-			+ "WHERE paciente_id = :pacienteId and vacuna.id IN (1,2,3)\r\n"
+			+ "WHERE paciente_id = :pacienteId and t.asistio = true and vacuna.id IN (1,2,3)\r\n"
 			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
 			nativeQuery = true)
 	List<Object[]> getVacunasCovidPaciente(Integer pacienteId);
@@ -175,7 +175,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
 			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
-			+ "WHERE paciente_id = :pacienteId and vacuna.id IN (4)\r\n"
+			+ "WHERE paciente_id = :pacienteId and t.asistio = true and vacuna.id IN (4)\r\n"
 			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
 			nativeQuery = true)
 	List<Object[]> getVacunasGripePaciente(Integer pacienteId);
@@ -197,7 +197,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 			+ "LEFT JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "LEFT JOIN vacunatorio vac ON (vac.id = t.vacunatorio_id)\r\n"
 			+ "LEFT JOIN zona z ON (z.id = vac.zona_id)\r\n"
-			+ "WHERE paciente_id = :pacienteId and vacuna.id IN (5)\r\n"
+			+ "WHERE paciente_id = :pacienteId and t.asistio = true and vacuna.id IN (5)\r\n"
 			+ "ORDER BY vacuna_id, fecha_aplicacion DESC, fecha_detalle",
 			nativeQuery = true)
 	List<Object[]> getVacunasFiebreAmarillaPaciente(Integer pacienteId);
