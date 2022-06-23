@@ -549,6 +549,15 @@ public class PacienteService {
 			return null;
 		}
 	}
+
+	public Boolean deletePaciente(Integer pacienteId) {
+		Paciente pacienteBuscado = pacienteRepository.findById(pacienteId).orElse(null);
+		if(pacienteBuscado != null) {
+			pacienteRepository.deleteById(pacienteId);
+			return true;
+		}
+		return false;
+	}
 	
 	public PacienteDTO editarPacienteObject(String nombre, String apellido, String password, Integer idZona,
 			Integer dni) {
