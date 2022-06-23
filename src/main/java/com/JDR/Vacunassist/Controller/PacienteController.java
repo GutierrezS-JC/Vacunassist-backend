@@ -123,7 +123,7 @@ public class PacienteController {
 	
 	@PutMapping("/editarPacienteObject")
 	public PacienteDTO editarPacienteObject(@RequestParam("nombre") String nombre, @RequestParam("apellido") String apellido,
-			@RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni){
-		return pacienteService.editarPacienteObject(nombre, apellido, password, idZona, dni);
+			@RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni, @RequestParam("deRiesgo") Boolean deRiesgo){
+		return pacienteService.editarPacienteObject(nombre, apellido, password, idZona, dni, deRiesgo);
 	}
 }

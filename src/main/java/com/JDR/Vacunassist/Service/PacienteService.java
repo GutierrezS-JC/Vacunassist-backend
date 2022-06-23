@@ -406,7 +406,7 @@ public class PacienteService {
 						Object ultimoTurnoFecha = pacienteRepository.getUltimoTurnoEnFecha(fechaQuery, vacunatorioElegido.getId());
 						Turno nuevoTurno;
 						
-						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
+						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 15 minutos al turno anterior
 						if(ultimoTurnoFecha == null) {
 							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
 									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 15, 0),
@@ -415,7 +415,7 @@ public class PacienteService {
 							System.out.println("(GRIPE) Fecha (Hora) devuelta por BD - 179: " + ultimoTurnoFecha.toString());
 							
 							LocalDateTime fechaPlus = LocalDateTime.parse(fechaQuery + " " + ultimoTurnoFecha.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-							fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 10));
+							fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 15));
 							
 							System.out.println("(GRIPE) Fecha plus 10 minutos por turno existente - 184: " + fechaPlus);
 							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
@@ -435,16 +435,16 @@ public class PacienteService {
 						Object ultimoTurnoFecha = pacienteRepository.getUltimoTurnoEnFecha(fechaQuery, vacunatorioElegido.getId());
 						Turno nuevoTurno;
 						
-						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
+						// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 15 minutos al turno anterior
 						if(ultimoTurnoFecha == null) {
 							nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
-									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 10, 0),
+									LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 15, 0),
 									null, vacunaCovid, vacunatorioElegido, nuevoPaciente);
 						} else {
 							System.out.println("(COVID) Fecha devuelta por BD - 208: " + ultimoTurnoFecha.toString());
 							
 							LocalDateTime fechaPlus = LocalDateTime.parse(fechaQuery + " " + ultimoTurnoFecha.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-							fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 10));
+							fechaPlus =  LocalDateTime.of(fechaPlus.getYear(), fechaPlus.getMonth(), fechaPlus.getDayOfMonth(), fechaPlus.getHour(), (fechaPlus.getMinute() + 15));
 
 							System.out.println("(COVID) Fecha plus 10 minutos por turno existente - 213: " + fechaPlus.toString());
 							
@@ -476,7 +476,7 @@ public class PacienteService {
 							// Si no existe un turno en ese dia le asigno el primero - 10 AM - pero si existe entonces le sumo 10 minutos al turno anterior
 							if(ultimoTurnoFecha == null) {
 								nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()),
-										LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 10, 0),
+										LocalDateTime.of(fecha.getYear(), fecha.getMonth(), fecha.getDayOfMonth(), 15, 0),
 										null, vacunaGripe, vacunatorioElegido, nuevoPaciente);
 							} else {
 								LocalDateTime fechaPlus = LocalDateTime.parse(ultimoTurnoFecha.toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -560,7 +560,7 @@ public class PacienteService {
 	}
 	
 	public PacienteDTO editarPacienteObject(String nombre, String apellido, String password, Integer idZona,
-			Integer dni) {
+			Integer dni, Boolean deRiesgo) {
 		Zona zona = zonaRepository.findById(idZona).get();
         Paciente pacienteBuscado = pacienteRepository.findByDni(dni);
         if(pacienteBuscado != null) {
@@ -576,6 +576,10 @@ public class PacienteService {
             
             if(!pacienteBuscado.getZona().getNombreZona().equals(zona.getNombreZona())) {    // si zona no es = a la asignada actualmente, lo cambia de zona
             	pacienteBuscado.setZona(zona);
+            	
+            if(!pacienteBuscado.getEsDeRiesgo().equals(deRiesgo)) {
+            	pacienteBuscado.setEsDeRiesgo(deRiesgo);
+            }
           }
             PacienteDTO pacienteResponse = this.mapearPaciente(pacienteBuscado);
             pacienteRepository.save(pacienteBuscado); //actualiza los datos
@@ -584,6 +588,5 @@ public class PacienteService {
             return null;
         }
 	}
-
 	
 }
