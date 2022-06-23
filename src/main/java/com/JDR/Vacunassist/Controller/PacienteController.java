@@ -56,6 +56,11 @@ public class PacienteController {
 		return pacienteService.getEmailsPacientes();
 	}
 	
+	@GetMapping("/getPasswordPaciente")
+	public ResponseEntity<String> getPasswordPaciente(@RequestParam("dni") Integer dni) {
+		return ResponseEntity.ok(pacienteService.getPasswordPaciente(dni));
+	}
+	
 	@GetMapping("/getTurnosPaciente")
 	public List<TurnosPacienteResponse> getTurnosPaciente(@RequestParam("pacienteId") Integer pacienteId) throws ResourceNotFoundException{
 		return pacienteService.getTurnosPaciente(pacienteId);

@@ -96,6 +96,14 @@ public class PacienteService {
 		}
 	}
 	
+	public String getPasswordPaciente(Integer dni) {
+		Paciente pacienteBuscado = pacienteRepository.findByDni(dni);
+		if(pacienteBuscado!= null) {
+			return pacienteBuscado.getPassword();
+		}
+		return null;
+	}
+	
 	public List<PacienteDTO> devolverPacientePorDni(Integer dni) {
 		List<PacienteDTO> listaResponse = new ArrayList<>();
 		Paciente paciente = pacienteRepository.findByDni(dni);
