@@ -576,11 +576,12 @@ public class PacienteService {
             
             if(!pacienteBuscado.getZona().getNombreZona().equals(zona.getNombreZona())) {    // si zona no es = a la asignada actualmente, lo cambia de zona
             	pacienteBuscado.setZona(zona);
-            	
+            }
+            
             if(!pacienteBuscado.getEsDeRiesgo().equals(deRiesgo)) {
             	pacienteBuscado.setEsDeRiesgo(deRiesgo);
             }
-          }
+          
             PacienteDTO pacienteResponse = this.mapearPaciente(pacienteBuscado);
             pacienteRepository.save(pacienteBuscado); //actualiza los datos
             return pacienteResponse;
