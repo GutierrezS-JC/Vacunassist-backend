@@ -25,6 +25,10 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 	@Query(value="SELECT MAX(time(fecha_aplicacion)) as ultimo_turno FROM turno where date(fecha_aplicacion) = :fecha and vacunatorio_id = :vacunatorioId",
 			nativeQuery = true)
 	Object getUltimoTurnoEnFecha(String fecha, Integer vacunatorioId);
+	
+	@Query(value="SELECT MAX(time(fecha_aplicacion)) as ultimo_turno FROM turno where date(fecha_aplicacion) = :fecha and vacunatorio_id = :vacunatorioId",
+			nativeQuery = true)
+	String getUltimoTurnoEnFechaString(String fecha, Integer vacunatorioId);
 
 	//Pacientes por zona
 	@Query(value="SELECT p.id, p.dni, p.email, p.nombre, p.apellido, p.es_de_riesgo, p.fecha_nacimiento, p.rol_id, z.nombre_zona, vac.nombre as nombre_vacunatorio\r\n"
