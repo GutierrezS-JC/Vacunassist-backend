@@ -550,4 +550,31 @@ public class PacienteService {
 		}
 	}
 	
+	public PacienteDTO editarPacienteObject(String nombre, String apellido, String password, Integer idZona,
+			Integer dni) {
+		Zona zona = zonaRepository.findById(idZona).get();
+        Paciente pacienteBuscado = pacienteRepository.findByDni(dni);
+        if(pacienteBuscado != null) {
+            if(!pacienteBuscado.getNombre().trim().equals(nombre) && !nombre.isBlank()) {    //si nombre no es = a el nombre original y si no es blank, cambia el nombre
+            	pacienteBuscado.setNombre(nombre);
+            }
+            if(!pacienteBuscado.getApellido().trim().equals(apellido) && !apellido.isBlank()) {    //si apellido no es = a el apellido original y si no es blank, cambia el apellido
+            	pacienteBuscado.setApellido(apellido);
+            }
+            if(!pacienteBuscado.getPassword().equals(password) && !password.isBlank()) {    //si password no es = a la password original y si no es blank, cambia la passsword
+                pacienteBuscado.setPassword(password);
+            }
+            
+            if(!pacienteBuscado.getZona().getNombreZona().equals(zona.getNombreZona())) {    // si zona no es = a la asignada actualmente, lo cambia de zona
+            	pacienteBuscado.setZona(zona);
+          }
+            PacienteDTO pacienteResponse = this.mapearPaciente(pacienteBuscado);
+            pacienteRepository.save(pacienteBuscado); //actualiza los datos
+            return pacienteResponse;
+        } else {
+            return null;
+        }
+	}
+
+	
 }
