@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,14 @@ public class TurnoService {
 		return listaResponse;
 	}
 
+	public List<TurnoResponse> getTurnosDia() {
+		String fechaHoy = LocalDate.now().toString();
+		System.out.println(fechaHoy);
+		List<Object[]> listaDb = turnoRepository.getTurnosDia(fechaHoy);
+		List<TurnoResponse> listaResponse = this.mapearTurnos(listaDb);
+		return listaResponse;
+	}
+
 	private List<TurnoResponse> mapearTurnos(List<Object[]> listaDb) {
 		List<TurnoResponse> listaResponse = new ArrayList<>();
 		for(Object[] data : listaDb) {
@@ -48,5 +57,5 @@ public class TurnoService {
 		}
 		return listaResponse;
 	}
-
+	
 }

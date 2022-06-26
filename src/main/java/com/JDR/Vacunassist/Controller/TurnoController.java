@@ -38,4 +38,10 @@ public class TurnoController {
 	public List<TurnoResponse> getTurnosYellow() throws ResourceNotFoundException{
 		return turnoService.getTurnosYellow();
 	}
+	
+	@GetMapping("/getTurnosDia")
+	public List<TurnoResponse> getTurnosDia() throws ResourceNotFoundException{
+		return turnoService.getTurnosDia();
+	}
+	
 }
