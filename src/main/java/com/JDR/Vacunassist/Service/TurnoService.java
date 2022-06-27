@@ -57,5 +57,26 @@ public class TurnoService {
 		}
 		return listaResponse;
 	}
+
+	public List<String> getTurnosAsignadosDespuesDeHoy() {
+		String fechaHoy = LocalDate.now().toString();
+		List<Object[]> listaDb = turnoRepository.getTurnosAsignadosDespuesDeHoy(fechaHoy);
+		List<String> listaResonse = this.mapearStringTurnos(listaDb);
+		return listaResonse;
+	}
+	
+	public List<String> getTurnosHorasAsignadosEnFecha(String fecha) {
+		List<Object[]> listaDb = turnoRepository.getTurnosHorasAsignadosEnFecha(fecha);
+		List<String> listaResonse = this.mapearStringTurnos(listaDb);
+		return listaResonse;
+	}
+	
+	private List<String> mapearStringTurnos(List<Object[]> listaDb) {
+		List<String> listaResponse = new ArrayList<>();
+		for(Object[] fecha : listaDb) {
+			listaResponse.add((String)fecha[0].toString());
+		}
+		return listaResponse;
+	}
 	
 }

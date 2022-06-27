@@ -64,4 +64,21 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "ORDER BY fecha_aplicacion;",
 			nativeQuery = true)
 	List<Object[]> getTurnosDia(String fechaHoy);
+	
+	@Query(value="SELECT date(t.fecha_aplicacion) as fechaTurnoAsignado\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE date(fecha_aplicacion) > '2022-06-27'\r\n"
+			+ "GROUP BY date(t.fecha_aplicacion)\r\n"
+			+ "ORDER BY fecha_aplicacion;",
+			nativeQuery = true)
+	List<Object[]> getTurnosAsignadosDespuesDeHoy(String fechaHoy);
+	
+	@Query(value="SELECT time(t.fecha_aplicacion) as hora_fecha_turno\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE date(fecha_aplicacion) = :fechaHoy\r\n"
+			+ "GROUP BY time(t.fecha_aplicacion)\r\n"
+			+ "ORDER BY time(fecha_aplicacion)",
+			nativeQuery = true)
+	List<Object[]> getTurnosHorasAsignadosEnFecha(String fechaHoy);
+	
 }

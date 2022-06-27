@@ -44,4 +44,14 @@ public class TurnoController {
 		return turnoService.getTurnosDia();
 	}
 	
+	@GetMapping("/getTurnosAsignadosDespuesDeHoy")
+	public List<String> getTurnosAsignadosDespuesDeHoy() throws ResourceNotFoundException{
+		return turnoService.getTurnosAsignadosDespuesDeHoy();
+	}
+	
+	@GetMapping("/getTurnosHorasAsignadosEnFecha")
+	public List<String> getTurnosHorasAsignadosEnFecha(@RequestParam("fecha") String fecha) throws ResourceNotFoundException{
+		return turnoService.getTurnosHorasAsignadosEnFecha(fecha);
+	}
+	
 }
