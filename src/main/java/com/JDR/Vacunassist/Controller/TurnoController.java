@@ -1,13 +1,20 @@
 package com.JDR.Vacunassist.Controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.JDR.Vacunassist.Dto.CargarTurno;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Service.TurnoService;
@@ -54,4 +61,9 @@ public class TurnoController {
 		return turnoService.getTurnosHorasAsignadosEnFecha(fecha);
 	}
 	
+	@PostMapping("/asignarTurnoFiebreAmarilla")
+	public Boolean asignarTurnoFiebreAmarilla(@RequestBody CargarTurno turnoRequest) throws ResourceNotFoundException{
+		return turnoService.asignarTurnoFiebreAmarilla(turnoRequest);
+	}
+		
 }
