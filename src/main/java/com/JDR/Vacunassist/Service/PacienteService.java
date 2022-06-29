@@ -19,6 +19,7 @@ import com.JDR.Vacunassist.Dto.PacienteRequest;
 import com.JDR.Vacunassist.Dto.PermisoDTO;
 import com.JDR.Vacunassist.Dto.RolDTO;
 import com.JDR.Vacunassist.Dto.SolicitudFiebreAmarilla;
+import com.JDR.Vacunassist.Dto.SolicitudStatus;
 import com.JDR.Vacunassist.Dto.TurnosPacienteResponse;
 import com.JDR.Vacunassist.Dto.VacunadorDTO;
 import com.JDR.Vacunassist.Dto.VacunasAnterioresRequest;
@@ -309,6 +310,18 @@ public class PacienteService {
 			return pacienteBuscado.getSolicitud() == null ? false : true;
 		}
 		return false;
+	}
+	
+	public SolicitudStatus getTieneSolicitudFiebreAmarillaPacienteV2(Integer pacienteId) {
+		Paciente pacienteBuscado = pacienteRepository.findById(pacienteId).orElse(null);
+		SolicitudStatus solicitudStatus = new SolicitudStatus();
+		if(pacienteBuscado.getSolicitud() != null ) {
+			solicitudStatus.setTieneSolicitud(true);
+			if(pacienteBuscado.getSolicitud().getAprobado() != null) {
+				solicitudStatus.setAceptada(pacienteBuscado.getSolicitud().getAprobado());
+			}
+		}
+		return solicitudStatus;
 	}
 
 	// ====================== REGISTRO ====================== //
