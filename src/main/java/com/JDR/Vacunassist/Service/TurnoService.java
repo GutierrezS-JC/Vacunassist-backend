@@ -78,6 +78,14 @@ public class TurnoService {
 		List<TurnoResponse> listaResponse = this.mapearTurnos(listaDb);
 		return listaResponse;
 	}
+	
+	public List<TurnoResponse> getTurnosDiaVacunatorio(Integer vacunatorioId) {
+		String fechaHoy = LocalDate.now().toString();
+		System.out.println(fechaHoy);
+		List<Object[]> listaDb = turnoRepository.getTurnosDiaVacunatorio(fechaHoy,vacunatorioId );
+		List<TurnoResponse> listaResponse = this.mapearTurnos(listaDb);
+		return listaResponse;
+	}
 
 	private List<TurnoResponse> mapearTurnos(List<Object[]> listaDb) {
 		List<TurnoResponse> listaResponse = new ArrayList<>();

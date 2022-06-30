@@ -51,6 +51,11 @@ public class TurnoController {
 		return turnoService.getTurnosDia();
 	}
 	
+	@GetMapping("/getTurnosDiaVacunatorio")
+	public List<TurnoResponse> getTurnosDiaVacunatorio(@RequestParam("vacunatorioId") Integer vacunatorioId) throws ResourceNotFoundException{
+		return turnoService.getTurnosDiaVacunatorio(vacunatorioId);
+	}
+	
 	@GetMapping("/getTurnosAsignadosDespuesDeHoy")
 	public List<String> getTurnosAsignadosDespuesDeHoy() throws ResourceNotFoundException{
 		return turnoService.getTurnosAsignadosDespuesDeHoy();
