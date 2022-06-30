@@ -9,7 +9,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.JDR.Vacunassist.Dto.RechazarSolicitudRequest;
 import com.JDR.Vacunassist.Dto.SolicitudDTO;
+import com.JDR.Vacunassist.Model.Administrador;
+import com.JDR.Vacunassist.Model.Solicitud;
+import com.JDR.Vacunassist.Repository.AdministradorRepository;
 import com.JDR.Vacunassist.Repository.SolicitudRepository;
 
 @Service
@@ -17,6 +21,9 @@ public class SolicitudService {
 
 	@Autowired
 	SolicitudRepository solicitudRepository;
+	
+	@Autowired
+	AdministradorRepository administradorRepository;
 
 	public List<SolicitudDTO> getSolicitudes() {
 		List<Object[]> listaDB = solicitudRepository.getSolicitudes();
@@ -65,6 +72,15 @@ public class SolicitudService {
 			listaResponse.add(nuevaSolicitud);
 		}
 		return listaResponse;
+	}
+
+	public Boolean rechazarSolicitud(RechazarSolicitudRequest request) {
+		Solicitud solicitudBuscada = solicitudRepository.findById(request.getSolicitudId()).get();
+		Administrador adminBuscado = administradorRepository.findById(request.getAdminId()).get();
+		solicitudBuscada.setAprobado(false);
+		solicitudBuscada.setAdministrador(adminBuscado);
+		solicitudRepository.save(solicitudBuscada);
+		return true;
 	}
 
 }

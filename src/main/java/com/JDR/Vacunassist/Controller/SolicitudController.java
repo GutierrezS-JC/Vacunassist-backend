@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.JDR.Vacunassist.Dto.RechazarSolicitudRequest;
 import com.JDR.Vacunassist.Dto.SolicitudDTO;
 import com.JDR.Vacunassist.Service.SolicitudService;
 
@@ -35,6 +38,11 @@ public class SolicitudController {
 	@GetMapping("/getSolicitudesPendientes")
 	public List<SolicitudDTO> getSolicitudesPendientes(){
 		return solicitudService.getSolicitudesPendientes();
+	}
+	
+	@PostMapping("/rechazarSolicitud")
+	public Boolean rechazarSolicitud(@RequestBody RechazarSolicitudRequest requestRechazo){
+		return solicitudService.rechazarSolicitud(requestRechazo);
 	}
 	
 }
