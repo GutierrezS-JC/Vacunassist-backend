@@ -92,4 +92,130 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			nativeQuery = true)
 	List<Object[]> getTurnosHorasAsignadosEnFecha(String fechaHoy);
 	
+	// METRICAS
+	
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_pendientes\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 4) as total_turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 1 and t.vacuna_id = 4) as turnos_pendientes_uno,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 2 and t.vacuna_id = 4) as turnos_pendientes_dos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 3 and t.vacuna_id = 4) as turnos_pendientes_tres;",
+			nativeQuery = true)
+	List<Object[]> getTurnosPendientesGripe();
+	
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_pendientes\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 1) as total_turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 1 and t.vacuna_id IN (1,2,3)) as turnos_pendientes_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 1 and t.vacuna_id = 4) as turnos_pendientes_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 1 and t.vacuna_id = 5) as turnos_pendientes_yellow\r\n"
+			+ "UNION\r\n"
+			+ "SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_pendientes\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 2) as total_turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 2 and t.vacuna_id IN (1,2,3)) as turnos_pendientes_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 2 and t.vacuna_id = 4) as turnos_pendientes_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 2 and t.vacuna_id = 5) as turnos_pendientes_yellow\r\n"
+			+ "UNION\r\n"
+			+ "SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_pendientes\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 3) as total_turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 3 and t.vacuna_id IN (1,2,3)) as turnos_pendientes_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 3 and t.vacuna_id = 4) as turnos_pendientes_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = 3 and t.vacuna_id = 5) as turnos_pendientes_yellow",
+			nativeQuery = true)
+	List<Object[]> getTurnosPendientesTodasPorVacunatorio();
+	
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_pendientes\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.asistio is null) as total_turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id IN (1,2,3)) as turnos_pendientes_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 4) as turnos_pendientes_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 5) as turnos_pendientes_yellow",
+			nativeQuery = true)
+	List<Object[]> getTurnosPendientesTodas();
+	
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_covid\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.vacuna_id IN (1,2,3)) as total_turnos_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id IN (1,2,3)) as turnos_pendientes_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacuna_id IN (1,2,3)) as turnos_asistidos_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacuna_id IN (1,2,3)) as turnos_no_asistidos_covid",
+			nativeQuery = true)
+	List<Object[]> getReporteCovid();
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_gripe\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.vacuna_id = 4) as total_turnos_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 4) as turnos_pendientes_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacuna_id = 4) as turnos_asistidos_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacuna_id = 4) as turnos_no_asistidos_gripe",
+			nativeQuery = true)
+	List<Object[]> getReporteGripe();
+	
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_yellow\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.vacuna_id = 5) as total_turnos_yellow,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 5) as turnos_pendientes_yellow,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacuna_id = 5) as turnos_asistidos_yellow,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacuna_id = 5) as turnos_no_asistidos_yellow",
+			nativeQuery = true)
+	List<Object[]> getReporteYellow();
+	
 }

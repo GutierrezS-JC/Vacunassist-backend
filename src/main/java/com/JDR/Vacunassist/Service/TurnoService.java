@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Service;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.JDR.Vacunassist.Dto.CargarTurno;
+import com.JDR.Vacunassist.Dto.MetricasResponse;
+import com.JDR.Vacunassist.Dto.ReporteResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
 import com.JDR.Vacunassist.Model.Administrador;
 import com.JDR.Vacunassist.Model.Paciente;
@@ -149,6 +152,62 @@ public class TurnoService {
 			
 			return true;
 		}
+	}
+
+	// METRICAS
+	
+	public List<MetricasResponse> getTurnosPendientesGripe() {
+		List<Object[]> listaDb = turnoRepository.getTurnosPendientesGripe();
+		List<MetricasResponse> listaResponse = this.mapearPendientes(listaDb);
+		return listaResponse;
+	}
+
+	private List<MetricasResponse> mapearPendientes(List<Object[]> listaDb) {
+		List<MetricasResponse> response = new ArrayList<>();
+		for(Object[] obj : listaDb) {
+			response.add(new MetricasResponse(((BigInteger)obj[0]).intValue(), ((BigInteger)obj[1]).intValue(), ((BigInteger)obj[2]).intValue(),
+					((BigInteger)obj[3]).intValue()));
+		}
+		return response;
+	}
+	
+	private List<ReporteResponse> mapearReporte(List<Object[]> listaDb) {
+		List<ReporteResponse> response = new ArrayList<>();
+		for(Object[] obj : listaDb) {
+			response.add(new ReporteResponse(((BigInteger)obj[0]).intValue(), ((BigInteger)obj[1]).intValue(), ((BigInteger)obj[2]).intValue(),
+					((BigInteger)obj[3]).intValue()));
+		}
+		return response;
+	}
+	
+	public List<MetricasResponse> getTurnosPendientesTodasPorVacunatorio() {
+		List<Object[]> listaDb = turnoRepository.getTurnosPendientesTodasPorVacunatorio();
+		List<MetricasResponse> listaResponse = this.mapearPendientes(listaDb);
+		return listaResponse;
+	}
+
+	public List<MetricasResponse> getTurnosPendientesTodas() {
+		List<Object[]> listaDb = turnoRepository.getTurnosPendientesTodas();
+		List<MetricasResponse> listaResponse = this.mapearPendientes(listaDb);
+		return listaResponse;
+	}
+
+	public ReporteResponse getReporteCovid() {
+		List<Object[]> listaDb = turnoRepository.getReporteCovid();
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse.get(0);
+	}
+
+	public List<ReporteResponse> getReporteGripe() {
+		List<Object[]> listaDb = turnoRepository.getReporteGripe();
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse;
+	}
+
+	public List<ReporteResponse> getReporteYellow() {
+		List<Object[]> listaDb = turnoRepository.getReporteYellow();
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse;
 	}
 	
 }

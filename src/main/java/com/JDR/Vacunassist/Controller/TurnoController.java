@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.CargarTurno;
+import com.JDR.Vacunassist.Dto.MetricasResponse;
+import com.JDR.Vacunassist.Dto.ReporteResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Service.TurnoService;
@@ -66,9 +68,44 @@ public class TurnoController {
 		return turnoService.getTurnosHorasAsignadosEnFecha(fecha);
 	}
 	
+	// METRICAS 
+	
+	@GetMapping("/getTurnosPendientesGripe")
+	public List<MetricasResponse> getTurnosPendientesGripe() throws ResourceNotFoundException{
+		return turnoService.getTurnosPendientesGripe();
+	}
+	
+	@GetMapping("/getTurnosPendientesTodasPorVacunatorio") //Por vacunatorio
+	public List<MetricasResponse> getTurnosPendientesTodasPorVacunatorio() throws ResourceNotFoundException{
+		return turnoService.getTurnosPendientesTodasPorVacunatorio();
+	}
+	
+	@GetMapping("/getTurnosPendientesTodas") //En todos los vacunatorios
+	public List<MetricasResponse> getTurnosPendientesTodas() throws ResourceNotFoundException{
+		return turnoService.getTurnosPendientesTodas();
+	}
+	
+	//THIS 
+	@GetMapping("/getReporteCovid")
+	public ReporteResponse getReporteCovid() throws ResourceNotFoundException{
+		return turnoService.getReporteCovid();
+	}
+	
+	@GetMapping("/getReporteGripe")
+	public List<ReporteResponse> getReporteGripe() throws ResourceNotFoundException{
+		return turnoService.getReporteGripe();
+	}
+	
+	@GetMapping("/getReporteYellow")
+	public List<ReporteResponse> getReporteYellow() throws ResourceNotFoundException{
+		return turnoService.getReporteYellow();
+	}
+	
+	// FIN METRICAS 
+	
 	@PostMapping("/asignarTurnoFiebreAmarilla")
 	public Boolean asignarTurnoFiebreAmarilla(@RequestBody CargarTurno turnoRequest) throws ResourceNotFoundException{
 		return turnoService.asignarTurnoFiebreAmarilla(turnoRequest);
 	}
-		
+	
 }
