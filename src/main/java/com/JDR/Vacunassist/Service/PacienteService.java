@@ -436,8 +436,10 @@ public class PacienteService {
 						}
 						turnoRepository.saveAndFlush(nuevoTurno);
 					}
-					
+										
 					if(!seVacunoPreviamenteCovid || (seVacunoPreviamenteCovid && ChronoUnit.MONTHS.between(fechaVacunaCovidAnterior, convertirALocalDate(new Date())) >= 3)) {
+						fecha = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+
 						fecha = fecha.plusDays(7);
 						System.out.println("(COVID) Fecha plus 7 dias - 193: " + fecha);
 						Vacuna vacunaCovid = vacunaRepository.getVacunaCovidRandom();
@@ -565,6 +567,8 @@ public class PacienteService {
 						}
 						
 						if(!seVacunoPreviamenteCovid || (seVacunoPreviamenteCovid && ChronoUnit.MONTHS.between(fechaVacunaCovidAnterior, convertirALocalDate(new Date())) >= 3)) {
+							fecha = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+							
 							fecha = fecha.plusDays(7);
 							Vacuna vacunaCovid = vacunaRepository.getVacunaCovidRandom();
 							
