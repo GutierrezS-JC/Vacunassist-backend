@@ -18,6 +18,7 @@ import com.JDR.Vacunassist.Dto.CargarTurno;
 import com.JDR.Vacunassist.Dto.MetricasResponse;
 import com.JDR.Vacunassist.Dto.ReporteResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
+import com.JDR.Vacunassist.Dto.TurnosPendientesPacienteResponse;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
 import com.JDR.Vacunassist.Service.TurnoService;
 
@@ -92,16 +93,27 @@ public class TurnoController {
 	}
 	
 	@GetMapping("/getReporteGripe")
-	public List<ReporteResponse> getReporteGripe() throws ResourceNotFoundException{
+	public ReporteResponse getReporteGripe() throws ResourceNotFoundException{
 		return turnoService.getReporteGripe();
 	}
 	
 	@GetMapping("/getReporteYellow")
-	public List<ReporteResponse> getReporteYellow() throws ResourceNotFoundException{
+	public ReporteResponse getReporteYellow() throws ResourceNotFoundException{
 		return turnoService.getReporteYellow();
 	}
 	
+//	@GetMapping("/getReportePacientesCovid")
+//	public List<ReporteResponse> getReportePacientesCovid() throws ResourceNotFoundException{
+//		return turnoService.getReporteYellow();
+//	}
+	
 	// FIN METRICAS 
+	
+	// LISTADO TURNOS FUTUROS
+	@GetMapping("/getTurnosFuturosPorDni")
+	public List<TurnosPendientesPacienteResponse> getTurnosFuturosPorDni(@RequestParam("dni") Integer dni) throws ResourceNotFoundException{
+		return turnoService.getTurnosFuturosPorDni(dni);
+	}
 	
 	@PostMapping("/asignarTurnoFiebreAmarilla")
 	public Boolean asignarTurnoFiebreAmarilla(@RequestBody CargarTurno turnoRequest) throws ResourceNotFoundException{

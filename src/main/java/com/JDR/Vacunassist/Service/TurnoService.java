@@ -15,6 +15,7 @@ import com.JDR.Vacunassist.Dto.CargarTurno;
 import com.JDR.Vacunassist.Dto.MetricasResponse;
 import com.JDR.Vacunassist.Dto.ReporteResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
+import com.JDR.Vacunassist.Dto.TurnosPendientesPacienteResponse;
 import com.JDR.Vacunassist.Model.Administrador;
 import com.JDR.Vacunassist.Model.Paciente;
 import com.JDR.Vacunassist.Model.Solicitud;
@@ -198,16 +199,33 @@ public class TurnoService {
 		return listaResponse.get(0);
 	}
 
-	public List<ReporteResponse> getReporteGripe() {
+	public ReporteResponse getReporteGripe() {
 		List<Object[]> listaDb = turnoRepository.getReporteGripe();
 		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
-		return listaResponse;
+		return listaResponse.get(0);
 	}
 
-	public List<ReporteResponse> getReporteYellow() {
+	public ReporteResponse getReporteYellow() {
 		List<Object[]> listaDb = turnoRepository.getReporteYellow();
 		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
-		return listaResponse;
+		return listaResponse.get(0);
+	}
+
+	public List<TurnosPendientesPacienteResponse> getTurnosFuturosPorDni(Integer dni) {
+		LocalDate fechaHoy = LocalDate.now();
+		System.out.println(fechaHoy);
+		List<Object[]> listaDb = turnoRepository.getTurnosFuturosPorDni(dni, fechaHoy.toString());
+		List<TurnosPendientesPacienteResponse> listaResposne = this.maperTurnosPendientesPaciente(listaDb);
+		return listaResposne;
+	}
+
+	private List<TurnosPendientesPacienteResponse> maperTurnosPendientesPaciente(List<Object[]> listaDb) {
+		List<TurnosPendientesPacienteResponse> response = new ArrayList<>();
+		for(Object[] obj : listaDb) {
+			response.add(new TurnosPendientesPacienteResponse(
+					(Integer)obj[0], (String)obj[1].toString(), (Integer)obj[2], (String)obj[3], (String)obj[4], (String)obj[5], (String)obj[6]));
+		}
+		return response;
 	}
 	
 }
