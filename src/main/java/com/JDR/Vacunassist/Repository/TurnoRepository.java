@@ -315,6 +315,50 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteCompletoCovid(String fechaInicio, String fechaFin, Integer vacunatorioId, Integer pacienteDni);
+
+	@Query(value="SELECT t.id, p.nombre, p.apellido, p.dni, v.nombre as nombre_vacunatorio, vac.nombre as nombre_vacuna,\r\n"
+			+ "t.fecha_aplicacion, t.fecha_asignacion, t.asistio\r\n"
+			+ "FROM turno t\r\n"
+			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
+			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin)\r\n"
+			+ "ORDER BY t.fecha_aplicacion",
+			nativeQuery = true)
+	List<Object[]> getReporteSimpleSinVacuna(String fechaInicio, String fechaFin);
+
+	@Query(value="SELECT t.id, p.nombre, p.apellido, p.dni, v.nombre as nombre_vacunatorio, vac.nombre as nombre_vacuna,\r\n"
+			+ "t.fecha_aplicacion, t.fecha_asignacion, t.asistio\r\n"
+			+ "FROM turno t\r\n"
+			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
+			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "ORDER BY t.fecha_aplicacion",
+			nativeQuery = true)
+	List<Object[]> getReporteParcialConVacunatorioSinVacuna(String fechaInicio, String fechaFin, Integer vacunatorioId);
+
+	@Query(value="SELECT t.id, p.nombre, p.apellido, p.dni, v.nombre as nombre_vacunatorio, vac.nombre as nombre_vacuna,\r\n"
+			+ "t.fecha_aplicacion, t.fecha_asignacion, t.asistio\r\n"
+			+ "FROM turno t\r\n"
+			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
+			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni\r\n"
+			+ "ORDER BY t.fecha_aplicacion",
+			nativeQuery = true)
+	List<Object[]> getReporteParcialConDniSinVacuna(String fechaInicio, String fechaFin, Integer pacienteDni);
+
+	@Query(value="SELECT t.id, p.nombre, p.apellido, p.dni, v.nombre as nombre_vacunatorio, vac.nombre as nombre_vacuna,\r\n"
+			+ "t.fecha_aplicacion, t.fecha_asignacion, t.asistio\r\n"
+			+ "FROM turno t\r\n"
+			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
+			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
+			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "ORDER BY t.fecha_aplicacion",
+			nativeQuery = true)
+	List<Object[]> getReporteCompletoSinVacuna(String fechaInicio, String fechaFin, Integer vacunatorioId, Integer pacienteDni);
 	
 	// FIN REPORTE - LISTADOS
 }

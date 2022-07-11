@@ -95,7 +95,27 @@ public class TurnoService {
 	// REPORTE LISTADO
 	public List<TurnoResponse> generarListadoReporte(GenerarListadoRequest request) {
 		List<Object[]> listaDb = null;
-		if(request.getPacienteDni() == null && request.getVacunatorioId() == null) {
+		
+		// SIN VACUNA SETEADA
+		if(request.getPacienteDni() == null && request.getVacunatorioId() == null && request.getVacunaId() == null) {
+			listaDb = turnoRepository.getReporteSimpleSinVacuna(request.getFechaInicio().toString(), request.getFechaFin().toString());			
+		}
+		
+		else if (request.getPacienteDni() == null && request.getVacunatorioId() != null && request.getVacunaId() == null) {
+			listaDb = turnoRepository.getReporteParcialConVacunatorioSinVacuna(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId());
+		}
+	
+		else if (request.getPacienteDni() !=null && request.getVacunatorioId() == null && request.getVacunaId() == null) {
+			listaDb = turnoRepository.getReporteParcialConDniSinVacuna(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getPacienteDni());
+			
+		}
+		
+		else if(request.getPacienteDni() !=null && request.getVacunatorioId() != null && request.getVacunaId() == null) {
+			listaDb = turnoRepository.getReporteCompletoSinVacuna(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId(), request.getPacienteDni());	
+		}
+		
+		// CON VACUNA SETEADA
+		else if(request.getPacienteDni() == null && request.getVacunatorioId() == null && request.getVacunaId() != null) {
 			if(request.getVacunaId() == 1) {
 				listaDb = turnoRepository.getReporteSimpleCovid(request.getFechaInicio().toString(), request.getFechaFin().toString());			
 			}
@@ -103,7 +123,8 @@ public class TurnoService {
 				listaDb = turnoRepository.getReporteSimple(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString());			
 			}
 		}
-		else if (request.getPacienteDni() == null && request.getVacunatorioId() != null) {
+		
+		else if (request.getPacienteDni() == null && request.getVacunatorioId() != null && request.getVacunaId() != null) {
 			if(request.getVacunaId() == 1) {
 				listaDb = turnoRepository.getReporteParcialConVacunatorioCovid(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId());				
 			}
@@ -111,7 +132,8 @@ public class TurnoService {
 				listaDb = turnoRepository.getReporteParcialConVacunatorio(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId());
 			}
 		}
-		else if (request.getPacienteDni() !=null && request.getVacunatorioId() == null) {
+		
+		else if (request.getPacienteDni() !=null && request.getVacunatorioId() == null && request.getVacunaId() != null) {
 			if(request.getVacunaId() == 1) {				
 				listaDb = turnoRepository.getReporteParcialConDniCovid(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getPacienteDni());
 			}
@@ -119,7 +141,8 @@ public class TurnoService {
 				listaDb = turnoRepository.getReporteParcialConDni(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getPacienteDni());
 			}
 		}
-		else {
+		
+		else if(request.getPacienteDni() !=null && request.getVacunatorioId() != null && request.getVacunaId() != null) {
 			if(request.getVacunaId() == 1) {	
 				listaDb = turnoRepository.getReporteCompletoCovid(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId(), request.getPacienteDni());
 			}
@@ -127,6 +150,7 @@ public class TurnoService {
 				listaDb = turnoRepository.getReporteCompleto(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId(), request.getPacienteDni());
 			}
 		}
+		
 		List<TurnoResponse> listaResponse = this.mapearTurnos(listaDb);
 		return listaResponse;
 	}
