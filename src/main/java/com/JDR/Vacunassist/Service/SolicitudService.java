@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.JDR.Vacunassist.Dto.RechazarSolicitudRequest;
 import com.JDR.Vacunassist.Dto.SolicitudDTO;
 import com.JDR.Vacunassist.Model.Administrador;
+import com.JDR.Vacunassist.Model.Paciente;
 import com.JDR.Vacunassist.Model.Solicitud;
 import com.JDR.Vacunassist.Repository.AdministradorRepository;
+import com.JDR.Vacunassist.Repository.PacienteRepository;
 import com.JDR.Vacunassist.Repository.SolicitudRepository;
 
 @Service
@@ -24,7 +26,10 @@ public class SolicitudService {
 	
 	@Autowired
 	AdministradorRepository administradorRepository;
-
+	
+	@Autowired
+	PacienteRepository pacienteRepository;
+	
 	public List<SolicitudDTO> getSolicitudes() {
 		List<Object[]> listaDB = solicitudRepository.getSolicitudes();
 		List<SolicitudDTO> listaResponse = new ArrayList<>();
@@ -81,6 +86,22 @@ public class SolicitudService {
 		solicitudBuscada.setAdministrador(adminBuscado);
 		solicitudRepository.save(solicitudBuscada);
 		return true;
+	}
+
+	public Boolean resetSolicitudFiebreAmarilla(Integer pacienteId) {
+		System.out.println("Reset");
+		Paciente pacienteBuscado = pacienteRepository.findById(pacienteId).orElse(null);
+		if(pacienteBuscado != null) {
+			Solicitud solicitudBuscada = pacienteBuscado.getSolicitud();
+			System.out.println(solicitudBuscada);
+			if(solicitudBuscada != null ) {
+				solicitudRepository.delete(solicitudBuscada);	
+				pacienteBuscado.setSolicitud(null);
+				pacienteRepository.saveAndFlush(pacienteBuscado);
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

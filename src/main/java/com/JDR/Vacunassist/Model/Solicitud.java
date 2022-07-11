@@ -33,7 +33,7 @@ public class Solicitud {
 	@JoinColumn(name="administrador_id")
 	private Administrador administrador;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="paciente_id", referencedColumnName = "id", nullable=false)
 	private Paciente paciente;
 
