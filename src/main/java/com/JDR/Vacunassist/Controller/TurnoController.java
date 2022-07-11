@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.JDR.Vacunassist.Dto.CargarTurno;
+import com.JDR.Vacunassist.Dto.GenerarListadoRequest;
 import com.JDR.Vacunassist.Dto.MetricasResponse;
 import com.JDR.Vacunassist.Dto.ReporteResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
@@ -34,6 +35,7 @@ public class TurnoController {
 		return turnoService.getAllTurnos();
 	}
 	
+	// LISTADO
 	@GetMapping("/getTurnosCovid")
 	public List<TurnoResponse> getTurnosCovid() throws ResourceNotFoundException{
 		return turnoService.getTurnosCovid();
@@ -48,6 +50,8 @@ public class TurnoController {
 	public List<TurnoResponse> getTurnosYellow() throws ResourceNotFoundException{
 		return turnoService.getTurnosYellow();
 	}
+	
+	// FIN LISTADO
 	
 	@GetMapping("/getTurnosDia")
 	public List<TurnoResponse> getTurnosDia() throws ResourceNotFoundException{
@@ -106,6 +110,11 @@ public class TurnoController {
 //	public List<ReporteResponse> getReportePacientesCovid() throws ResourceNotFoundException{
 //		return turnoService.getReporteYellow();
 //	}
+	
+	@PostMapping("/generarListadoReporte")
+	public List<TurnoResponse> generarListadoReporte(@RequestBody GenerarListadoRequest request) throws ResourceNotFoundException{
+		return turnoService.generarListadoReporte(request);
+	}
 	
 	// FIN METRICAS 
 	

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.JDR.Vacunassist.Dto.CargarTurno;
+import com.JDR.Vacunassist.Dto.GenerarListadoRequest;
 import com.JDR.Vacunassist.Dto.MetricasResponse;
 import com.JDR.Vacunassist.Dto.ReporteResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
@@ -91,6 +92,45 @@ public class TurnoService {
 		return listaResponse;
 	}
 
+	// REPORTE LISTADO
+	public List<TurnoResponse> generarListadoReporte(GenerarListadoRequest request) {
+		List<Object[]> listaDb = null;
+		if(request.getPacienteDni() == null && request.getVacunatorioId() == null) {
+			if(request.getVacunaId() == 1) {
+				listaDb = turnoRepository.getReporteSimpleCovid(request.getFechaInicio().toString(), request.getFechaFin().toString());			
+			}
+			else {				
+				listaDb = turnoRepository.getReporteSimple(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString());			
+			}
+		}
+		else if (request.getPacienteDni() == null && request.getVacunatorioId() != null) {
+			if(request.getVacunaId() == 1) {
+				listaDb = turnoRepository.getReporteParcialConVacunatorioCovid(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId());				
+			}
+			else {
+				listaDb = turnoRepository.getReporteParcialConVacunatorio(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId());
+			}
+		}
+		else if (request.getPacienteDni() !=null && request.getVacunatorioId() == null) {
+			if(request.getVacunaId() == 1) {				
+				listaDb = turnoRepository.getReporteParcialConDniCovid(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getPacienteDni());
+			}
+			else {
+				listaDb = turnoRepository.getReporteParcialConDni(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getPacienteDni());
+			}
+		}
+		else {
+			if(request.getVacunaId() == 1) {	
+				listaDb = turnoRepository.getReporteCompletoCovid(request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId(), request.getPacienteDni());
+			}
+			else {				
+				listaDb = turnoRepository.getReporteCompleto(request.getVacunaId(), request.getFechaInicio().toString(), request.getFechaFin().toString(), request.getVacunatorioId(), request.getPacienteDni());
+			}
+		}
+		List<TurnoResponse> listaResponse = this.mapearTurnos(listaDb);
+		return listaResponse;
+	}
+	
 	private List<TurnoResponse> mapearTurnos(List<Object[]> listaDb) {
 		List<TurnoResponse> listaResponse = new ArrayList<>();
 		for(Object[] data : listaDb) {
