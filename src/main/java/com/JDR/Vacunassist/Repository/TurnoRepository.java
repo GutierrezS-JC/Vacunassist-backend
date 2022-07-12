@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -234,7 +235,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteCompleto(Integer vacunaId, String fechaInicio, String fechaFin, Integer vacunatorioId, Integer pacienteDni);
@@ -245,7 +246,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni\r\n"
+			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and p.dni = :pacienteDni\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteParcialConDni(Integer vacunaId, String fechaInicio, String fechaFin, Integer pacienteDni);
@@ -256,7 +257,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteParcialConVacunatorio(Integer vacunaId, String fechaInicio, String fechaFin, Integer vacunatorioId);
@@ -267,7 +268,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin)\r\n"
+			+ "WHERE vac.id = :vacunaId and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin)\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteSimple(Integer vacunaId, String fechaInicio, String fechaFin);
@@ -278,7 +279,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin)\r\n"
+			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin)\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteSimpleCovid(String fechaInicio, String fechaFin);
@@ -289,7 +290,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteParcialConVacunatorioCovid(String fechaInicio, String fechaFin, Integer vacunatorioId);
@@ -300,7 +301,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni\r\n"
+			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and p.dni = :pacienteDni\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteParcialConDniCovid(String fechaInicio, String fechaFin, Integer pacienteDni);
@@ -311,7 +312,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "WHERE vac.id IN (1,2,3) and (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteCompletoCovid(String fechaInicio, String fechaFin, Integer vacunatorioId, Integer pacienteDni);
@@ -322,7 +323,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin)\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin)\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteSimpleSinVacuna(String fechaInicio, String fechaFin);
@@ -333,7 +334,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and t.vacunatorio_id = :vacunatorioId\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteParcialConVacunatorioSinVacuna(String fechaInicio, String fechaFin, Integer vacunatorioId);
@@ -344,7 +345,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and p.dni = :pacienteDni\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteParcialConDniSinVacuna(String fechaInicio, String fechaFin, Integer pacienteDni);
@@ -355,10 +356,137 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 			+ "INNER JOIN paciente p ON (p.id = t.paciente_id)\r\n"
 			+ "INNER JOIN vacunatorio v ON (v.id = t.vacunatorio_id)\r\n"
 			+ "INNER JOIN vacuna vac ON (vac.id = t.vacuna_id)\r\n"
-			+ "WHERE (date(t.fecha_aplicacion) > :fechaInicio) and (date(t.fecha_aplicacion) < :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
+			+ "WHERE (date(t.fecha_aplicacion) >= :fechaInicio) and (date(t.fecha_aplicacion) <= :fechaFin) and p.dni = :pacienteDni  and t.vacunatorio_id = :vacunatorioId\r\n"
 			+ "ORDER BY t.fecha_aplicacion",
 			nativeQuery = true)
 	List<Object[]> getReporteCompletoSinVacuna(String fechaInicio, String fechaFin, Integer vacunatorioId, Integer pacienteDni);
+	
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos\r\n"
+			+ "FROM turno t) as total_turnos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null) as turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true) as turnos_asistidos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false) as turnos_no_asistidos",
+			nativeQuery = true)
+	List<Object[]> getTurnosTotal();
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos\r\n"
+			+ "FROM turno t WHERE t.vacunatorio_id = :vacunatorioId) as total_turnos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = :vacunatorioId ) as turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacunatorio_id = :vacunatorioId ) as turnos_asistidos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacunatorio_id = :vacunatorioId ) as turnos_no_asistidos;",
+			nativeQuery = true)
+	List<Object[]> getTurnosTotalPorVacunatorio(Integer vacunatorioId);
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT vac.nombre\r\n"
+			+ "FROM vacunatorio vac WHERE vac.id = :vacunatorioId) as nombre_vacun,"
+			+ "(SELECT count(t.id) as turnos\r\n"
+			+ "FROM turno t WHERE t.vacunatorio_id = :vacunatorioId) as total_turnos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = :vacunatorioId ) as turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacunatorio_id = :vacunatorioId ) as turnos_asistidos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacunatorio_id = :vacunatorioId ) as turnos_no_asistidos;",
+			nativeQuery = true)
+	List<Object[]> getTurnosTotalPorVacunatorioConNombre(Integer vacunatorioId);
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos\r\n"
+			+ "FROM turno t WHERE date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as total_turnos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_asistidos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_no_asistidos;",
+			nativeQuery = true)
+	List<Object[]> getTurnosTotalEnRango(String fechaInicio, String fechaFin);
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT vac.nombre\r\n"
+			+ "FROM vacunatorio vac WHERE vac.id = :vacunatorioId) as nombre_vacun,"
+			+ "(SELECT count(t.id) as turnos\r\n"
+			+ "FROM turno t WHERE t.vacunatorio_id = :vacunatorioId and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as total_turnos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacunatorio_id = :vacunatorioId and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_pendientes,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacunatorio_id = :vacunatorioId and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_asistidos,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacunatorio_id = :vacunatorioId and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_no_asistidos;",
+			nativeQuery = true)
+	List<Object[]> getTurnosTotalPorVacunatorioEnRangoConNombre(Integer vacunatorioId, String fechaInicio, String fechaFin);
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_covid\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.vacuna_id IN (1,2,3) and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as total_turnos_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id IN (1,2,3) and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_pendientes_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacuna_id IN (1,2,3) and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_asistidos_covid,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacuna_id IN (1,2,3) and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_no_asistidos_covid",
+			nativeQuery = true)
+	List<Object[]> getReporteCovidEnRango(String fechaInicio, String fechaFin);
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_gripe\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.vacuna_id = 4 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as total_turnos_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 4 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_pendientes_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacuna_id = 4 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_asistidos_gripe,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacuna_id = 4 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_no_asistidos_gripe",
+			nativeQuery = true)
+	List<Object[]> getReporteGripeEnRango(String fechaInicio, String fechaFin);
+
+	@Query(value="SELECT \r\n"
+			+ "(SELECT count(t.id) as turnos_yellow\r\n"
+			+ "FROM turno t \r\n"
+			+ "WHERE t.vacuna_id = 5 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as total_turnos_yellow,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio is null and t.vacuna_id = 5 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_pendientes_yellow,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = true and t.vacuna_id = 5 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_asistidos_yellow,\r\n"
+			+ "(SELECT count(t.id)\r\n"
+			+ "FROM turno t\r\n"
+			+ "WHERE t.asistio = false and t.vacuna_id = 5 and date(t.fecha_aplicacion) >= :fechaInicio and date(t.fecha_aplicacion) <= :fechaFin) as turnos_no_asistidos_yellow",
+			nativeQuery = true)
+	List<Object[]> getReporteYellowEnRango(String fechaInicio, String fechaFin);
 	
 	// FIN REPORTE - LISTADOS
 }

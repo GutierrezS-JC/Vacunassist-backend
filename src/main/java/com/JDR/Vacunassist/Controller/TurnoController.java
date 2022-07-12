@@ -18,6 +18,7 @@ import com.JDR.Vacunassist.Dto.CargarTurno;
 import com.JDR.Vacunassist.Dto.GenerarListadoRequest;
 import com.JDR.Vacunassist.Dto.MetricasResponse;
 import com.JDR.Vacunassist.Dto.ReporteResponse;
+import com.JDR.Vacunassist.Dto.ReporteTotalResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
 import com.JDR.Vacunassist.Dto.TurnosPendientesPacienteResponse;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
@@ -50,7 +51,6 @@ public class TurnoController {
 	public List<TurnoResponse> getTurnosYellow() throws ResourceNotFoundException{
 		return turnoService.getTurnosYellow();
 	}
-	
 	// FIN LISTADO
 	
 	@GetMapping("/getTurnosDia")
@@ -74,7 +74,6 @@ public class TurnoController {
 	}
 	
 	// METRICAS 
-	
 	@GetMapping("/getTurnosPendientesGripe")
 	public List<MetricasResponse> getTurnosPendientesGripe() throws ResourceNotFoundException{
 		return turnoService.getTurnosPendientesGripe();
@@ -89,11 +88,15 @@ public class TurnoController {
 	public List<MetricasResponse> getTurnosPendientesTodas() throws ResourceNotFoundException{
 		return turnoService.getTurnosPendientesTodas();
 	}
-	
-	//THIS 
+	 
 	@GetMapping("/getReporteCovid")
 	public ReporteResponse getReporteCovid() throws ResourceNotFoundException{
 		return turnoService.getReporteCovid();
+	}
+	
+	@GetMapping("/getReporteCovidEnRango") // Chart
+	public ReporteResponse getReporteCovidEnRango(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin) throws ResourceNotFoundException{
+		return turnoService.getReporteCovidEnRango(fechaInicio, fechaFin);
 	}
 	
 	@GetMapping("/getReporteGripe")
@@ -101,24 +104,47 @@ public class TurnoController {
 		return turnoService.getReporteGripe();
 	}
 	
+	@GetMapping("/getReporteGripeEnRango") // Chart
+	public ReporteResponse getReporteGripeEnRango(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin) throws ResourceNotFoundException{
+		return turnoService.getReporteGripeEnRango(fechaInicio, fechaFin);
+	}
+	
 	@GetMapping("/getReporteYellow")
 	public ReporteResponse getReporteYellow() throws ResourceNotFoundException{
 		return turnoService.getReporteYellow();
 	}
 	
-//	@GetMapping("/getReportePacientesCovid")
-//	public List<ReporteResponse> getReportePacientesCovid() throws ResourceNotFoundException{
-//		return turnoService.getReporteYellow();
-//	}
-	
+	@GetMapping("/getReporteYellowEnRango") // Chart
+	public ReporteResponse getReporteYellowEnRango(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin) throws ResourceNotFoundException{
+		return turnoService.getReporteYellowEnRango(fechaInicio, fechaFin);
+	}
+		
 	@PostMapping("/generarListadoReporte")
 	public List<TurnoResponse> generarListadoReporte(@RequestBody GenerarListadoRequest request) throws ResourceNotFoundException{
 		return turnoService.generarListadoReporte(request);
 	}
 	
+	@GetMapping("/getTurnosTotal") 
+	public ReporteResponse getTurnosTotal() throws ResourceNotFoundException{
+		return turnoService.getTurnosTotal();
+	}
+	
+	@GetMapping("/getTurnosTotalEnRango") 
+	public ReporteResponse getTurnosTotalEnRango(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin) throws ResourceNotFoundException{
+		return turnoService.getTurnosTotalEnRango(fechaInicio, fechaFin);
+	}
+	
+	@GetMapping("/getTurnosTotalPorVacunatorio") 
+	public List<ReporteTotalResponse> getTurnosTotalPorVacunatorio() throws ResourceNotFoundException{
+		return turnoService.getTurnosTotalPorVacunatorio();
+	}
+	
+	@GetMapping("/getTurnosTotalPorVacunatorioEnRango") 
+	public List<ReporteTotalResponse> getTurnosTotalPorVacunatorioEnRango(@RequestParam("fechaInicio") String fechaInicio, @RequestParam("fechaFin") String fechaFin) throws ResourceNotFoundException{
+		return turnoService.getTurnosTotalPorVacunatorioEnRango(fechaInicio, fechaFin);
+	}
 	// FIN METRICAS 
 	
-	// LISTADO TURNOS FUTUROS
 	@GetMapping("/getTurnosFuturosPorDni")
 	public List<TurnosPendientesPacienteResponse> getTurnosFuturosPorDni(@RequestParam("dni") Integer dni) throws ResourceNotFoundException{
 		return turnoService.getTurnosFuturosPorDni(dni);

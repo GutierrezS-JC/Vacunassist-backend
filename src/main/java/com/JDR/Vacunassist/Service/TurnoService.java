@@ -15,6 +15,7 @@ import com.JDR.Vacunassist.Dto.CargarTurno;
 import com.JDR.Vacunassist.Dto.GenerarListadoRequest;
 import com.JDR.Vacunassist.Dto.MetricasResponse;
 import com.JDR.Vacunassist.Dto.ReporteResponse;
+import com.JDR.Vacunassist.Dto.ReporteTotalResponse;
 import com.JDR.Vacunassist.Dto.TurnoResponse;
 import com.JDR.Vacunassist.Dto.TurnosPendientesPacienteResponse;
 import com.JDR.Vacunassist.Model.Administrador;
@@ -290,6 +291,64 @@ public class TurnoService {
 					(Integer)obj[0], (String)obj[1].toString(), (Integer)obj[2], (String)obj[3], (String)obj[4], (String)obj[5], (String)obj[6]));
 		}
 		return response;
+	}
+
+	public ReporteResponse getTurnosTotal() {
+		List<Object[]> listaDb = turnoRepository.getTurnosTotal();
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse.get(0);
+	}
+
+	public List<ReporteTotalResponse> getTurnosTotalPorVacunatorio() {
+		List<Object[]> listaDb = new ArrayList<>();
+		for(int i = 1; i < 4; i++) {			
+			listaDb.add(turnoRepository.getTurnosTotalPorVacunatorioConNombre(i).get(0));
+		}
+		List<ReporteTotalResponse> listaResponse = this.mapearReporteMetricas(listaDb);
+		return listaResponse;
+	}
+
+	private List<ReporteTotalResponse> mapearReporteMetricas(List<Object[]> listaDb) {
+		List<ReporteTotalResponse> response = new ArrayList<>();
+		for(Object[] obj : listaDb) {
+			response.add(new ReporteTotalResponse((String)obj[0], ((BigInteger)obj[1]).intValue(), ((BigInteger)obj[2]).intValue(), ((BigInteger)obj[3]).intValue(),
+					((BigInteger)obj[4]).intValue()));
+		}
+		return response;
+	}
+
+	public ReporteResponse getTurnosTotalEnRango(String fechaInicio, String fechaFin) {
+		System.out.println(fechaInicio);
+		List<Object[]> listaDb = turnoRepository.getTurnosTotalEnRango(fechaInicio, fechaFin);
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse.get(0);
+	}
+
+	public List<ReporteTotalResponse> getTurnosTotalPorVacunatorioEnRango(String fechaInicio, String fechaFin) {
+		List<Object[]> listaDb = new ArrayList<>();
+		for(int i = 1; i < 4; i++) {			
+			listaDb.add(turnoRepository.getTurnosTotalPorVacunatorioEnRangoConNombre(i, fechaInicio, fechaFin).get(0));
+		}
+		List<ReporteTotalResponse> listaResponse = this.mapearReporteMetricas(listaDb);
+		return listaResponse;
+	}
+
+	public ReporteResponse getReporteCovidEnRango(String fechaInicio, String fechaFin) {
+		List<Object[]> listaDb = turnoRepository.getReporteCovidEnRango(fechaInicio, fechaFin);
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse.get(0);
+	}
+
+	public ReporteResponse getReporteGripeEnRango(String fechaInicio, String fechaFin) {
+		List<Object[]> listaDb = turnoRepository.getReporteGripeEnRango(fechaInicio, fechaFin);
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse.get(0);
+	}
+
+	public ReporteResponse getReporteYellowEnRango(String fechaInicio, String fechaFin) {
+		List<Object[]> listaDb = turnoRepository.getReporteYellowEnRango(fechaInicio, fechaFin);
+		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
+		return listaResponse.get(0);
 	}
 	
 }
