@@ -132,4 +132,10 @@ public class PacienteController {
 			@RequestParam("password") String password, @RequestParam("idZona") Integer idZona, @RequestParam("dni") Integer dni, @RequestParam("deRiesgo") Boolean deRiesgo){
 		return pacienteService.editarPacienteObject(nombre, apellido, password, idZona, dni, deRiesgo);
 	}
+	
+	// REASIGNAR
+	@PostMapping("/reasignarTurno")
+	public Boolean reasignarTurno(@RequestParam("turnoId") Integer turnoId ){
+		return pacienteService.reasignarTurno(turnoId);
+	}
 }

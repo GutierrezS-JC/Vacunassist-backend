@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -673,6 +674,102 @@ public class PacienteService {
         } else {
             return null;
         }
+	}
+
+	public Boolean reasignarTurno(Integer turnoId) {
+		Turno turnoBuscado = turnoRepository.findById(turnoId).get();
+		
+//		System.out.println(turnoBuscado.getFechaAplicacion().toLocalDate());
+//		LocalDate fecha = turnoBuscado.getFechaAplicacion().toLocalDate();
+//		LocalTime hora = LocalTime.parse(turnoBuscado.getFechaAplicacion().toLocalTime().toString(), DateTimeFormatter.ofPattern("HH:mm"));
+//		System.out.println(hora);
+//		System.out.println(turnoBuscado.getFechaAplicacion().toLocalTime().toString());
+//		System.out.println(fecha.plusDays(230));
+//		LocalTime horaInicio = LocalTime.parse(("10:00"), DateTimeFormatter.ofPattern("HH:mm"));
+//		System.out.println(horaInicio);
+//		
+//		Object[] turnoBd = pacienteRepository.buscarTurnoExiste("2022-12-23","10:30"); 
+//		System.out.println(turnoBd.length);
+//		System.out.println(turnoBd.length == 0);
+//		
+//		LocalDate fechaPrueba = LocalDate.parse(("2022-12-25"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//		System.out.println("Fecha Prueba: " + fechaPrueba);
+//		LocalDateTime prueba = this.buscarTurnoLibre(fechaPrueba);
+//		System.out.println("El dia encontrado es: " + prueba);
+		
+		Paciente pacienteAsignado = turnoBuscado.getPaciente();
+		Vacuna vacuna = turnoBuscado.getVacuna();
+		Vacunatorio vacunatorio = turnoBuscado.getVacunatorio();
+		
+		if(!pacienteAsignado.getEsDeRiesgo()) {
+			// Covid sin riesgo --> Solo elimino turno
+			if(turnoBuscado.getVacuna().getId() == 1 || turnoBuscado.getVacuna().getId() == 2 || turnoBuscado.getVacuna().getId() == 3) {
+				turnoRepository.delete(turnoBuscado);
+			}
+			// Gripe sin riesgo --> 1 MES
+			else if (turnoBuscado.getVacuna().getId() == 4) {
+				LocalDate fecha = turnoBuscado.getFechaAplicacion().toLocalDate();
+				fecha = fecha.plusMonths(1);
+				LocalDateTime primerTurnoLibre = this.buscarTurnoLibre(fecha);
+				turnoRepository.delete(turnoBuscado);
+				
+				// Asignar nuevo turno
+				Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), primerTurnoLibre, null, 
+						vacuna, vacunatorio, pacienteAsignado);
+				turnoRepository.saveAndFlush(nuevoTurno);
+			}
+		}
+		else {
+			// Covid o gripe con riesgo --> 1 SEMANA
+			if(turnoBuscado.getVacuna().getId() == 1 || turnoBuscado.getVacuna().getId() == 2 ||
+					turnoBuscado.getVacuna().getId() == 3 || turnoBuscado.getVacuna().getId() == 4) {
+				LocalDate fecha = turnoBuscado.getFechaAplicacion().toLocalDate();
+				fecha = fecha.plusWeeks(1);
+				LocalDateTime primerTurnoLibre = this.buscarTurnoLibre(fecha);
+				turnoRepository.delete(turnoBuscado);
+				
+				// Asignar nuevo turno
+				Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), primerTurnoLibre, null, 
+						vacuna, vacunatorio, pacienteAsignado);
+				turnoRepository.saveAndFlush(nuevoTurno);
+			}
+		}
+		return true;
+	}
+
+	// Busca el primer turno libre a partir de la fecha ingresada.
+	// Ignora los dias Sabado y Domingo 
+	private LocalDateTime buscarTurnoLibre(LocalDate fecha) {
+		LocalDate fechaLibre = null;
+		LocalTime horaLibre = null;
+		boolean encontre = false;
+		LocalTime finalJornada = LocalTime.parse(("17:00"), DateTimeFormatter.ofPattern("HH:mm"));
+		
+		while(!encontre) {
+			
+			if(fecha.getDayOfWeek() != DayOfWeek.SATURDAY && fecha.getDayOfWeek() != DayOfWeek.SUNDAY) {			
+				LocalTime horaInicio = LocalTime.parse(("10:00"), DateTimeFormatter.ofPattern("HH:mm"));
+				
+				//Loop en el mismo dia pero con horas intervalo de 15 minutos
+				while(horaInicio.isBefore(finalJornada)) {
+					Object[] turnoBd = pacienteRepository.buscarTurnoExiste(fecha.toString(),horaInicio.toString()); 
+					
+					// Si el turno buscado en ese dia y hora es NULL && no encontre una fecha antes (bandera) --> LO ENCONTRE!
+					if(turnoBd.length == 0 && !encontre) {
+						System.out.println("Encontre");
+						encontre = true;
+						fechaLibre = fecha;
+						horaLibre = horaInicio;
+					}
+					horaInicio = horaInicio.plusMinutes(15);
+					System.out.println("No encontre, nuevo horario: " + horaInicio);
+				}
+			}
+			// Es un finde || Termine la jornada --> Sumo un dia para seguir loopeando
+			fecha = fecha.plusDays(1);
+			System.out.println("No encontre, nuevo dia: " + fecha);
+		}
+		return LocalDateTime.of(fechaLibre, horaLibre);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.JDR.Vacunassist.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -208,4 +209,8 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 
 	@Query(value="SELECT id, CASE id WHEN 5 THEN 'Fiebre Amarilla' END AS tipo_vacuna FROM vacuna WHERE id = 5", nativeQuery = true)
 	Object[] getFiebreAmarillaDummmy();
+
+	@Query(value="SELECT id, asistio, time_format(time(fecha_aplicacion),'%H:%i'), fecha_asignacion, paciente_id,\r\n"
+			+ "vacuna_id, vacunatorio_id from turno where time_format(time(fecha_aplicacion),'%H:%i') = :hora and date(fecha_aplicacion) = :fecha", nativeQuery = true)
+	Object[] buscarTurnoExiste(String fecha, String hora);
 }

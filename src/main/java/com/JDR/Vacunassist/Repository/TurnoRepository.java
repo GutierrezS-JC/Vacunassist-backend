@@ -221,7 +221,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Integer>{
 	
 	@Query(value="SELECT t.id, t.fecha_aplicacion, p.dni, p.nombre, p.apellido, z.nombre_zona, vac.nombre as nombre_vacunatorio\r\n"
 			+ "FROM turno t \r\n"
-			+ "INNER JOIN paciente p ON (t.paciente_id = t.id)\r\n"
+			+ "INNER JOIN paciente p ON (t.paciente_id = p.id)\r\n"
 			+ "INNER JOIN vacunatorio vac ON (t.vacunatorio_id = vac.id)\r\n"
 			+ "INNER JOIN zona z ON (z.id = vac.zona_id)\r\n"
 			+ "WHERE p.dni = :dni and date(t.fecha_aplicacion) > :fechaHoy and t.asistio is null",
