@@ -350,5 +350,18 @@ public class TurnoService {
 		List<ReporteResponse> listaResponse = this.mapearReporte(listaDb);
 		return listaResponse.get(0);
 	}
+
+	// FIEBRE AMARILLA
+	public Boolean eliminarTurnoFiebreAmarilla(Integer turnoId) {
+		Turno turnoBuscado = turnoRepository.findById(turnoId).get();
+		Solicitud solicitudBuscada = turnoBuscado.getPaciente().getSolicitud();
+		System.out.println(turnoBuscado);
+		System.out.println(solicitudBuscada);
+		solicitudRepository.delete(solicitudBuscada);
+		turnoRepository.delete(turnoBuscado);
+		System.out.println(turnoBuscado);
+		System.out.println(solicitudBuscada);
+		return true;
+	}
 	
 }

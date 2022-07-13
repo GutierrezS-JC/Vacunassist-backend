@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -150,9 +151,14 @@ public class TurnoController {
 		return turnoService.getTurnosFuturosPorDni(dni);
 	}
 	
+	// FIEBRE AMARILLA
 	@PostMapping("/asignarTurnoFiebreAmarilla")
 	public Boolean asignarTurnoFiebreAmarilla(@RequestBody CargarTurno turnoRequest) throws ResourceNotFoundException{
 		return turnoService.asignarTurnoFiebreAmarilla(turnoRequest);
 	}
 	
+	@DeleteMapping("/eliminarTurnoFiebreAmarilla")
+	public Boolean eliminarTurnoFiebreAmarilla(@RequestParam("turnoId") Integer turnoId) throws ResourceNotFoundException{
+		return turnoService.eliminarTurnoFiebreAmarilla(turnoId);
+	}
 }

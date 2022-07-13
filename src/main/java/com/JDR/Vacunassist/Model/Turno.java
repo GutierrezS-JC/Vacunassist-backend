@@ -107,6 +107,14 @@ public class Turno {
 	public void setVacunatorio(Vacunatorio vacunatorio) {
 		this.vacunatorio = vacunatorio;
 	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
 	
 	
 }
