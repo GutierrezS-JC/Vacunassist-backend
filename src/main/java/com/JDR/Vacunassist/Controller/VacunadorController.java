@@ -2,7 +2,11 @@ package com.JDR.Vacunassist.Controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +23,7 @@ import com.JDR.Vacunassist.Dto.VacunadorListNative;
 import com.JDR.Vacunassist.Dto.VacunadorRequest;
 import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
+import com.JDR.Vacunassist.Service.EmailSenderService;
 import com.JDR.Vacunassist.Service.VacunadorService;
 
 @RestController
@@ -27,6 +32,9 @@ public class VacunadorController {
 	
 	@Autowired 
 	VacunadorService vacunadorService;
+	
+	@Autowired
+	EmailSenderService emailSenderService;
 	
 	@GetMapping("/getVacunadores")
 	public List<VacunadorDTO> getVacunadores(){
@@ -153,4 +161,11 @@ public class VacunadorController {
 	}
 	
 	// FIN EDITAR VACUNADOR //
+	
+	// REGISTRO DE ASISTENCIA A TURNO
+	
+	@GetMapping("/triggerEmail")
+	public void triggerEmail(@RequestParam("email") String email) throws MessagingException {
+		emailSenderService.sendMailWithAttachment(email, "The Red Door awaits, do you dare step through it?", "Red Door", "C:\\DataDump\\can.jpg");
+	}
 }
