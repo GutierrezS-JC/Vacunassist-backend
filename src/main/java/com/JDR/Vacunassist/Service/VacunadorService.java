@@ -30,12 +30,14 @@ import com.JDR.Vacunassist.Model.Turno;
 import com.JDR.Vacunassist.Model.Vacuna;
 import com.JDR.Vacunassist.Model.Vacunador;
 import com.JDR.Vacunassist.Model.Vacunatorio;
+import com.JDR.Vacunassist.Model.VacunatorioVacuna;
 import com.JDR.Vacunassist.Model.Zona;
 import com.JDR.Vacunassist.Repository.PacienteRepository;
 import com.JDR.Vacunassist.Repository.RolRepository;
 import com.JDR.Vacunassist.Repository.SolicitudRepository;
 import com.JDR.Vacunassist.Repository.TurnoRepository;
 import com.JDR.Vacunassist.Repository.VacunadorRepository;
+import com.JDR.Vacunassist.Repository.VacunatorioVacunaRepository;
 import com.JDR.Vacunassist.Repository.ZonaRepository;
 
 @Service
@@ -58,6 +60,9 @@ public class VacunadorService {
 	
 	@Autowired
 	SolicitudRepository solicitudRepository;
+	
+	@Autowired
+	VacunatorioVacunaRepository vacunatorioVacunaRepository;
 	
 	@Autowired
 	EmailSenderService emailSenderService;
@@ -417,6 +422,12 @@ public class VacunadorService {
 		
 		Paciente pacienteAsignado = turnoBuscado.getPaciente();
 		Vacuna vacuna = turnoBuscado.getVacuna();
+		
+		//MENOS 1 DE STOCK
+		VacunatorioVacuna vacunatorioVacuna = vacunatorioVacunaRepository.findByVacunatorioAndVacuna(pacienteAsignado.getZona().getVacunatorio(),
+				vacuna);
+		vacunatorioVacuna.setStock(vacunatorioVacuna.getStock() - 1);
+		vacunatorioVacunaRepository.save(vacunatorioVacuna);
 		
 		//MANDAR MAIL
 		String fechaAplicada = turnoBuscado.getFechaAplicacion().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
