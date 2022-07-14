@@ -1,8 +1,15 @@
 package com.JDR.Vacunassist.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +22,19 @@ import com.JDR.Vacunassist.Dto.VacunatorioDTO;
 import com.JDR.Vacunassist.Dto.ValidarVacunador;
 import com.JDR.Vacunassist.Dto.ZonaDTO;
 import com.JDR.Vacunassist.Excepciones.ResourceNotFoundException;
+import com.JDR.Vacunassist.Model.Paciente;
 import com.JDR.Vacunassist.Model.Permiso;
 import com.JDR.Vacunassist.Model.Rol;
+import com.JDR.Vacunassist.Model.Solicitud;
+import com.JDR.Vacunassist.Model.Turno;
+import com.JDR.Vacunassist.Model.Vacuna;
 import com.JDR.Vacunassist.Model.Vacunador;
+import com.JDR.Vacunassist.Model.Vacunatorio;
 import com.JDR.Vacunassist.Model.Zona;
+import com.JDR.Vacunassist.Repository.PacienteRepository;
 import com.JDR.Vacunassist.Repository.RolRepository;
+import com.JDR.Vacunassist.Repository.SolicitudRepository;
+import com.JDR.Vacunassist.Repository.TurnoRepository;
 import com.JDR.Vacunassist.Repository.VacunadorRepository;
 import com.JDR.Vacunassist.Repository.ZonaRepository;
 
@@ -34,6 +49,18 @@ public class VacunadorService {
 	
 	@Autowired
 	ZonaRepository zonaRepository;
+	
+	@Autowired
+	TurnoRepository turnoRepository;
+	
+	@Autowired
+	PacienteRepository pacienteRepository;
+	
+	@Autowired
+	SolicitudRepository solicitudRepository;
+	
+	@Autowired
+	EmailSenderService emailSenderService;
 	
 	public List<VacunadorDTO> devolverVacunadores() {
 		List<Vacunador> vacunadorList = vacunadorRepository.findAll();
@@ -302,6 +329,144 @@ public class VacunadorService {
 		}
 		return false;
 	}
+
+	public Boolean registrarInasistenciaTurno(Integer turnoId) throws MessagingException {
+		Turno turnoBuscado = turnoRepository.findById(turnoId).get();
+		
+		// No asistio --> False
+		turnoBuscado.setAsistio(false);
+		turnoRepository.saveAndFlush(turnoBuscado);
+		
+		Paciente pacienteAsignado = turnoBuscado.getPaciente();
+		Vacuna vacuna = turnoBuscado.getVacuna();
+		Vacunatorio vacunatorio = turnoBuscado.getVacunatorio();
+		
+		if(!pacienteAsignado.getEsDeRiesgo()) {
+			// Covid sin riesgo --> Solo elimino turno
+			if(turnoBuscado.getVacuna().getId() == 1 || turnoBuscado.getVacuna().getId() == 2 || turnoBuscado.getVacuna().getId() == 3) {
+				//MANDAR MAIL
+				emailSenderService.sendMailCovidCasiVacio(pacienteAsignado, vacuna.getNombre());
+			}
+			// Gripe sin riesgo --> 1 MES
+			else if (turnoBuscado.getVacuna().getId() == 4) {
+				LocalDate fecha = turnoBuscado.getFechaAplicacion().toLocalDate();
+				fecha = fecha.plusMonths(1);
+				LocalDateTime primerTurnoLibre = this.buscarTurnoLibre(fecha, vacunatorio.getId());
+					
+				// Asignar nuevo turno
+				Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), primerTurnoLibre, null, 
+						vacuna, vacunatorio, pacienteAsignado);
+				turnoRepository.saveAndFlush(nuevoTurno);
+				
+				//MANDAR MAIL
+				String fechaNueva = primerTurnoLibre.toLocalDate().toString();
+				String horaNueva = primerTurnoLibre.toLocalTime().toString();
+				emailSenderService.sendMailWithoutAttachment(pacienteAsignado, vacuna.getNombre(), fechaNueva, horaNueva);
+			}
+			
+			// Caso para la fiebre amarilla
+			else if (turnoBuscado.getVacuna().getId() == 5) {
+				
+				Solicitud solicitudBuscada = pacienteAsignado.getSolicitud();
+				solicitudRepository.delete(solicitudBuscada);
+
+				//MANDAR MAIL
+				emailSenderService.sendMailAmarillaInasistencia(pacienteAsignado, vacuna.getNombre());
+			}
+			
+			// Caso para la fiebre amarilla
+		}
+		else {
+			// Covid o gripe con riesgo --> 1 SEMANA
+			if(turnoBuscado.getVacuna().getId() == 1 || turnoBuscado.getVacuna().getId() == 2 ||
+					turnoBuscado.getVacuna().getId() == 3 || turnoBuscado.getVacuna().getId() == 4) {
+				LocalDate fecha = turnoBuscado.getFechaAplicacion().toLocalDate();
+				fecha = fecha.plusWeeks(1);
+				LocalDateTime primerTurnoLibre = this.buscarTurnoLibre(fecha, vacunatorio.getId());
+				
+				// Asignar nuevo turno
+				Turno nuevoTurno = new Turno(0, LocalDateTime.of(LocalDate.now(), LocalTime.now()), primerTurnoLibre, null, 
+						vacuna, vacunatorio, pacienteAsignado);
+				turnoRepository.saveAndFlush(nuevoTurno);
+				
+				//MANDAR MAIL
+				String fechaNueva = primerTurnoLibre.toLocalDate().toString();
+				String horaNueva = primerTurnoLibre.toLocalTime().toString();
+				emailSenderService.sendMailWithoutAttachment(pacienteAsignado, vacuna.getNombre(), fechaNueva, horaNueva);
+			}
+			
+			// Caso para la fiebre amarilla
+			else if (turnoBuscado.getVacuna().getId() == 5) {
+				
+				Solicitud solicitudBuscada = pacienteAsignado.getSolicitud();
+				solicitudRepository.delete(solicitudBuscada);
+
+				//MANDAR MAIL
+				emailSenderService.sendMailAmarillaInasistencia(pacienteAsignado, vacuna.getNombre());
+			}
+		}
+		return true;
+	}
+	
+	public Boolean registrarAsistenciaTurno(Integer turnoId) throws MessagingException {
+		Turno turnoBuscado = turnoRepository.findById(turnoId).get();
+		
+		// No asistio --> False
+		turnoBuscado.setAsistio(true);
+		turnoRepository.saveAndFlush(turnoBuscado);
+		
+		Paciente pacienteAsignado = turnoBuscado.getPaciente();
+		Vacuna vacuna = turnoBuscado.getVacuna();
+		
+		//MANDAR MAIL
+		String fechaAplicada = turnoBuscado.getFechaAplicacion().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String horaAplicada = turnoBuscado.getFechaAplicacion().format(DateTimeFormatter.ofPattern("HH:mm"));
+		emailSenderService.sendMailAsistenciaTurno(pacienteAsignado, vacuna.getNombre(), fechaAplicada, horaAplicada);
+		return true;
+	}
+	
+	// Busca el primer turno libre a partir de la fecha ingresada.
+	// Ignora los dias Sabado y Domingo 
+	private LocalDateTime buscarTurnoLibre(LocalDate fecha, Integer vacunatorioId) {
+		LocalDate fechaLibre = null;
+		LocalTime horaLibre = null;
+		boolean encontre = false;
+		LocalTime finalJornada = LocalTime.parse(("17:00"), DateTimeFormatter.ofPattern("HH:mm"));
+		
+		while(!encontre) {
+			
+			if(fecha.getDayOfWeek() != DayOfWeek.SATURDAY && fecha.getDayOfWeek() != DayOfWeek.SUNDAY) {			
+				LocalTime horaInicio = LocalTime.parse(("10:00"), DateTimeFormatter.ofPattern("HH:mm"));
+				
+				//Loop en el mismo dia pero con horas intervalo de 15 minutos
+				while(horaInicio.isBefore(finalJornada)) {
+					Object[] turnoBd = pacienteRepository.buscarTurnoExisteEnVacun(fecha.toString(),horaInicio.toString(), vacunatorioId); 
+					
+					// Si el turno buscado en ese dia y hora es NULL && no encontre una fecha antes (bandera) --> LO ENCONTRE!
+					if(turnoBd.length == 0 && !encontre) {
+						System.out.println("Encontre");
+						encontre = true;
+						fechaLibre = fecha;
+						horaLibre = horaInicio;
+					}
+					horaInicio = horaInicio.plusMinutes(15);
+				}
+			}
+			// Es un finde || Termine la jornada --> Sumo un dia para seguir loopeando
+			fecha = fecha.plusDays(1);
+		}
+		return LocalDateTime.of(fechaLibre, horaLibre);
+	}
+
+	public Boolean testtt(Integer turnoId) throws MessagingException {
+		Turno turnoBuscado = turnoRepository.findById(turnoId).get();
+		Paciente pacienteAsignado = turnoBuscado.getPaciente();
+		Vacuna vacuna = turnoBuscado.getVacuna();
+		String hora = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+		emailSenderService.sendMailCovidCasiVacio(pacienteAsignado, vacuna.getNombre());
+		return true;
+	}
+
 
 }
 

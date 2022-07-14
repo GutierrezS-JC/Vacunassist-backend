@@ -166,6 +166,21 @@ public class VacunadorController {
 	
 	@GetMapping("/triggerEmail")
 	public void triggerEmail(@RequestParam("email") String email) throws MessagingException {
-		emailSenderService.sendMailWithAttachment(email, "The Red Door awaits, do you dare step through it?", "Red Door", "C:\\DataDump\\can.jpg");
+		emailSenderService.sendMailWithAttachment(email, "The Red Door awaits, do you dare step through it?", "Certificado de asistencia", "C:\\DataDump\\can.jpg");
+	}
+	
+	@PostMapping("/registrarInasistenciaTurno")
+	public Boolean registrarInasistenciaTurno(@RequestParam("turnoId") Integer turnoId ) throws MessagingException{
+		return vacunadorService.registrarInasistenciaTurno(turnoId);
+	}
+	
+	@PostMapping("/registrarAsistenciaTurno")
+	public Boolean registrarAsistenciaTurno(@RequestParam("turnoId") Integer turnoId ) throws MessagingException{
+		return vacunadorService.registrarAsistenciaTurno(turnoId);
+	}
+	
+	@PostMapping("/testtt")
+	public Boolean testtt(@RequestParam("turnoId") Integer turnoId ) throws MessagingException{
+		return vacunadorService.testtt(turnoId);
 	}
 }

@@ -213,4 +213,9 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer>{
 	@Query(value="SELECT id, asistio, time_format(time(fecha_aplicacion),'%H:%i'), fecha_asignacion, paciente_id,\r\n"
 			+ "vacuna_id, vacunatorio_id from turno where time_format(time(fecha_aplicacion),'%H:%i') = :hora and date(fecha_aplicacion) = :fecha", nativeQuery = true)
 	Object[] buscarTurnoExiste(String fecha, String hora);
+	
+	@Query(value="SELECT id, asistio, time_format(time(fecha_aplicacion),'%H:%i'), fecha_asignacion, paciente_id,\r\n"
+			+ "vacuna_id, vacunatorio_id from turno where time_format(time(fecha_aplicacion),'%H:%i') = :hora\r\n"
+			+ "and date(fecha_aplicacion) = :fecha and vacunatorio_id = :vacunatorioId", nativeQuery = true)
+	Object[] buscarTurnoExisteEnVacun(String fecha, String hora, Integer vacunatorioId);
 }
